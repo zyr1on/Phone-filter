@@ -1,16 +1,20 @@
-# Gerekli kütüphaneleri içe aktaralım
 from sklearn.model_selection import train_test_split
 import pandas as pd
 import json
 from datasets import Dataset
 from transformers import AutoTokenizer, AutoModelForSeq2SeqLM, Seq2SeqTrainingArguments, Seq2SeqTrainer
-from transformers.trainer_utils import IntervalStrategy
+import torch
+
+# Cihazı tanımla
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu") # GPU taşımak için var
 
 # Veri setini oluşturacağız
 def create_training_data():
     """Örneklem eğitim verileri oluşturur."""
+    
     training_data = []
     
+    # Fiyat örnekleri
     price_examples = [
         ("Fiyatı 10000'den az olsun", "price < 10000"),
         ("10 bin tl altı telefonlar", "price < 10000"),
@@ -112,7 +116,7 @@ def main():
     model_name = "google/mt5-small"
     print(f"Model yükleniyor: {model_name}")
     tokenizer = AutoTokenizer.from_pretrained(model_name)
-    model = AutoModelForSeq2SeqLM.from_pretrained(model_name)
+    model = AutoModelForSeq2SeqLM.from_pretrained(model_name).to(device)  # Modeli cihaza taşı
 
     # Veri hazırlama fonksiyonu
     def preprocess_function(examples):
@@ -140,13 +144,13 @@ def main():
     tokenized_eval = eval_dataset.map(preprocess_function, batched=True)
 
     # Eğitim argümanlarını tanımlayalım
-    
+    from transformers.trainer_utils import IntervalStrategy
     
     training_args = Seq2SeqTrainingArguments(
     output_dir="./phone_filter_model",
     learning_rate=5e-5,
-    per_device_train_batch_size=4,  # batch bouyutu ayarlanabilir
-    per_device_eval_batch_size=4,  # batch boyutu ayarlanabilir
+    per_device_train_batch_size=4,  # Daha küçük bir batch boyutu
+    per_device_eval_batch_size=4,  # Daha küçük bir batch boyutu
     gradient_accumulation_steps=8,  # Gradients'in 8 adımda birikmesini sağla
     weight_decay=0.01,
     save_total_limit=3,
@@ -156,9 +160,8 @@ def main():
     eval_strategy=IntervalStrategy.EPOCH,
     save_strategy=IntervalStrategy.EPOCH,
     load_best_model_at_end=True,
-    report_to="none", # api istemesin diye var
+    report_to="none",
 )
-
 
     # Trainer'ı oluşturalım
     trainer = Seq2SeqTrainer(
@@ -182,7 +185,7 @@ def main():
 
     # Test edelim
     def generate_filter_query(prompt):
-        inputs = tokenizer(prompt, return_tensors="pt", truncation=True, padding=True)
+        inputs = tokenizer(prompt, return_tensors="pt", truncation=True, padding=True).to(device)  # Girdi verisini cihaza taşı
         outputs = model.generate(
             input_ids=inputs.input_ids,
             attention_mask=inputs.attention_mask,
