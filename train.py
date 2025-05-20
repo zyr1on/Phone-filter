@@ -10,11 +10,30 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 # Function to create training data
 def create_training_data():
-    """Creates sample training data with increased diversity."""
+    """Örneklem eğitim verileri oluşturur ve ön işleme uygular."""
     
     training_data = []
-    
-    # Enhanced Price Examples
+
+    # Ön işleme fonksiyonu
+    def preprocess_text(text):
+        # 1. Tüm metni küçük harfe dönüştür
+        text = text.lower()
+        
+        # 2. Sayı olmayan ve harf olmayan karakterleri boşlukla değiştir
+        # (Örn: !, ?, ., ,, vb. kaldırır, sayıları korur)
+        # Sadece harf, sayı ve boşluk bırakmak istiyorsak:
+        # text = re.sub(r'[^a-zA-Z0-9çÇğĞıİöÖşŞüÜ\s]', '', text)
+        # Ancak, bu örnekte 'TL' veya 'GB' gibi ifadelerin bitişik kalması daha iyi olabilir.
+        # Bu nedenle, sadece noktalama işaretlerini hedefleyelim:
+        text = re.sub(r'[^\w\s]', '', text) # Alfabetik karakterler, sayılar ve boşluk dışındakileri kaldırır
+        
+        # Fazla boşlukları tek boşluğa dönüştür
+        text = re.sub(r'\s+', ' ', text).strip()
+        return text
+
+    # Veri örnekleri (eski haliyle aynı, preprocess_text ile işlenecek)
+    # ... (buraya orijinal price_examples, ram_examples, os_examples vb. eklenecek)
+    # Kopyala yapıştır kolaylığı için kısaltılmış örnekler:
     price_examples = [
         ("Fiyatı 10000'den az olsun", "price < 10000"),
         ("10 bin tl altı telefonlar", "price < 10000"),
@@ -141,13 +160,16 @@ def create_training_data():
         ("Yüksek ekran yenileme hızı ve güçlü işlemci", "refresh_rate DESC AND processor DESC"),
     ]
     
-    # Combine all examples
+    # Tüm örnekleri birleştir
     all_examples = price_examples + ram_examples + os_examples + battery_examples + camera_examples + screen_examples + storage_examples + mixed_examples
     
-    # Create the dataset
+    # Veri setini oluştur ve preprocess_text fonksiyonunu uygula
     for prompt, filter_query in all_examples:
+        # Sadece prompt'u ön işleme alıyoruz, filter_query'yi olduğu gibi bırakıyoruz
+        # çünkü filter_query SQL benzeri bir yapıda ve ona dokunmak istemeyiz.
+        processed_prompt = preprocess_text(prompt)
         training_data.append({
-            "prompt": prompt,
+            "prompt": processed_prompt,
             "filter_query": filter_query
         })
     
