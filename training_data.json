@@ -1,0 +1,75 @@
+[
+  {
+      "prompt": "Bana uygun fiyatlı bir telefon önerin, rami en az 4 olsun.",
+      "conditions": {
+          "price_max": 7000,
+          "ram_min": 4
+      }
+  },
+  {
+      "prompt": "Fiyatı 12000'den düşük, kamerası iyi bir Android telefon arıyorum.",
+      "conditions": {
+          "price_max": 12000,
+          "os": "Android",
+          "camera_resolution_min": 48
+      }
+  },
+  {
+      "prompt": "iPhone modellerine bakıyorum, bataryası uzun gitsin.",
+      "conditions": {
+          "os": "iOS",
+          "battery_capacity_min": 4000
+      }
+  },
+  {
+      "prompt": "Çok yüksek çözünürlüklü kamerası olan ve hızlı şarj olan bir telefon lazım, bütçem 15000 TL civarı.",
+      "conditions": {
+          "price_max": 16000,
+          "price_min": 14000,
+          "camera_resolution_min": 64,
+          "fast_charging": true
+      }
+  },
+  {
+      "prompt": "Oyun oynamak için güçlü işlemcili bir telefon önerisi, 8 GB RAM'in altında olmasın.",
+      "conditions": {
+          "ram_min": 8,
+          "processor_performance_min": "high"
+      }
+  },
+  {
+      "prompt": "Samsung'un yeni modellerinden, ekranı büyük bir şey istiyorum.",
+      "conditions": {
+          "brand": "Samsung",
+          "screen_size_min": 6.5
+      }
+  },
+  {
+      "prompt": "En ucuz ve en hafif akıllı telefonları göster.",
+      "conditions": {
+          "price_sort": "asc",
+          "weight_sort": "asc"
+      }
+  },
+  {
+      "prompt": "Xiaomi telefonlara bakıyorum, 64MP kamera ve üzeri olsun.",
+      "conditions": {
+          "brand": "Xiaomi",
+          "camera_resolution_min": 64
+      }
+  },
+  {
+      "prompt": "Pil ömrü iyi olan ve 10000 TL'yi geçmeyen bir telefon.",
+      "conditions": {
+          "battery_capacity_min": 4500,
+          "price_max": 10000
+      }
+  },
+  {
+      "prompt": "Huawei telefon önerileri, 256GB depolama alanı olanlar.",
+      "conditions": {
+          "brand": "Huawei",
+          "storage_gb_min": 256
+      }
+  }
+]
