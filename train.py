@@ -1,20 +1,16 @@
-import json
-import numpy as np
-import pandas as pd
+# Gerekli kütüphaneleri içe aktaralım
 from sklearn.model_selection import train_test_split
-from transformers import AutoTokenizer, AutoModelForSequenceClassification, TrainingArguments, Trainer
-
-import torch
+import pandas as pd
+import json
 from datasets import Dataset
-import re
+from transformers import AutoTokenizer, AutoModelForSeq2SeqLM, Seq2SeqTrainingArguments, Seq2SeqTrainer
+from transformers.trainer_utils import IntervalStrategy
 
 # Veri setini oluşturacağız
 def create_training_data():
     """Örneklem eğitim verileri oluşturur."""
-    
     training_data = []
     
-    # Fiyat örnekleri
     price_examples = [
         ("Fiyatı 10000'den az olsun", "price < 10000"),
         ("10 bin tl altı telefonlar", "price < 10000"),
@@ -100,132 +96,122 @@ def create_training_data():
     
     return training_data
 
-# Veri setini oluşturalım
-data = create_training_data()
+def main():
+    # Veri setini oluşturalım
+    print("Veri seti oluşturuluyor...")
+    data = create_training_data()
 
-# Veri setini eğitim ve değerlendirme olarak bölelim
-train_data, eval_data = train_test_split(data, test_size=0.2, random_state=42)
+    # Veri setini eğitim ve değerlendirme olarak bölelim
+    train_data, eval_data = train_test_split(data, test_size=0.2, random_state=42)
 
-# HuggingFace Datasets formatına dönüştürelim
-train_dataset = Dataset.from_pandas(pd.DataFrame(train_data))
-eval_dataset = Dataset.from_pandas(pd.DataFrame(eval_data))
+    # HuggingFace Datasets formatına dönüştürelim
+    train_dataset = Dataset.from_pandas(pd.DataFrame(train_data))
+    eval_dataset = Dataset.from_pandas(pd.DataFrame(eval_data))
 
-# Model ve tokenizer yükleyelim (Türkçe için dbmdz/bert-base-turkish-cased kullanacağız)
-model_name = "dbmdz/bert-base-turkish-cased"
-tokenizer = AutoTokenizer.from_pretrained(model_name)
+    # mT5 modelini kullanalım (çok dilli ve seq2seq için)
+    model_name = "google/mt5-small"
+    print(f"Model yükleniyor: {model_name}")
+    tokenizer = AutoTokenizer.from_pretrained(model_name)
+    model = AutoModelForSeq2SeqLM.from_pretrained(model_name)
 
-# Modelimizi sequence-to-sequence olarak değil, text-generation olarak kullanacağız
-# Burada BERT sınıflandırma değil text generation yapabilen bir model kullanacağız
-from transformers import BertTokenizer, BertForMaskedLM
+    # Veri hazırlama fonksiyonu
+    def preprocess_function(examples):
+        inputs = tokenizer(examples["prompt"], truncation=True, padding="max_length", max_length=128)
+        outputs = tokenizer(examples["filter_query"], truncation=True, padding="max_length", max_length=128)
+        
+        # Decoder input_ids oluştur
+        batch = {
+            "input_ids": inputs.input_ids,
+            "attention_mask": inputs.attention_mask,
+            "labels": outputs.input_ids.copy(),
+        }
+        
+        # -100 değerini padding token_id'leri için kullan (loss hesaplamasında göz ardı edilecek)
+        batch["labels"] = [
+            [-100 if token == tokenizer.pad_token_id else token for token in labels] 
+            for labels in batch["labels"]
+        ]
+        
+        return batch
 
-tokenizer = BertTokenizer.from_pretrained(model_name)
-model = BertForMaskedLM.from_pretrained(model_name)
+    # Veri setlerini tokenize edelim
+    print("Veri setleri tokenize ediliyor...")
+    tokenized_train = train_dataset.map(preprocess_function, batched=True)
+    tokenized_eval = eval_dataset.map(preprocess_function, batched=True)
 
-# Veri hazırlama fonksiyonu
-def preprocess_function(examples):
-    return tokenizer(examples["prompt"], truncation=True, padding="max_length", max_length=128)
-
-# Veri setlerini tokenize edelim
-tokenized_train = train_dataset.map(preprocess_function, batched=True)
-tokenized_eval = eval_dataset.map(preprocess_function, batched=True)
-
-# Özel trainer tanımlama (sequence generation için)
-from transformers import Seq2SeqTrainingArguments, Seq2SeqTrainer
-from transformers import AutoModelForSeq2SeqLM
-
-# Daha iyi bir seçenek olarak mT5 modelini kullanalım (çok dilli ve seq2seq için)
-model_name = "google/mt5-small"
-tokenizer = AutoTokenizer.from_pretrained(model_name)
-model = AutoModelForSeq2SeqLM.from_pretrained(model_name)
-
-# Veri hazırlama fonksiyonunu güncelleyelim
-def preprocess_function(examples):
-    inputs = tokenizer(examples["prompt"], truncation=True, padding="max_length", max_length=128)
-    outputs = tokenizer(examples["filter_query"], truncation=True, padding="max_length", max_length=128)
+    # Eğitim argümanlarını tanımlayalım
     
-    # Decoder input_ids oluştur
-    batch = {
-        "input_ids": inputs.input_ids,
-        "attention_mask": inputs.attention_mask,
-        "labels": outputs.input_ids.copy(),
-    }
     
-    # -100 değerini padding token_id'leri için kullan (loss hesaplamasında göz ardı edilecek)
-    batch["labels"] = [
-        [-100 if token == tokenizer.pad_token_id else token for token in labels] 
-        for labels in batch["labels"]
-    ]
-    
-    return batch
-
-# Veri setlerini güncellenmiş şekilde tokenize edelim
-tokenized_train = train_dataset.map(preprocess_function, batched=True)
-tokenized_eval = eval_dataset.map(preprocess_function, batched=True)
-
-# Eğitim argümanlarını tanımlayalım
-training_args = Seq2SeqTrainingArguments(
+    training_args = Seq2SeqTrainingArguments(
     output_dir="./phone_filter_model",
-    
     learning_rate=5e-5,
-    per_device_train_batch_size=8,
-    per_device_eval_batch_size=8,
+    per_device_train_batch_size=4,  # batch bouyutu ayarlanabilir
+    per_device_eval_batch_size=4,  # batch boyutu ayarlanabilir
+    gradient_accumulation_steps=8,  # Gradients'in 8 adımda birikmesini sağla
     weight_decay=0.01,
     save_total_limit=3,
-    num_train_epochs=50,
+    num_train_epochs=15,
     predict_with_generate=True,
     logging_dir="./logs",
-    warmup_steps=500,
-    save_strategy="epoch",
-    gradient_accumulation_steps=2
+    eval_strategy=IntervalStrategy.EPOCH,
+    save_strategy=IntervalStrategy.EPOCH,
+    load_best_model_at_end=True,
+    report_to="none", # api istemesin diye var
 )
 
-# Trainer'ı oluşturalım
-trainer = Seq2SeqTrainer(
-    model=model,
-    args=training_args,
-    train_dataset=tokenized_train,
-    eval_dataset=tokenized_eval,
-    tokenizer=tokenizer,
-)
 
-# Modeli eğitelim
-print("Model eğitimine başlanıyor...")
-trainer.train()
-
-# Eğitilen modeli kaydedelim
-trainer.save_model("./phone_filter_model")
-tokenizer.save_pretrained("./phone_filter_model")
-
-print("Model eğitimi tamamlandı ve model kaydedildi!")
-
-# Test edelim
-def generate_filter_query(prompt):
-    inputs = tokenizer(prompt, return_tensors="pt", truncation=True, padding=True)
-    outputs = model.generate(
-        input_ids=inputs.input_ids,
-        attention_mask=inputs.attention_mask,
-        max_length=128,
-        num_beams=5,
-        early_stopping=True
+    # Trainer'ı oluşturalım
+    trainer = Seq2SeqTrainer(
+        model=model,
+        args=training_args,
+        train_dataset=tokenized_train,
+        eval_dataset=tokenized_eval,
+        tokenizer=tokenizer,
     )
-    predicted_query = tokenizer.decode(outputs[0], skip_special_tokens=True)
-    return predicted_query
 
-# Birkaç örnek test edelim
-test_prompts = [
-    "Fiyatı 10000 TL altı ve 8 GB RAM olan telefonlar",
-    "Android telefonlar bataryası yüksek olanlar",
-    "En iyi kameralı Samsung telefonlar"
-]
+    # Modeli eğitelim
+    print("Model eğitimine başlanıyor...")
+    trainer.train()
+    print("Model eğitimi bitti!")
 
-print("\nTest sonuçları:")
-for prompt in test_prompts:
-    predicted_query = generate_filter_query(prompt)
-    print(f"Prompt: {prompt}")
-    print(f"Tahmin edilen filtre sorgusu: {predicted_query}\n")
+    # Eğitilen modeli kaydedelim
+    model_save_path = "./phone_filter_model"
+    trainer.save_model(model_save_path)
+    tokenizer.save_pretrained(model_save_path)
+    print(f"Model kaydedildi: {model_save_path}")
 
-# Tüm eğitim verilerini JSON dosyasına kaydedelim
-with open("training_data.json", "w", encoding="utf-8") as f:
-    json.dump(data, f, ensure_ascii=False, indent=4)
+    # Test edelim
+    def generate_filter_query(prompt):
+        inputs = tokenizer(prompt, return_tensors="pt", truncation=True, padding=True)
+        outputs = model.generate(
+            input_ids=inputs.input_ids,
+            attention_mask=inputs.attention_mask,
+            max_length=128,
+            num_beams=5,
+            early_stopping=True
+        )
+        predicted_query = tokenizer.decode(outputs[0], skip_special_tokens=True)
+        return predicted_query
 
-print("Eğitim verileri training_data.json dosyasına kaydedildi.")
+    # Birkaç örnek test edelim
+    test_prompts = [
+        "Fiyatı 10000 TL altı ve 8 GB RAM olan telefonlar",
+        "Android telefonlar bataryası yüksek olanlar",
+        "En iyi kameralı Samsung telefonlar"
+    ]
+
+    print("\nTest sonuçları:")
+    for prompt in test_prompts:
+        predicted_query = generate_filter_query(prompt)
+        print(f"Prompt: {prompt}")
+        print(f"Tahmin edilen filtre sorgusu: {predicted_query}\n")
+
+    # Tüm eğitim verilerini JSON dosyasına kaydedelim
+    json_path = "training_data.json"
+    with open(json_path, "w", encoding="utf-8") as f:
+        json.dump(data, f, ensure_ascii=False, indent=4)
+
+    print(f"Eğitim verileri kaydedildi: {json_path}")
+
+if __name__ == "__main__":
+    main()
