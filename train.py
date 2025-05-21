@@ -1124,7 +1124,15 @@ def compute_metrics(eval_preds):
         labels = labels.tolist()
     elif torch.is_tensor(labels):
         labels = labels.tolist()
+    def sanitize(token_list):
+        return [
+            [int(t) for t in seq if isinstance(t, int) and 0 <= t <= tokenizer.vocab_size]
+            for seq in token_list
+        ]
 
+    preds = sanitize(preds)
+    labels = sanitize(labels)
+    
     decoded_preds = tokenizer.batch_decode(preds, skip_special_tokens=True)
     decoded_labels = tokenizer.batch_decode(labels, skip_special_tokens=True)
     
@@ -1196,4 +1204,3 @@ if __name__ == "__main__":
     model.save_pretrained(model_path)
     tokenizer.save_pretrained(model_path)
     print(f"Model ve tokenizer kaydedildi: {model_path}")
-
