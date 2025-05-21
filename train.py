@@ -1,298 +1,1199 @@
-from sklearn.model_selection import train_test_split
 import pandas as pd
-import json
-from datasets import Dataset
-from transformers import AutoTokenizer, AutoModelForSeq2SeqLM, Seq2SeqTrainingArguments, Seq2SeqTrainer, DataCollatorForSeq2Seq
 import torch
+from torch.utils.data import Dataset, DataLoader
+from transformers import AutoTokenizer, AutoModelForSeq2SeqLM, DataCollatorForSeq2Seq
+from transformers import Seq2SeqTrainingArguments, Seq2SeqTrainer
+import numpy as np
+import os
+from sklearn.model_selection import train_test_split
 
-# Define the device
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+# Veri setinin oluşturulması
+def create_example_dataset():
+    """Örnek veri seti oluşturur."""
+    examples = [
+        {"input": "6 gb üzeri android telefon öner", "output": "os: android; ram >= 6"},
+        {"input": "6 gb ram ve fiyatı 10000 tl'den ucuz bir telefon istiyorum", "output": "ram: 6; price <= 10000"},
+        {"input": "en az 8 gb rami olan iphone modeli önerir misin", "output": "os: ios; ram >= 8"},
+        {"input": "12 gb ram ve en az 256 gb depolama alanı olan bir android telefon", "output": "os: android; ram: 12; storage >= 256"},
+        {"input": "bütçem 15000 tl, android ve ram 8 gb olsun", "output": "os: android; ram: 8; price <= 15000"},
+        {"input": "iphone istiyorum ama fiyatı 20000 tl'yi geçmesin", "output": "os: ios; price <= 20000"},
+        {"input": "en az 5000 mah bataryası olan bir android telefon", "output": "os: android; battery >= 5000"},
+        {"input": "hem uygun fiyatlı hem de iyi kamerası olan bir telefon", "output": "price: affordable; camera: good"},
+        {"input": "gaming için ram 12 gb ve ekran boyutu büyük olsun", "output": "ram: 12; screen_size: large; purpose: gaming"},
+        {"input": "hafif ve batarya ömrü uzun olan bir iphone", "output": "os: ios; weight: light; battery: long-lasting"},
+        {"input": "4 gb ram yeterli, ama depolama alanı büyük olsun", "output": "ram: 4; storage: large"},
+        {"input": "hem android hem de 5g destekli olsun", "output": "os: android; network: 5g"},
+        {"input": "amoled ekranlı ve en az 8 gb ram olan bir telefon", "output": "screen_type: amoled; ram >= 8"},
+        {"input": "öğrenci için uygun fiyatlı bir android telefon", "output": "os: android; price: budget; purpose: student"},
+        {"input": "fotoğraf çekimi için iyi bir iphone modeli", "output": "os: ios; camera: good; purpose: photography"},
+        {"input": "8 gb ram ve batarya ömrü iyi olan bir telefon öner", "output": "ram: 8; battery: long-lasting"},
+        {"input": "oyun için güçlü bir telefon ama 15000 tl altında", "output": "purpose: gaming; performance: high; price <= 15000"},
+        {"input": "en az 12 gb rami olan ve hızlı şarj desteği bulunan telefon", "output": "ram >= 12; charging: fast"},
+        {"input": "su geçirmez özelliği olan bir samsung telefon", "output": "brand: samsung; feature: waterproof"},
+        {"input": "gece fotoğrafçılığı için iyi bir kamerası olan telefon", "output": "camera: good; feature: night_photography"},
+        {"input": "6 gb ram android ve en fazla 8000 tl", "output": "os: android; ram: 6; price <= 8000"},
+        {"input": "iyi bir işlemcisi olan ve 12 gb ram bulunan telefon", "output": "processor: good; ram: 12"},
+        {"input": "minimum 128 gb depolama ve nfc özellikli", "output": "storage >= 128; feature: nfc"},
+        {"input": "çocuklar için dayanıklı ve ucuz bir telefon", "output": "durability: high; price: low; purpose: children"},
+        {"input": "4500 mah üzeri batarya ve android", "output": "os: android; battery >= 4500"},
+        {"input": "8 gb ramli telefon istiyorum", "output": "ram: 8"},
+        {"input": "5000 mah bataryalı ve ucuz bir telefon", "output": "battery: 5000; price: cheap"},
+        {"input": "iyi kamerası olan bir iphone arıyorum", "output": "camera: good; os: ios"},
+        {"input": "oyun oynamak için uygun fiyatlı bir android", "output": "purpose: gaming; price: affordable; os: android"},
+        {"input": "selfie için iyi bir kamera ve uzun batarya", "output": "purpose: selfie; camera: good; battery: long_lasting"},
+        {"input": "12 gb ram ve en fazla 15000 tl fiyatı olan telefon", "output": "ram: 12; price <= 15000"},
+        {"input": "en az 4000 mah bataryası olan bir iphone", "output": "battery >= 4000; os: ios"},
+        {"input": "hem uygun fiyatlı hem de kamerası iyi olan bir android", "output": "price: affordable; camera: good; os: android"},
+        {"input": "oyun için 16 gb ramli telefon", "output": "purpose: gaming; ram: 16"},
+        {"input": "batarya ömrü çok uzun bir iphone", "output": "battery: very_long_lasting; os: ios"},
+        {"input": "4 gb ram yeterli ama kamerası iyi olsun", "output": "ram: 4; camera: good"},
+        {"input": "en az 8 gb ramli telefon", "output": "ram >= 8"},
+        {"input": "fotoğraf çekimi için iyi bir iphone modeli", "output": "purpose: photography; camera: good; os: ios"},
+        {"input": "8 gb ram ve batarya ömrü iyi olan bir telefon öner", "output": "ram: 8; battery: long_lasting"},
+        {"input": "oyun için güçlü bir telefon ama 15000 tl altında", "output": "purpose: gaming; price <= 15000"},
+        {"input": "6 gb ram android ve en fazla 8000 tl", "output": "ram: 6; os: android; price <= 8000"},
+        {"input": "4500 mah üzeri batarya ve android", "output": "battery >= 4500; os: android"},
+        {"input": "en fazla 15000 tl", "output": "price <= 15000"},
+        {"input": "bütçem 15000 tl", "output": "price: 15000"},
+        {"input": "fiyat önemli değil ama kamerası iyi olsun", "output": "price: high; camera: good"},
+        {"input": "12 gb ramli telefon istiyorum", "output": "ram: 12"},
+        {"input": "ramı yüksek bir android", "output": "ram: high; os: android"},
+        {"input": "4 gb ramli ucuz telefon", "output": "ram: 4; price: cheap"},
+        {"input": "en az 6 gb ramli iphone", "output": "ram >= 6; os: ios"},
+        {"input": "oyun için 12 gb ram şart", "output": "purpose: gaming; ram: 12"},
+        {"input": "8 gb ram altı olmasın", "output": "ram >= 8"},
+        {"input": "16 gb ramli cihaz", "output": "ram: 16"},
+        {"input": "düşük ramli bir android arıyorum", "output": "ram: low; os: android"},
+        {"input": "ramı 6 gb olan telefon", "output": "ram: 6"},
+        {"input": "ramı 10 gb olan telefon", "output": "ram: 10"},
+        {"input": "ramı 14 gb olan telefon", "output": "ram: 14"},
+        {"input": "ramı 18 gb olan telefon", "output": "ram: 18"},
+        {"input": "ram olarak 8 gb ve üzeri", "output": "ram >= 8"},
+        {"input": "ram olarak 12 gb ve üzeri", "output": "ram >= 12"},
+        {"input": "ramı yüksek android telefon", "output": "ram: high; os: android"},
+        {"input": "ramı düşük iphone", "output": "ram: low; os: ios"},
+        {"input": "ramı 20 gb olan telefon", "output": "ram: 20"},
+        {"input": "ramı en az 10 gb", "output": "ram >= 10"},
+        {"input": "ramı 4 gb bir android", "output": "ram: 4; os: android"},
+        {"input": "ramı 8 gb bir iphone", "output": "ram: 8; os: ios"},
+        {"input": "ramı 12 gb bir android", "output": "ram: 12; os: android"},
+        {"input": "ramı 16 gb bir android", "output": "ram: 16; os: android"},
+        {"input": "ramı 6 gb olsun", "output": "ram: 6"},
+        {"input": "ram 8 gb olsun", "output": "ram: 8"},
+        {"input": "bataryası çok uzun giden telefon", "output": "battery: very_long_lasting"},
+        {"input": "6000 mah bataryalı bir android", "output": "battery: 6000; os: android"},
+        {"input": "pil ömrü çok önemli bir iphone", "output": "battery: very_important; os: ios"},
+        {"input": "4500 mah üzeri batarya istiyorum", "output": "battery >= 4500"},
+        {"input": "şarjı iki gün giden bir telefon", "output": "battery: two_days"},
+        {"input": "bataryası güçlü bir telefon öner", "output": "battery: powerful"},
+        {"input": "pil kapasitesi yüksek telefon", "output": "battery: high_capacity"},
+        {"input": "3000 mah bataryalı ve ucuz", "output": "battery: 3000; price: cheap"},
+        {"input": "bataryası zayıf olmasın", "output": "battery: not_weak"},
+        {"input": "pil ömrü harika olsun", "output": "battery: excellent_life"},
+        {"input": "5500 mah bataryalı telefon", "output": "battery: 5500"},
+        {"input": "7000 mah bataryalı telefon", "output": "battery: 7000"},
+        {"input": "bataryası uzun giden bir telefon", "output": "battery: long_lasting"},
+        {"input": "bataryası güçlü bir android", "output": "battery: powerful; os: android"},
+        {"input": "bataryası bitmeyen iphone", "output": "battery: never_ending; os: ios"},
+        {"input": "bataryası 4000 mah olan telefon", "output": "battery: 4000"},
+        {"input": "bataryası 8000 mah olan telefon", "output": "battery: 8000"},
+        {"input": "bataryası 9000 mah olan telefon", "output": "battery: 9000"},
+        {"input": "bataryası 10000 mah olan telefon", "output": "battery: 10000"},
+        {"input": "en az 5000 mah batarya", "output": "battery >= 5000"},
+        {"input": "en az 6000 mah batarya", "output": "battery >= 6000"},
+        {"input": "batarya ömrü uzun android", "output": "battery: long_lasting; os: android"},
+        {"input": "batarya ömrü uzun iphone", "output": "battery: long_lasting; os: ios"},
+        {"input": "uygun fiyatlı bir android", "output": "price: affordable; os: android"},
+        {"input": "en fazla 10000 tl'ye telefon", "output": "price <= 10000"},
+        {"input": "ucuz bir iphone var mı", "output": "price: cheap; os: ios"},
+        {"input": "orta segment bir telefon arıyorum", "output": "price: mid_range"},
+        {"input": "20000 tl üzeri bir telefon", "output": "price >= 20000"},
+        {"input": "bütçe dostu android telefon", "output": "price: budget; os: android"},
+        {"input": "pahalı bir iphone", "output": "price: expensive; os: ios"},
+        {"input": "12000 tl civarı bir telefon", "output": "price: 12000"},
+        {"input": "17500 tl'den pahalı olmasın", "output": "price <= 17500"},
+        {"input": "fiyat aralığı 8000-12000 tl arası", "output": "price: 8000-12000"},
+        {"input": "en pahalı telefon", "output": "price: most_expensive"},
+        {"input": "en ucuz telefon", "output": "price: cheapest"},
+        {"input": "3000 tl altı telefon", "output": "price <= 3000"},
+        {"input": "5000 tl üstü telefon", "output": "price >= 5000"},
+        {"input": "7500 tl'ye kadar bir telefon", "output": "price <= 7500"},
+        {"input": "25000 tl'den ucuz iphone", "output": "price <= 25000; os: ios"},
+        {"input": "30000 tl'den pahalı android", "output": "price >= 30000; os: android"},
+        {"input": "fiyatı 10000 tl olan telefon", "output": "price: 10000"},
+        {"input": "fiyatı 15000 tl olan telefon", "output": "price: 15000"},
+        {"input": "sadece ios kullanırım", "output": "os: ios"},
+        {"input": "yeni bir android telefon", "output": "os: android"},
+        {"input": "iphone dışı bir telefon", "output": "os: android"},
+        {"input": "ios ekosisteminde kalmak istiyorum", "output": "os: ios"},
+        {"input": "android olsun yeter", "output": "os: android"},
+        {"input": "iphone olsun yeter", "output": "os: ios"},
+        {"input": "apple telefon istiyorum", "output": "os: ios"},
+        {"input": "google telefon istiyorum", "output": "os: android"},
+        {"input": "samsung telefon istiyorum", "output": "os: android"},
+        {"input": "xiaomi telefon istiyorum", "output": "os: android"},
+        {"input": "huawei telefon istiyorum", "output": "os: android"},
+        {"input": "sadece android cihaz", "output": "os: android"},
+        {"input": "sadece iphone cihaz", "output": "os: ios"},
+        {"input": "kamerası çok iyi olan bir telefon", "output": "camera: very_good"},
+        {"input": "fotoğraf çekmek için en iyi android", "output": "purpose: photography; camera: best; os: android"},
+        {"input": "selfie için iyi ön kamerası olan iphone", "output": "purpose: selfie; camera: good_front; os: ios"},
+        {"input": "kamerası fena olmayan bir telefon", "output": "camera: decent"},
+        {"input": "kamera kalitesi yüksek olsun", "output": "camera: high_quality"},
+        {"input": "fotoğraf çekimi önceliğim", "output": "purpose: photography; camera: good"},
+        {"input": "kamerası güzel olsun", "output": "camera: nice"},
+        {"input": "ön kamera iyi çeksin", "output": "camera: good_front"},
+        {"input": "arka kamera iyi çeksin", "output": "camera: good_rear"},
+        {"input": "kamerası net fotoğraf çeksin", "output": "camera: clear_photos"},
+        {"input": "kamerası sıradan olmasın", "output": "camera: not_ordinary"},
+        {"input": "iyi kameralı ucuz telefon", "output": "camera: good; price: cheap"},
+        {"input": "iphone olsun kamerası çok iyi", "output": "os: ios; camera: very_good"},
+        {"input": "android olsun kamerası iyi", "output": "os: android; camera: good"},
+        {"input": "selfie için en iyi kamera", "output": "purpose: selfie; camera: best_front"},
+        {"input": "fotoğrafçı telefonu istiyorum", "output": "purpose: photography; camera: good"},
+        {"input": "kamerası iyi olan telefon", "output": "camera: good"},
+        {"input": "kamerası kötü olmayan telefon", "output": "camera: not_bad"},
+        {"input": "kamerası en iyi olan android", "output": "camera: best; os: android"},
+        {"input": "kamerası en iyi olan iphone", "output": "camera: best; os: ios"},
+        {"input": "oyun oynamak için tasarlanmış telefon", "output": "purpose: gaming"},
+        {"input": "selfie'lerim güzel çıksın istiyorum", "output": "purpose: selfie; camera: good_front"},
+        {"input": "oyun performansı yüksek bir android", "output": "purpose: gaming; os: android"},
+        {"input": "hem oyun hem de selfie için uygun telefon", "output": "purpose: gaming_selfie"},
+        {"input": "mobil oyunlar için en iyi telefon", "output": "purpose: gaming"},
+        {"input": "selfie odaklı iphone", "output": "purpose: selfie; os: ios"},
+        {"input": "oyuncu telefonu arıyorum", "output": "purpose: gaming"},
+        {"input": "selfie çekmek için harika bir telefon", "output": "purpose: selfie; camera: excellent_front"},
+        {"input": "sadece oyun oynamak için telefon", "output": "purpose: gaming_only"},
+        {"input": "sadece selfie çekmek için telefon", "output": "purpose: selfie_only"},
+        {"input": "oyun ve batarya ömrü benim için önemli", "output": "purpose: gaming; battery: long_life"},
+        {"input": "selfie ve fiyat önceliğim", "output": "purpose: selfie; price: important"},
+        {"input": "oyun oynayanlar için", "output": "purpose: gaming"},
+        {"input": "selfie sevenler için", "output": "purpose: selfie"},
+        {"input": "oyun için telefon", "output": "purpose: gaming"},
+        {"input": "selfie için telefon", "output": "purpose: selfie"},
+        {"input": "8 gb ramli, bataryası iyi giden android, fiyatı 12000 tl'den ucuz", "output": "ram: 8; battery: long_lasting; os: android; price <= 12000"},
+        {"input": "iyi kamera ve uygun fiyatlı iphone, selfie için de iyi olsun", "output": "camera: good; price: affordable; os: ios; purpose: selfie"},
+        {"input": "oyun için 12 gb ram ve büyük batarya, android tercih ederim", "output": "purpose: gaming; ram: 12; battery: large; os: android"},
+        {"input": "kamerası çok iyi olan android, oyun oynamayacağım", "output": "camera: very_good; os: android; purpose: not_gaming"},
+        {"input": "bütçem 10000 tl, oyun için uygun, 6 gb ramli bir android", "output": "price <= 10000; purpose: gaming; ram: 6; os: android"},
+        {"input": "pahalı bir iphone, bataryası uzun giden", "output": "price: expensive; os: ios; battery: long_lasting"},
+        {"input": "ucuz android, kamerası iyi olsun", "output": "price: cheap; os: android; camera: good"},
+        {"input": "oyun için 16 gb ram ve en az 7000 mah batarya", "output": "purpose: gaming; ram: 16; battery >= 7000"},
+        {"input": "selfie için en iyi iphone, fiyatı önemli değil", "output": "purpose: selfie; camera: best_front; os: ios; price: high"},
+        {"input": "orta fiyatlı android, 8 gb ram ve iyi kamera", "output": "price: mid_range; os: android; ram: 8; camera: good"},
+        {"input": "pil ömrü uzun, ramı yüksek ve android olsun", "output": "battery: long_life; ram: high; os: android"},
+        {"input": "iphone olsun, kamerası iyi, oyun oynamayacağım", "output": "os: ios; camera: good; purpose: not_gaming"},
+        {"input": "ucuz ve selfie için uygun android", "output": "price: cheap; purpose: selfie; os: android"},
+        {"input": "oyun için 12 gb ram, bataryası 5000 mah olsun", "output": "purpose: gaming; ram: 12; battery: 5000"},
+        {"input": "android olsun, kamerası çok iyi, fiyatı 20000 tl'den az", "output": "os: android; camera: very_good; price <= 20000"},
+        {"input": "iphone olsun, pil ömrü uzun, oyun oynamam", "output": "os: ios; battery: long_life; purpose: not_gaming"},
+        {"input": "pahalı android, en iyi kameraya sahip", "output": "price: expensive; os: android; camera: best"},
+        {"input": "bütçe dostu, android, 8 gb ram", "output": "price: budget; os: android; ram: 8"},
+        {"input": "selfie için iyi kamera, 6 gb ram ve android", "output": "purpose: selfie; camera: good_front; ram: 6; os: android"},
+        {"input": "oyun için 16 gb ram ve iphone", "output": "purpose: gaming; ram: 16; os: ios"},
+        {"input": "5000 mah batarya, 8 gb ram ve ucuz", "output": "battery: 5000; ram: 8; price: cheap"},
+        {"input": "kamerası iyi, pahalı olmayan android", "output": "camera: good; price: not_expensive; os: android"},
+        {"input": "uzun batarya ömrü ve iyi kamera, iphone", "output": "battery: long_life; camera: good; os: ios"},
+        {"input": "oyun için güçlü, 12 gb ramli android", "output": "purpose: gaming; ram: 12; os: android"},
+        {"input": "selfie için uygun fiyatlı, 10000 tl'den fazla olmayan bir telefon", "output": "purpose: selfie; price <= 10000"},
+        {"input": "android olsun, bataryası 6000 mah, fiyatı orta segment", "output": "os: android; battery: 6000; price: mid_range"},
+        {"input": "iphone olsun, kamerası iyi, pahalı değil", "output": "os: ios; camera: good; price: not_expensive"},
+        {"input": "8 gb ramli, oyun için tasarlanmış android", "output": "ram: 8; purpose: gaming; os: android"},
+        {"input": "6 gb ram, iyi kamera ve selfie odaklı iphone", "output": "ram: 6; camera: good; purpose: selfie; os: ios"},
+        {"input": "batarya ömrü uzun ve oyun için güçlü android", "output": "battery: long_life; purpose: gaming; os: android"},
+        {"input": "en az 4000 mah batarya ve uygun fiyatlı android", "output": "battery >= 4000; price: affordable; os: android"},
+        {"input": "ramı yüksek, fiyatı ucuz ve android", "output": "ram: high; price: cheap; os: android"},
+        {"input": "kamerası çok iyi ve pahalı iphone", "output": "camera: very_good; price: expensive; os: ios"},
+        {"input": "oyun ve selfie için en iyi android", "output": "purpose: gaming_selfie; os: android"},
+        {"input": "pil ömrü ve ram önemli, android olsun", "output": "battery: long_life; ram: high; os: android"},
+        {"input": "ucuz bir iphone, kamerası idare etsin", "output": "price: cheap; os: ios; camera: decent"},
+        {"input": "oyun için yüksek ram ve android", "output": "purpose: gaming; ram: high; os: android"},
+        {"input": "selfie için iyi kamera ve ucuz", "output": "purpose: selfie; camera: good_front; price: cheap"},
+        {"input": "8 gb ramli bir telefon, 10000 tl altında", "output": "ram: 8; price <= 10000"},
+        {"input": "kamerası iyi olan ve 5000 mah bataryalı android", "output": "camera: good; battery: 5000; os: android"},
+        {"input": "oyun oynamak için 12 gb ramli bir iphone", "output": "purpose: gaming; ram: 12; os: ios"},
+        {"input": "selfie odaklı ve fiyatı 8000 tl'yi geçmeyen android", "output": "purpose: selfie; price <= 8000; os: android"},
+        {"input": "orta segment fiyatlı, iyi kameralı android", "output": "price: mid_range; camera: good; os: android"},
+        {"input": "pahalı bir oyun telefonu, 16 gb ramli olsun", "output": "price: expensive; purpose: gaming; ram: 16"},
+        {"input": "iphone olsun, batarya ömrü uzun, kamera orta seviye", "output": "os: ios; battery: long_life; camera: average"},
+        {"input": "android olsun, ramı yüksek, oyun için", "output": "os: android; ram: high; purpose: gaming"},
+        {"input": "selfie için iyi bir kamera ve ucuz iphone", "output": "purpose: selfie; camera: good_front; price: cheap; os: ios"},
+        {"input": "8 gb ramli, 5000 mah bataryalı android", "output": "ram: 8; battery: 5000; os: android"},
+        {"input": "kamerası en iyi, fiyatı 20000 tl üzeri iphone", "output": "camera: best; price >= 20000; os: ios"},
+        {"input": "oyun oynamak ve uzun bataryası olan bir telefon", "output": "purpose: gaming; battery: long_lasting"},
+        {"input": "selfie için uygun fiyatlı android", "output": "purpose: selfie; price: affordable; os: android"},
+        {"input": "12 gb ram ve bataryası uzun giden telefon", "output": "ram: 12; battery: long_lasting"},
+        {"input": "pahalı bir android, kamerası çok iyi", "output": "price: expensive; os: android; camera: very_good"},
+        {"input": "ucuz ve sadece oyun için android", "output": "price: cheap; purpose: gaming_only; os: android"},
+        {"input": "iphone olsun, batarya ömrü iyi, selfie için de iyi olsun", "output": "os: ios; battery: good; purpose: selfie"},
+        {"input": "android olsun, 16 gb ram, 7000 mah batarya", "output": "os: android; ram: 16; battery: 7000"},
+        {"input": "kamerası iyi olan ve 10000 tl altı bir iphone", "output": "camera: good; price <= 10000; os: ios"},
+        {"input": "oyun için 8 gb ramli, uygun fiyatlı android", "output": "purpose: gaming; ram: 8; price: affordable; os: android"},
+        {"input": "selfie için en iyi kamera, pahalı olsun", "output": "purpose: selfie; camera: best_front; price: expensive"},
+        {"input": "orta segment fiyatlı android, kamerası iyi", "output": "price: mid_range; os: android; camera: good"},
+        {"input": "oyun için 12 gb ram ve android", "output": "purpose: gaming; ram: 12; os: android"},
+        {"input": "6000 mah batarya ve uygun fiyatlı bir telefon", "output": "battery: 6000; price: affordable"},
+        {"input": "iyi kamera ve pahalı android", "output": "camera: good; price: expensive; os: android"},
+        {"input": "iphone, oyun için ideal, 8 gb ram", "output": "os: ios; purpose: gaming; ram: 8"},
+        {"input": "android, selfie için, 4000 mah batarya", "output": "os: android; purpose: selfie; battery: 4000"},
+        {"input": "ucuz bir android, ramı 6 gb olsun", "output": "price: cheap; os: android; ram: 6"},
+        {"input": "pahalı bir iphone, bataryası güçlü", "output": "price: expensive; os: ios; battery: powerful"},
+        {"input": "kamerası en iyi, fiyatı orta segment android", "output": "camera: best; price: mid_range; os: android"},
+        {"input": "oyun için 16 gb ram ve android", "output": "purpose: gaming; ram: 16; os: android"},
+        {"input": "selfie için uygun fiyatlı iphone", "output": "purpose: selfie; price: affordable; os: ios"},
+        {"input": "orta segment fiyatlı, 5000 mah bataryalı android", "output": "price: mid_range; battery: 5000; os: android"},
+        {"input": "iyi kamera, uygun fiyat ve android", "output": "camera: good; price: affordable; os: android"},
+        {"input": "oyun için 12 gb ram ve uygun fiyatlı", "output": "purpose: gaming; ram: 12; price: affordable"},
+        {"input": "pahalı bir iphone, selfie için çok iyi", "output": "price: expensive; os: ios; purpose: selfie; camera: very_good_front"},
+        {"input": "6 gb ramli android, bataryası uzun giden", "output": "ram: 6; os: android; battery: long_lasting"},
+        {"input": "oyun için 8 gb ram ve 15000 tl altı", "output": "purpose: gaming; ram: 8; price <= 15000"},
+        {"input": "kamerası iyi olan android, 20000 tl'den ucuz", "output": "camera: good; os: android; price <= 20000"},
+        {"input": "selfie için en iyi kamera, 10000 tl civarı", "output": "purpose: selfie; camera: best_front; price: 10000"},
+        {"input": "iphone olsun, 12 gb ramli, oyun için", "output": "os: ios; ram: 12; purpose: gaming"},
+        {"input": "android olsun, batarya ömrü uzun, ucuz", "output": "os: android; battery: long_lasting; price: cheap"},
+        {"input": "pahalı bir android, oyun performansı yüksek", "output": "price: expensive; os: android; purpose: gaming"},
+        {"input": "ucuz bir iphone, kamerası iyi değil", "output": "price: cheap; os: ios; camera: not_good"},
+        {"input": "8 gb ramli, iyi kamera ve oyun için android", "output": "ram: 8; camera: good; purpose: gaming; os: android"},
+        {"input": "5000 mah bataryalı, selfie için uygun iphone", "output": "battery: 5000; purpose: selfie; os: ios"},
+        {"input": "orta segment fiyatlı, bataryası uzun giden iphone", "output": "price: mid_range; battery: long_lasting; os: ios"},
+        {"input": "oyun için 16 gb ramli, pahalı olmayan android", "output": "purpose: gaming; ram: 16; price: not_expensive; os: android"},
+        {"input": "kamerası en iyi, fiyatı uygun, selfie için android", "output": "camera: best; price: affordable; purpose: selfie; os: android"},
+        {"input": "iphone olsun, 4000 mah batarya, oyun oynamam", "output": "os: ios; battery: 4000; purpose: not_gaming"},
+        {"input": "android olsun, 12 gb ram, bataryası güçlü", "output": "os: android; ram: 12; battery: powerful"},
+        {"input": "pahalı bir telefon, ramı yüksek, kamerası iyi olsun", "output": "price: expensive; ram: high; camera: good"},
+        {"input": "ucuz bir android, bataryası uzun, oyun için", "output": "price: cheap; os: android; battery: long_lasting; purpose: gaming"},
+        {"input": "selfie için en iyi iphone, bataryası da iyi", "output": "purpose: selfie; camera: best_front; os: ios; battery: good"},
+        {"input": "oyun için tasarlanmış android, fiyatı orta segment", "output": "purpose: gaming; os: android; price: mid_range"},
+        {"input": "6 gb ramli, kamerası iyi, fiyatı 10000 tl altı", "output": "ram: 6; camera: good; price <= 10000"},
+        {"input": "batarya ömrü uzun, uygun fiyatlı android, oyun oynamam", "output": "battery: long_lasting; price: affordable; os: android; purpose: not_gaming"},
+        {"input": "iphone olsun, 8 gb ram, selfie için uygun", "output": "os: ios; ram: 8; purpose: selfie"},
+        {"input": "android olsun, 5000 mah batarya, kamerası çok iyi", "output": "os: android; battery: 5000; camera: very_good"},
+        {"input": "oyun için 16 gb ramli, pahalı bir iphone", "output": "purpose: gaming; ram: 16; price: expensive; os: ios"},
+        {"input": "selfie için en iyi kamera, 20000 tl'den pahalı olmayan", "output": "purpose: selfie; camera: best_front; price <= 20000"},
+        {"input": "orta segment fiyatlı android, oyun için güçlü", "output": "price: mid_range; os: android; purpose: gaming"},
+        {"input": "pahalı bir android, batarya ömrü uzun", "output": "price: expensive; os: android; battery: long_lasting"},
+        {"input": "ucuz bir iphone, ramı 4 gb olsun", "output": "price: cheap; os: ios; ram: 4"},
+        {"input": "kamerası iyi olan ve 12 gb ramli android", "output": "camera: good; ram: 12; os: android"},
+        {"input": "oyun için 8 gb ramli, bataryası iyi iphone", "output": "purpose: gaming; ram: 8; battery: good; os: ios"},
+        {"input": "selfie için uygun, fiyatı 15000 tl altı android", "output": "purpose: selfie; price <= 15000; os: android"},
+        {"input": "orta segment fiyatlı, 6000 mah bataryalı iphone", "output": "price: mid_range; battery: 6000; os: ios"},
+        {"input": "iyi kamera ve yüksek ramli bir telefon", "output": "camera: good; ram: high"},
+        {"input": "oyun için ve 7000 mah bataryalı android", "output": "purpose: gaming; battery: 7000; os: android"},
+        {"input": "selfie ve kamera önceliği olan iphone", "output": "purpose: selfie; camera: high_quality; os: ios"},
+        {"input": "ucuz, ramı 6 gb ve android", "output": "price: cheap; ram: 6; os: android"},
+        {"input": "pahalı, kamerası en iyi iphone", "output": "price: expensive; camera: best; os: ios"},
+        {"input": "oyun için, 16 gb ram, 5000 mah batarya", "output": "purpose: gaming; ram: 16; battery: 5000"},
+        {"input": "selfie için, uygun fiyatlı, iyi kamera", "output": "purpose: selfie; price: affordable; camera: good"},
+        {"input": "android olsun, 8 gb ram, iyi batarya", "output": "os: android; ram: 8; battery: good"},
+        {"input": "iphone olsun, kamera iyi, oyun oynamam", "output": "os: ios; camera: good; purpose: not_gaming"},
+        {"input": "orta fiyatlı android, 12 gb ram, iyi kamera", "output": "price: mid_range; os: android; ram: 12; camera: good"},
+        {"input": "oyun için 16 gb ramli, bataryası uzun iphone", "output": "purpose: gaming; ram: 16; battery: long_lasting; os: ios"},
+        {"input": "selfie için çok iyi bir kamera, android olsun, ucuz", "output": "purpose: selfie; camera: very_good_front; os: android; price: cheap"},
+        {"input": "pahalı bir android, oyun için en iyi", "output": "price: expensive; os: android; purpose: gaming"},
+        {"input": "ucuz bir telefon, ramı düşük, bataryası iyi", "output": "price: cheap; ram: low; battery: good"},
+        {"input": "kamerası iyi olan ve 5000 mah bataryalı iphone", "output": "camera: good; battery: 5000; os: ios"},
+        {"input": "oyun için 8 gb ramli ve uygun fiyatlı iphone", "output": "purpose: gaming; ram: 8; price: affordable; os: ios"},
+        {"input": "selfie için en iyi kamera, 25000 tl civarı android", "output": "purpose: selfie; camera: best_front; price: 25000; os: android"},
+        {"input": "orta segment fiyatlı, 12 gb ramli android", "output": "price: mid_range; ram: 12; os: android"},
+        {"input": "pahalı bir oyun telefonu, bataryası çok uzun giden", "output": "price: expensive; purpose: gaming; battery: very_long_lasting"},
+        {"input": "iphone olsun, kamerası iyi, 10000 tl altı", "output": "os: ios; camera: good; price <= 10000"},
+        {"input": "android olsun, ramı yüksek, selfie için uygun", "output": "os: android; ram: high; purpose: selfie"},
+        {"input": "ramı 6 gb olan, bataryası uzun giden telefon", "output": "ram: 6; battery: long_lasting"},
+        {"input": "kamerası en iyi, fiyatı uygun olan bir android", "output": "camera: best; price: affordable; os: android"},
+        {"input": "oyun için 12 gb ram ve 6000 mah batarya", "output": "purpose: gaming; ram: 12; battery: 6000"},
+        {"input": "selfie için uygun, ucuz, android", "output": "purpose: selfie; price: cheap; os: android"},
+        {"input": "iphone olsun, 8 gb ramli, batarya ömrü iyi", "output": "os: ios; ram: 8; battery: good"},
+        {"input": "android olsun, kamerası iyi, oyun oynamam", "output": "os: android; camera: good; purpose: not_gaming"},
+        {"input": "pahalı android, 16 gb ram, iyi kamera", "output": "price: expensive; os: android; ram: 16; camera: good"},
+        {"input": "ucuz iphone, selfie için uygun değil", "output": "price: cheap; os: ios; purpose: not_selfie"},
+        {"input": "oyun için 8 gb ram, 5000 mah batarya, uygun fiyatlı", "output": "purpose: gaming; ram: 8; battery: 5000; price: affordable"},
+        {"input": "kamerası çok iyi, pahalı olmayan iphone", "output": "camera: very_good; price: not_expensive; os: ios"},
+        {"input": "selfie için en iyi android, bataryası da iyi", "output": "purpose: selfie; camera: best_front; os: android; battery: good"},
+        {"input": "orta segment fiyatlı, oyun için tasarlanmış iphone", "output": "price: mid_range; purpose: gaming; os: ios"},
+        {"input": "6 gb ramli, bataryası uzun giden, uygun fiyatlı android", "output": "ram: 6; battery: long_lasting; price: affordable; os: android"},
+        {"input": "oyun için 12 gb ramli, 7000 mah bataryalı bir telefon", "output": "purpose: gaming; ram: 12; battery: 7000"},
+        {"input": "kamerası iyi olan android, selfie için de iyi", "output": "camera: good; os: android; purpose: selfie"},
+        {"input": "iphone olsun, 4 gb ram, ucuz", "output": "os: ios; ram: 4; price: cheap"},
+        {"input": "android olsun, kamerası iyi, 15000 tl civarı", "output": "os: android; camera: good; price: 15000"},
+        {"input": "pahalı bir oyun telefonu, 12 gb ramli", "output": "price: expensive; purpose: gaming; ram: 12"},
+        {"input": "ucuz bir iphone, bataryası iyi giden", "output": "price: cheap; os: ios; battery: good"},
+        {"input": "selfie için en iyi kamera, 20000 tl altı android", "output": "purpose: selfie; camera: best_front; price <= 20000; os: android"},
+        {"input": "orta segment fiyatlı, 8 gb ramli iphone", "output": "price: mid_range; ram: 8; os: ios"},
+        {"input": "oyun için uygun, bataryası uzun giden telefon", "output": "purpose: gaming; battery: long_lasting"},
+        {"input": "kamerası iyi olan, uygun fiyatlı, android", "output": "camera: good; price: affordable; os: android"},
+        {"input": "iphone olsun, 16 gb ram, oyun için", "output": "os: ios; ram: 16; purpose: gaming"},
+        {"input": "android olsun, 6000 mah batarya, selfie için", "output": "os: android; battery: 6000; purpose: selfie"},
+        {"input": "ucuz, iyi kamera ve android", "output": "price: cheap; camera: good; os: android"},
+        {"input": "pahalı, batarya ömrü uzun iphone", "output": "price: expensive; battery: long_lasting; os: ios"},
+        {"input": "oyun için 12 gb ram, orta segment fiyatlı", "output": "purpose: gaming; ram: 12; price: mid_range"},
+        {"input": "selfie için iyi kamera, 5000 mah batarya", "output": "purpose: selfie; camera: good_front; battery: 5000"},
+        {"input": "android olsun, 8 gb ramli, ucuz", "output": "os: android; ram: 8; price: cheap"},
+        {"input": "iphone olsun, kamerası iyi, pahalı", "output": "os: ios; camera: good; price: expensive"},
+        {"input": "orta fiyatlı android, bataryası uzun, oyun oynamam", "output": "price: mid_range; os: android; battery: long_lasting; purpose: not_gaming"},
+        {"input": "oyun için 16 gb ramli, uygun fiyatlı iphone", "output": "purpose: gaming; ram: 16; price: affordable; os: ios"},
+        {"input": "selfie için en iyi kamera, android olsun, pahalı", "output": "purpose: selfie; camera: best_front; os: android; price: expensive"},
+        {"input": "ramı yüksek, kamerası iyi, oyun için bir telefon", "output": "ram: high; camera: good; purpose: gaming"},
+        {"input": "bataryası uzun giden, uygun fiyatlı, selfie için", "output": "battery: long_lasting; price: affordable; purpose: selfie"},
+        {"input": "android olsun, 12 gb ram, bataryası uzun giden", "output": "os: android; ram: 12; battery: long_lasting"},
+        {"input": "iphone olsun, kamerası iyi, 8 gb ram", "output": "os: ios; camera: good; ram: 8"},
+        {"input": "oyun için, 5000 mah batarya, android", "output": "purpose: gaming; battery: 5000; os: android"},
+        {"input": "selfie için, 6 gb ram, ucuz iphone", "output": "purpose: selfie; ram: 6; price: cheap; os: ios"},
+        {"input": "pahalı bir android, kamerası çok iyi, bataryası da iyi", "output": "price: expensive; os: android; camera: very_good; battery: good"},
+        {"input": "ucuz bir telefon, ramı 8 gb, bataryası iyi", "output": "price: cheap; ram: 8; battery: good"},
+        {"input": "kamerası iyi, oyun için, 12 gb ram", "output": "camera: good; purpose: gaming; ram: 12"},
+        {"input": "bataryası uzun giden, selfie için, android", "output": "battery: long_lasting; purpose: selfie; os: android"},
+        {"input": "iphone olsun, 16 gb ramli, fiyatı pahalı", "output": "os: ios; ram: 16; price: expensive"},
+        {"input": "android olsun, 7000 mah bataryalı, uygun fiyatlı", "output": "os: android; battery: 7000; price: affordable"},
+        {"input": "oyun için en iyi telefon, 12 gb ram", "output": "purpose: gaming; ram: 12"},
+        {"input": "selfie için çok iyi kamera, ucuz bir android", "output": "purpose: selfie; camera: very_good_front; price: cheap; os: android"},
+        {"input": "orta segment android, kamerası iyi, bataryası uzun", "output": "price: mid_range; os: android; camera: good; battery: long_lasting"},
+        {"input": "pahalı bir oyun telefonu, ramı 16 gb", "output": "price: expensive; purpose: gaming; ram: 16"},
+        {"input": "ucuz bir iphone, bataryası iyi, oyun oynamam", "output": "price: cheap; os: ios; battery: good; purpose: not_gaming"},
+        {"input": "kamerası iyi olan android, selfie için uygun", "output": "camera: good; os: android; purpose: selfie"},
+        {"input": "iphone olsun, 8 gb ram, batarya ömrü iyi", "output": "os: ios; ram: 8; battery: good"},
+        {"input": "android olsun, 6000 mah batarya, oyun için", "output": "os: android; battery: 6000; purpose: gaming"},
+        {"input": "orta segment, iyi kamera ve oyun için android", "output": "price: mid_range; camera: good; purpose: gaming; os: android"},
+        {"input": "pahalı iphone, batarya ömrü uzun, selfie için", "output": "price: expensive; os: ios; battery: long_lasting; purpose: selfie"},
+        {"input": "ucuz android, 12 gb ram, oyun oynamam", "output": "price: cheap; os: android; ram: 12; purpose: not_gaming"},
+        {"input": "kamerası çok iyi, 15000 tl civarı, android", "output": "camera: very_good; price: 15000; os: android"},
+        {"input": "oyun için 16 gb ram, uygun fiyatlı, android", "output": "purpose: gaming; ram: 16; price: affordable; os: android"},
+        {"input": "selfie için en iyi kamera, pahalı olmayan iphone", "output": "purpose: selfie; camera: best_front; price: not_expensive; os: ios"},
+        {"input": "ramı yüksek, batarya ömrü uzun, android", "output": "ram: high; battery: long_lasting; os: android"},
+        {"input": "kamerası iyi, uygun fiyatlı, oyun oynamam", "output": "camera: good; price: affordable; purpose: not_gaming"},
+        {"input": "iphone olsun, 5000 mah batarya, 8 gb ram", "output": "os: ios; battery: 5000; ram: 8"},
+        {"input": "android olsun, kamerası iyi, 12 gb ram", "output": "os: android; camera: good; ram: 12"},
+        {"input": "oyun için, 7000 mah batarya, ucuz", "output": "purpose: gaming; battery: 7000; price: cheap"},
+        {"input": "selfie için, 16 gb ram, pahalı", "output": "purpose: selfie; ram: 16; price: expensive"},
+        {"input": "orta segment iphone, bataryası iyi, oyun oynamam", "output": "price: mid_range; os: ios; battery: good; purpose: not_gaming"},
+        {"input": "pahalı android, 12 gb ram, oyun için", "output": "price: expensive; os: android; ram: 12; purpose: gaming"},
+        {"input": "ucuz iphone, kamerası iyi, selfie için", "output": "price: cheap; os: ios; camera: good; purpose: selfie"},
+        {"input": "kamerası çok iyi, bataryası uzun, android", "output": "camera: very_good; battery: long_lasting; os: android"},
+        {"input": "oyun için uygun fiyatlı, ramı 8 gb", "output": "purpose: gaming; price: affordable; ram: 8"},
+        {"input": "selfie için en iyi kamera, 10000 tl civarı iphone", "output": "purpose: selfie; camera: best_front; price: 10000; os: ios"},
+        {"input": "orta segment android, oyun için, 8 gb ram", "output": "price: mid_range; os: android; purpose: gaming; ram: 8"},
+        {"input": "pahalı bir telefon, ramı yüksek, bataryası uzun", "output": "price: expensive; ram: high; battery: long_lasting"},
+        {"input": "ucuz bir android, kamerası iyi, oyun oynamam", "output": "price: cheap; os: android; camera: good; purpose: not_gaming"},
+        {"input": "iphone olsun, 5000 mah batarya, selfie için", "output": "os: ios; battery: 5000; purpose: selfie"},
+        {"input": "android olsun, 16 gb ramli, kamerası iyi", "output": "os: android; ram: 16; camera: good"},
+        {"input": "oyun için 7000 mah batarya, uygun fiyatlı", "output": "purpose: gaming; battery: 7000; price: affordable"},
+        {"input": "selfie için iyi kamera, 8 gb ramli iphone", "output": "purpose: selfie; camera: good_front; ram: 8; os: ios"},
+        {"input": "orta segment android, kamerası iyi, oyun oynamam", "output": "price: mid_range; os: android; camera: good; purpose: not_gaming"},
+        {"input": "pahalı android, batarya ömrü çok uzun, selfie için", "output": "price: expensive; os: android; battery: very_long_lasting; purpose: selfie"},
+        {"input": "ucuz iphone, ramı 8 gb, bataryası iyi değil", "output": "price: cheap; os: ios; ram: 8; battery: not_good"},
+        {"input": "kamerası çok iyi, oyun için uygun, iphone", "output": "camera: very_good; purpose: gaming; os: ios"},
+        {"input": "android olsun, 8 gb ram, 10000 tl altı", "output": "os: android; ram: 8; price <= 10000"},
+        {"input": "selfie için en iyi kamera, orta fiyatlı iphone", "output": "purpose: selfie; camera: best_front; price: mid_range; os: ios"},
+        {"input": "ramı yüksek, bataryası uzun giden, pahalı olmayan", "output": "ram: high; battery: long_lasting; price: not_expensive"},
+        {"input": "kamerası iyi, uygun fiyatlı, oyun için", "output": "camera: good; price: affordable; purpose: gaming"},
+        {"input": "iphone olsun, 5000 mah batarya, oyun oynamam", "output": "os: ios; battery: 5000; purpose: not_gaming"},
+        {"input": "android olsun, 12 gb ram, kamerası iyi", "output": "os: android; ram: 12; camera: good"},
+        {"input": "oyun için, 7000 mah batarya, uygun fiyatlı", "output": "purpose: gaming; battery: 7000; price: affordable"},
+        {"input": "selfie için, 16 gb ram, pahalı değil", "output": "purpose: selfie; ram: 16; price: not_expensive"},
+        {"input": "orta segment android, bataryası iyi, oyun için", "output": "price: mid_range; os: android; battery: good; purpose: gaming"},
+        {"input": "pahalı iphone, oyun için, 12 gb ram", "output": "price: expensive; os: ios; purpose: gaming; ram: 12"},
+        {"input": "ucuz android, kamerası iyi, selfie için", "output": "price: cheap; os: android; camera: good; purpose: selfie"},
+        {"input": "kamerası çok iyi, bataryası uzun, android", "output": "camera: very_good; battery: long_lasting; os: android"},
+        {"input": "oyun için uygun fiyatlı, ramı 12 gb", "output": "purpose: gaming; price: affordable; ram: 12"},
+        {"input": "selfie için en iyi kamera, 20000 tl civarı iphone", "output": "purpose: selfie; camera: best_front; price: 20000; os: ios"},
+        {"input": "orta segment iphone, oyun için, 16 gb ram", "output": "price: mid_range; os: ios; purpose: gaming; ram: 16"},
+        {"input": "pahalı bir telefon, ramı yüksek, bataryası uzun", "output": "price: expensive; ram: high; battery: long_lasting"},
+        {"input": "ucuz bir android, kamerası iyi, oyun oynamam", "output": "price: cheap; os: android; camera: good; purpose: not_gaming"},
+        {"input": "iphone olsun, 5000 mah batarya, selfie için", "output": "os: ios; battery: 5000; purpose: selfie"},
+        {"input": "android olsun, 16 gb ramli, kamerası iyi", "output": "os: android; ram: 16; camera: good"},
+        {"input": "oyun için 7000 mah batarya, uygun fiyatlı", "output": "purpose: gaming; battery: 7000; price: affordable"},
+        {"input": "selfie için iyi kamera, 8 gb ramli iphone", "output": "purpose: selfie; camera: good_front; ram: 8; os: ios"},
+        {"input": "orta segment android, kamerası iyi, oyun oynamam", "output": "price: mid_range; os: android; camera: good; purpose: not_gaming"},
+        {"input": "pahalı android, batarya ömrü çok uzun, selfie için", "output": "price: expensive; os: android; battery: very_long_lasting; purpose: selfie"},
+        {"input": "ucuz iphone, ramı 8 gb, bataryası iyi değil", "output": "price: cheap; os: ios; ram: 8; battery: not_good"},
+        {"input": "kamerası çok iyi, oyun için uygun, iphone", "output": "camera: very_good; purpose: gaming; os: ios"},
+        {"input": "android olsun, 8 gb ram, 10000 tl altı", "output": "os: android; ram: 8; price <= 10000"},
+        {"input": "selfie için en iyi kamera, orta fiyatlı iphone", "output": "purpose: selfie; camera: best_front; price: mid_range; os: ios"},
+        {"input": "ramı yüksek, bataryası uzun giden, pahalı olmayan", "output": "ram: high; battery: long_lasting; price: not_expensive"},
+        {"input": "kamerası iyi, uygun fiyatlı, oyun için", "output": "camera: good; price: affordable; purpose: gaming"},
+        {"input": "iphone olsun, 5000 mah batarya, oyun oynamam", "output": "os: ios; battery: 5000; purpose: not_gaming"},
+        {"input": "android olsun, 12 gb ram, kamerası iyi", "output": "os: android; ram: 12; camera: good"},
+        {"input": "oyun için, 7000 mah batarya, uygun fiyatlı", "output": "purpose: gaming; battery: 7000; price: affordable"},
+        {"input": "selfie için, 16 gb ram, pahalı değil", "output": "purpose: selfie; ram: 16; price: not_expensive"},
+        {"input": "orta segment android, bataryası iyi, oyun için", "output": "price: mid_range; os: android; battery: good; purpose: gaming"},
+        {"input": "pahalı iphone, oyun için, 12 gb ram", "output": "price: expensive; os: ios; purpose: gaming; ram: 12"},
+        {"input": "ucuz android, kamerası iyi, selfie için", "output": "price: cheap; os: android; camera: good; purpose: selfie"},
+        {"input": "kamerası çok iyi, bataryası uzun, android", "output": "camera: very_good; battery: long_lasting; os: android"},
+        {"input": "oyun için uygun fiyatlı, ramı 12 gb", "output": "purpose: gaming; price: affordable; ram: 12"},
+        {"input": "selfie için en iyi kamera, 20000 tl civarı iphone", "output": "purpose: selfie; camera: best_front; price: 20000; os: ios"},
+        {"input": "orta segment iphone, oyun için, 16 gb ram", "output": "price: mid_range; os: ios; purpose: gaming; ram: 16"},
+        {"input": "pahalı bir telefon, ramı yüksek, bataryası uzun", "output": "price: expensive; ram: high; battery: long_lasting"},
+        {"input": "ucuz bir android, kamerası iyi, oyun oynamam", "output": "price: cheap; os: android; camera: good; purpose: not_gaming"},
+        {"input": "iphone olsun, 5000 mah batarya, selfie için", "output": "os: ios; battery: 5000; purpose: selfie"},
+        {"input": "android olsun, 16 gb ramli, kamerası iyi", "output": "os: android; ram: 16; camera: good"},
+        {"input": "oyun için 7000 mah batarya, uygun fiyatlı", "output": "purpose: gaming; battery: 7000; price: affordable"},
+        {"input": "selfie için iyi kamera, 8 gb ramli iphone", "output": "purpose: selfie; camera: good_front; ram: 8; os: ios"},
+        {"input": "orta segment android, kamerası iyi, oyun oynamam", "output": "price: mid_range; os: android; camera: good; purpose: not_gaming"},
+        {"input": "pahalı android, batarya ömrü çok uzun, selfie için", "output": "price: expensive; os: android; battery: very_long_lasting; purpose: selfie"},
+        {"input": "ucuz iphone, ramı 8 gb, bataryası iyi değil", "output": "price: cheap; os: ios; ram: 8; battery: not_good"},
+        {"input": "kamerası çok iyi, oyun için uygun, iphone", "output": "camera: very_good; purpose: gaming; os: ios"},
+        {"input": "android olsun, 8 gb ram, 10000 tl altı", "output": "os: android; ram: 8; price <= 10000"},
+        {"input": "selfie için en iyi kamera, orta fiyatlı iphone", "output": "purpose: selfie; camera: best_front; price: mid_range; os: ios"},
+        {"input": "ramı yüksek, bataryası uzun giden, pahalı olmayan", "output": "ram: high; battery: long_lasting; price: not_expensive"},
+        {"input": "kamerası iyi, uygun fiyatlı, oyun için", "output": "camera: good; price: affordable; purpose: gaming"},
+        {"input": "iphone olsun, 5000 mah batarya, oyun oynamam", "output": "os: ios; battery: 5000; purpose: not_gaming"},
+        {"input": "android olsun, 12 gb ram, kamerası iyi", "output": "os: android; ram: 12; camera: good"},
+        {"input": "oyun için, 7000 mah batarya, uygun fiyatlı", "output": "purpose: gaming; battery: 7000; price: affordable"},
+        {"input": "selfie için, 16 gb ram, pahalı değil", "output": "purpose: selfie; ram: 16; price: not_expensive"},
+        {"input": "orta segment android, bataryası iyi, oyun için", "output": "price: mid_range; os: android; battery: good; purpose: gaming"},
+        {"input": "pahalı iphone, oyun için, 12 gb ram", "output": "price: expensive; os: ios; purpose: gaming; ram: 12"},
+        {"input": "ucuz android, kamerası iyi, selfie için", "output": "price: cheap; os: android; camera: good; purpose: selfie"},
+        {"input": "kamerası çok iyi, bataryası uzun, android", "output": "camera: very_good; battery: long_lasting; os: android"},
+        {"input": "oyun için uygun fiyatlı, ramı 12 gb", "output": "purpose: gaming; price: affordable; ram: 12"},
+        {"input": "selfie için en iyi kamera, 20000 tl civarı iphone", "output": "purpose: selfie; camera: best_front; price: 20000; os: ios"},
+        {"input": "orta segment iphone, oyun için, 16 gb ram", "output": "price: mid_range; os: ios; purpose: gaming; ram: 16"},
+        {"input": "pahalı bir telefon, ramı yüksek, bataryası uzun", "output": "price: expensive; ram: high; battery: long_lasting"},
+        {"input": "ucuz bir android, kamerası iyi, oyun oynamam", "output": "price: cheap; os: android; camera: good; purpose: not_gaming"},
+        {"input": "iphone olsun, 5000 mah batarya, selfie için", "output": "os: ios; battery: 5000; purpose: selfie"},
+        {"input": "android olsun, 16 gb ramli, kamerası iyi", "output": "os: android; ram: 16; camera: good"},
+        {"input": "oyun için 7000 mah batarya, uygun fiyatlı", "output": "purpose: gaming; battery: 7000; price: affordable"},
+        {"input": "selfie için iyi kamera, 8 gb ramli iphone", "output": "purpose: selfie; camera: good_front; ram: 8; os: ios"},
+        {"input": "orta segment android, kamerası iyi, oyun oynamam", "output": "price: mid_range; os: android; camera: good; purpose: not_gaming"},
+        {"input": "pahalı android, batarya ömrü çok uzun, selfie için", "output": "price: expensive; os: android; battery: very_long_lasting; purpose: selfie"},
+        {"input": "ucuz iphone, ramı 8 gb, bataryası iyi değil", "output": "price: cheap; os: ios; ram: 8; battery: not_good"},
+        {"input": "kamerası çok iyi, oyun için uygun, iphone", "output": "camera: very_good; purpose: gaming; os: ios"},
+        {"input": "android olsun, 8 gb ram, 10000 tl altı", "output": "os: android; ram: 8; price <= 10000"},
+        {"input": "selfie için en iyi kamera, orta fiyatlı iphone", "output": "purpose: selfie; camera: best_front; price: mid_range; os: ios"},
+        {"input": "ramı yüksek, bataryası uzun giden, pahalı olmayan", "output": "ram: high; battery: long_lasting; price: not_expensive"},
+        {"input": "kamerası iyi, uygun fiyatlı, oyun için", "output": "camera: good; price: affordable; purpose: gaming"},
+        {"input": "iphone olsun, 5000 mah batarya, oyun oynamam", "output": "os: ios; battery: 5000; purpose: not_gaming"},
+        {"input": "android olsun, 12 gb ram, kamerası iyi", "output": "os: android; ram: 12; camera: good"},
+        {"input": "oyun için, 7000 mah batarya, uygun fiyatlı", "output": "purpose: gaming; battery: 7000; price: affordable"},
+        {"input": "selfie için, 16 gb ram, pahalı değil", "output": "purpose: selfie; ram: 16; price: not_expensive"},
+        {"input": "orta segment android, bataryası iyi, oyun için", "output": "price: mid_range; os: android; battery: good; purpose: gaming"},
+        {"input": "pahalı iphone, oyun için, 12 gb ram", "output": "price: expensive; os: ios; purpose: gaming; ram: 12"},
+        {"input": "ucuz android, kamerası iyi, selfie için", "output": "price: cheap; os: android; camera: good; purpose: selfie"},
+        {"input": "kamerası çok iyi, bataryası uzun, android", "output": "camera: very_good; battery: long_lasting; os: android"},
+        {"input": "oyun için uygun fiyatlı, ramı 12 gb", "output": "purpose: gaming; price: affordable; ram: 12"},
+        {"input": "selfie için en iyi kamera, 20000 tl civarı iphone", "output": "purpose: selfie; camera: best_front; price: 20000; os: ios"},
+        {"input": "orta segment iphone, oyun için, 16 gb ram", "output": "price: mid_range; os: ios; purpose: gaming; ram: 16"},
+        {"input": "pahalı bir telefon, ramı yüksek, bataryası uzun", "output": "price: expensive; ram: high; battery: long_lasting"},
+        {"input": "ucuz bir android, kamerası iyi, oyun oynamam", "output": "price: cheap; os: android; camera: good; purpose: not_gaming"},
+        {"input": "iphone olsun, 5000 mah batarya, selfie için", "output": "os: ios; battery: 5000; purpose: selfie"},
+        {"input": "android olsun, 16 gb ramli, kamerası iyi", "output": "os: android; ram: 16; camera: good"},
+        {"input": "oyun için 7000 mah batarya, uygun fiyatlı", "output": "purpose: gaming; battery: 7000; price: affordable"},
+        {"input": "selfie için iyi kamera, 8 gb ramli iphone", "output": "purpose: selfie; camera: good_front; ram: 8; os: ios"},
+        {"input": "orta segment android, kamerası iyi, oyun oynamam", "output": "price: mid_range; os: android; camera: good; purpose: not_gaming"},
+        {"input": "pahalı android, batarya ömrü çok uzun, selfie için", "output": "price: expensive; os: android; battery: very_long_lasting; purpose: selfie"},
+        {"input": "ucuz iphone, ramı 8 gb, bataryası iyi değil", "output": "price: cheap; os: ios; ram: 8; battery: not_good"},
+        {"input": "kamerası çok iyi, oyun için uygun, iphone", "output": "camera: very_good; purpose: gaming; os: ios"},
+        {"input": "android olsun, 8 gb ram, 10000 tl altı", "output": "os: android; ram: 8; price <= 10000"},
+        {"input": "selfie için en iyi kamera, orta fiyatlı iphone", "output": "purpose: selfie; camera: best_front; price: mid_range; os: ios"},
+        {"input": "ramı yüksek, bataryası uzun giden, pahalı olmayan", "output": "ram: high; battery: long_lasting; price: not_expensive"},
+        {"input": "kamerası iyi, uygun fiyatlı, oyun için", "output": "camera: good; price: affordable; purpose: gaming"},
+        {"input": "iphone olsun, 5000 mah batarya, oyun oynamam", "output": "os: ios; battery: 5000; purpose: not_gaming"},
+        {"input": "android olsun, 12 gb ram, kamerası iyi", "output": "os: android; ram: 12; camera: good"},
+        {"input": "oyun için, 7000 mah batarya, uygun fiyatlı", "output": "purpose: gaming; battery: 7000; price: affordable"},
+        {"input": "selfie için, 16 gb ram, pahalı değil", "output": "purpose: selfie; ram: 16; price: not_expensive"},
+        {"input": "orta segment android, bataryası iyi, oyun için", "output": "price: mid_range; os: android; battery: good; purpose: gaming"},
+        {"input": "pahalı iphone, oyun için, 12 gb ram", "output": "price: expensive; os: ios; purpose: gaming; ram: 12"},
+        {"input": "ucuz android, kamerası iyi, selfie için", "output": "price: cheap; os: android; camera: good; purpose: selfie"},
+        {"input": "kamerası çok iyi, bataryası uzun, android", "output": "camera: very_good; battery: long_lasting; os: android"},
+        {"input": "oyun için uygun fiyatlı, ramı 12 gb", "output": "purpose: gaming; price: affordable; ram: 12"},
+        {"input": "selfie için en iyi kamera, 20000 tl civarı iphone", "output": "purpose: selfie; camera: best_front; price: 20000; os: ios"},
+        {"input": "orta segment iphone, oyun için, 16 gb ram", "output": "price: mid_range; os: ios; purpose: gaming; ram: 16"},
+        {"input": "pahalı bir telefon, ramı yüksek, bataryası uzun", "output": "price: expensive; ram: high; battery: long_lasting"},
+        {"input": "ucuz bir android, kamerası iyi, oyun oynamam", "output": "price: cheap; os: android; camera: good; purpose: not_gaming"},
+        {"input": "iphone olsun, 5000 mah batarya, selfie için", "output": "os: ios; battery: 5000; purpose: selfie"},
+        {"input": "android olsun, 16 gb ramli, kamerası iyi", "output": "os: android; ram: 16; camera: good"},
+        {"input": "oyun için 7000 mah batarya, uygun fiyatlı", "output": "purpose: gaming; battery: 7000; price: affordable"},
+        {"input": "selfie için iyi kamera, 8 gb ramli iphone", "output": "purpose: selfie; camera: good_front; ram: 8; os: ios"},
+        {"input": "orta segment android, kamerası iyi, oyun oynamam", "output": "price: mid_range; os: android; camera: good; purpose: not_gaming"},
+        {"input": "pahalı android, batarya ömrü çok uzun, selfie için", "output": "price: expensive; os: android; battery: very_long_lasting; purpose: selfie"},
+        {"input": "ucuz iphone, ramı 8 gb, bataryası iyi değil", "output": "price: cheap; os: ios; ram: 8; battery: not_good"},
+        {"input": "kamerası çok iyi, oyun için uygun, iphone", "output": "camera: very_good; purpose: gaming; os: ios"},
+        {"input": "android olsun, 8 gb ram, 10000 tl altı", "output": "os: android; ram: 8; price <= 10000"},
+        {"input": "selfie için en iyi kamera, orta fiyatlı iphone", "output": "purpose: selfie; camera: best_front; price: mid_range; os: ios"},
+        {"input": "ramı yüksek, bataryası uzun giden, pahalı olmayan", "output": "ram: high; battery: long_lasting; price: not_expensive"},
+        {"input": "kamerası iyi, uygun fiyatlı, oyun için", "output": "camera: good; price: affordable; purpose: gaming"},
+        {"input": "iphone olsun, 5000 mah batarya, oyun oynamam", "output": "os: ios; battery: 5000; purpose: not_gaming"},
+        {"input": "android olsun, 12 gb ram, kamerası iyi", "output": "os: android; ram: 12; camera: good"},
+        {"input": "oyun için, 7000 mah batarya, uygun fiyatlı", "output": "purpose: gaming; battery: 7000; price: affordable"},
+        {"input": "selfie için, 16 gb ram, pahalı değil", "output": "purpose: selfie; ram: 16; price: not_expensive"},
+        {"input": "orta segment android, bataryası iyi, oyun için", "output": "price: mid_range; os: android; battery: good; purpose: gaming"},
+        {"input": "pahalı iphone, oyun için, 12 gb ram", "output": "price: expensive; os: ios; purpose: gaming; ram: 12"},
+        {"input": "ucuz android, kamerası iyi, selfie için", "output": "price: cheap; os: android; camera: good; purpose: selfie"},
+        {"input": "kamerası çok iyi, bataryası uzun, android", "output": "camera: very_good; battery: long_lasting; os: android"},
+        {"input": "oyun için uygun fiyatlı, ramı 12 gb", "output": "purpose: gaming; price: affordable; ram: 12"},
+        {"input": "selfie için en iyi kamera, 20000 tl civarı iphone", "output": "purpose: selfie; camera: best_front; price: 20000; os: ios"},
+        {"input": "orta segment iphone, oyun için, 16 gb ram", "output": "price: mid_range; os: ios; purpose: gaming; ram: 16"},
+        {"input": "pahalı bir telefon, ramı yüksek, bataryası uzun", "output": "price: expensive; ram: high; battery: long_lasting"},
+        {"input": "ucuz bir android, kamerası iyi, oyun oynamam", "output": "price: cheap; os: android; camera: good; purpose: not_gaming"},
+        {"input": "iphone olsun, 5000 mah batarya, selfie için", "output": "os: ios; battery: 5000; purpose: selfie"},
+        {"input": "android olsun, 16 gb ramli, kamerası iyi", "output": "os: android; ram: 16; camera: good"},
+        {"input": "oyun için 7000 mah batarya, uygun fiyatlı", "output": "purpose: gaming; battery: 7000; price: affordable"},
+        {"input": "selfie için iyi kamera, 8 gb ramli iphone", "output": "purpose: selfie; camera: good_front; ram: 8; os: ios"},
+        {"input": "orta segment android, kamerası iyi, oyun oynamam", "output": "price: mid_range; os: android; camera: good; purpose: not_gaming"},
+        {"input": "pahalı android, batarya ömrü çok uzun, selfie için", "output": "price: expensive; os: android; battery: very_long_lasting; purpose: selfie"},
+        {"input": "ucuz iphone, ramı 8 gb, bataryası iyi değil", "output": "price: cheap; os: ios; ram: 8; battery: not_good"},
+        {"input": "kamerası çok iyi, oyun için uygun, iphone", "output": "camera: very_good; purpose: gaming; os: ios"},
+        {"input": "android olsun, 8 gb ram, 10000 tl altı", "output": "os: android; ram: 8; price <= 10000"},
+        {"input": "selfie için en iyi kamera, orta fiyatlı iphone", "output": "purpose: selfie; camera: best_front; price: mid_range; os: ios"},
+        {"input": "ramı yüksek, bataryası uzun giden, pahalı olmayan", "output": "ram: high; battery: long_lasting; price: not_expensive"},
+        {"input": "kamerası iyi, uygun fiyatlı, oyun için", "output": "camera: good; price: affordable; purpose: gaming"},
+        {"input": "iphone olsun, 5000 mah batarya, oyun oynamam", "output": "os: ios; battery: 5000; purpose: not_gaming"},
+        {"input": "android olsun, 12 gb ram, kamerası iyi", "output": "os: android; ram: 12; camera: good"},
+        {"input": "oyun için, 7000 mah batarya, uygun fiyatlı", "output": "purpose: gaming; battery: 7000; price: affordable"},
+        {"input": "selfie için, 16 gb ram, pahalı değil", "output": "purpose: selfie; ram: 16; price: not_expensive"},
+        {"input": "orta segment android, bataryası iyi, oyun için", "output": "price: mid_range; os: android; battery: good; purpose: gaming"},
+        {"input": "pahalı iphone, oyun için, 12 gb ram", "output": "price: expensive; os: ios; purpose: gaming; ram: 12"},
+        {"input": "ucuz android, kamerası iyi, selfie için", "output": "price: cheap; os: android; camera: good; purpose: selfie"},
+        {"input": "kamerası çok iyi, bataryası uzun, android", "output": "camera: very_good; battery: long_lasting; os: android"},
+        {"input": "oyun için uygun fiyatlı, ramı 12 gb", "output": "purpose: gaming; price: affordable; ram: 12"},
+        {"input": "selfie için en iyi kamera, 20000 tl civarı iphone", "output": "purpose: selfie; camera: best_front; price: 20000; os: ios"},
+        {"input": "orta segment iphone, oyun için, 16 gb ram", "output": "price: mid_range; os: ios; purpose: gaming; ram: 16"},
+        {"input": "pahalı bir telefon, ramı yüksek, bataryası uzun", "output": "price: expensive; ram: high; battery: long_lasting"},
+        {"input": "ucuz bir android, kamerası iyi, oyun oynamam", "output": "price: cheap; os: android; camera: good; purpose: not_gaming"},
+        {"input": "iphone olsun, 5000 mah batarya, selfie için", "output": "os: ios; battery: 5000; purpose: selfie"},
+        {"input": "android olsun, 16 gb ramli, kamerası iyi", "output": "os: android; ram: 16; camera: good"},
+        {"input": "oyun için 7000 mah batarya, uygun fiyatlı", "output": "purpose: gaming; battery: 7000; price: affordable"},
+        {"input": "selfie için iyi kamera, 8 gb ramli iphone", "output": "purpose: selfie; camera: good_front; ram: 8; os: ios"},
+        {"input": "orta segment android, kamerası iyi, oyun oynamam", "output": "price: mid_range; os: android; camera: good; purpose: not_gaming"},
+        {"input": "pahalı android, batarya ömrü çok uzun, selfie için", "output": "price: expensive; os: android; battery: very_long_lasting; purpose: selfie"},
+        {"input": "ucuz iphone, ramı 8 gb, bataryası iyi değil", "output": "price: cheap; os: ios; ram: 8; battery: not_good"},
+        {"input": "kamerası çok iyi, oyun için uygun, iphone", "output": "camera: very_good; purpose: gaming; os: ios"},
+        {"input": "android olsun, 8 gb ram, 10000 tl altı", "output": "os: android; ram: 8; price <= 10000"},
+        {"input": "selfie için en iyi kamera, orta fiyatlı iphone", "output": "purpose: selfie; camera: best_front; price: mid_range; os: ios"},
+        {"input": "ramı yüksek, bataryası uzun giden, pahalı olmayan", "output": "ram: high; battery: long_lasting; price: not_expensive"},
+        {"input": "kamerası iyi, uygun fiyatlı, oyun için", "output": "camera: good; price: affordable; purpose: gaming"},
+        {"input": "iphone olsun, 5000 mah batarya, oyun oynamam", "output": "os: ios; battery: 5000; purpose: not_gaming"},
+        {"input": "android olsun, 12 gb ram, kamerası iyi", "output": "os: android; ram: 12; camera: good"},
+        {"input": "oyun için, 7000 mah batarya, uygun fiyatlı", "output": "purpose: gaming; battery: 7000; price: affordable"},
+        {"input": "selfie için, 16 gb ram, pahalı değil", "output": "purpose: selfie; ram: 16; price: not_expensive"},
+        {"input": "orta segment android, bataryası iyi, oyun için", "output": "price: mid_range; os: android; battery: good; purpose: gaming"},
+        {"input": "pahalı iphone, oyun için, 12 gb ram", "output": "price: expensive; os: ios; purpose: gaming; ram: 12"},
+        {"input": "ucuz android, kamerası iyi, selfie için", "output": "price: cheap; os: android; camera: good; purpose: selfie"},
+        {"input": "kamerası çok iyi, bataryası uzun, android", "output": "camera: very_good; battery: long_lasting; os: android"},
+        {"input": "oyun için uygun fiyatlı, ramı 12 gb", "output": "purpose: gaming; price: affordable; ram: 12"},
+        {"input": "selfie için en iyi kamera, 20000 tl civarı iphone", "output": "purpose: selfie; camera: best_front; price: 20000; os: ios"},
+        {"input": "orta segment iphone, oyun için, 16 gb ram", "output": "price: mid_range; os: ios; purpose: gaming; ram: 16"},
+        {"input": "pahalı bir telefon, ramı yüksek, bataryası uzun", "output": "price: expensive; ram: high; battery: long_lasting"},
+        {"input": "ucuz bir android, kamerası iyi, oyun oynamam", "output": "price: cheap; os: android; camera: good; purpose: not_gaming"},
+        {"input": "iphone olsun, 5000 mah batarya, selfie için", "output": "os: ios; battery: 5000; purpose: selfie"},
+        {"input": "android olsun, 16 gb ramli, kamerası iyi", "output": "os: android; ram: 16; camera: good"},
+        {"input": "oyun için 7000 mah batarya, uygun fiyatlı", "output": "purpose: gaming; battery: 7000; price: affordable"},
+        {"input": "selfie için iyi kamera, 8 gb ramli iphone", "output": "purpose: selfie; camera: good_front; ram: 8; os: ios"},
+        {"input": "orta segment android, kamerası iyi, oyun oynamam", "output": "price: mid_range; os: android; camera: good; purpose: not_gaming"},
+        {"input": "pahalı android, batarya ömrü çok uzun, selfie için", "output": "price: expensive; os: android; battery: very_long_lasting; purpose: selfie"},
+        {"input": "ucuz iphone, ramı 8 gb, bataryası iyi değil", "output": "price: cheap; os: ios; ram: 8; battery: not_good"},
+        {"input": "kamerası çok iyi, oyun için uygun, iphone", "output": "camera: very_good; purpose: gaming; os: ios"},
+        {"input": "android olsun, 8 gb ram, 10000 tl altı", "output": "os: android; ram: 8; price <= 10000"},
+        {"input": "selfie için en iyi kamera, orta fiyatlı iphone", "output": "purpose: selfie; camera: best_front; price: mid_range; os: ios"},
+        {"input": "ramı yüksek, bataryası uzun giden, pahalı olmayan", "output": "ram: high; battery: long_lasting; price: not_expensive"},
+        {"input": "kamerası iyi, uygun fiyatlı, oyun için", "output": "camera: good; price: affordable; purpose: gaming"},
+        {"input": "iphone olsun, 5000 mah batarya, oyun oynamam", "output": "os: ios; battery: 5000; purpose: not_gaming"},
+        {"input": "android olsun, 12 gb ram, kamerası iyi", "output": "os: android; ram: 12; camera: good"},
+        {"input": "oyun için, 7000 mah batarya, uygun fiyatlı", "output": "purpose: gaming; battery: 7000; price: affordable"},
+        {"input": "selfie için, 16 gb ram, pahalı değil", "output": "purpose: selfie; ram: 16; price: not_expensive"},
+        {"input": "orta segment android, bataryası iyi, oyun için", "output": "price: mid_range; os: android; battery: good; purpose: gaming"},
+        {"input": "pahalı iphone, oyun için, 12 gb ram", "output": "price: expensive; os: ios; purpose: gaming; ram: 12"},
+        {"input": "ucuz android, kamerası iyi, selfie için", "output": "price: cheap; os: android; camera: good; purpose: selfie"},
+        {"input": "kamerası çok iyi, bataryası uzun, android", "output": "camera: very_good; battery: long_lasting; os: android"},
+        {"input": "oyun için uygun fiyatlı, ramı 12 gb", "output": "purpose: gaming; price: affordable; ram: 12"},
+        {"input": "selfie için en iyi kamera, 20000 tl civarı iphone", "output": "purpose: selfie; camera: best_front; price: 20000; os: ios"},
+        {"input": "orta segment iphone, oyun için, 16 gb ram", "output": "price: mid_range; os: ios; purpose: gaming; ram: 16"},
+        {"input": "pahalı bir telefon, ramı yüksek, bataryası uzun", "output": "price: expensive; ram: high; battery: long_lasting"},
+        {"input": "ucuz bir android, kamerası iyi, oyun oynamam", "output": "price: cheap; os: android; camera: good; purpose: not_gaming"},
+        {"input": "iphone olsun, 5000 mah batarya, selfie için", "output": "os: ios; battery: 5000; purpose: selfie"},
+        {"input": "android olsun, 16 gb ramli, kamerası iyi", "output": "os: android; ram: 16; camera: good"},
+        {"input": "oyun için 7000 mah batarya, uygun fiyatlı", "output": "purpose: gaming; battery: 7000; price: affordable"},
+        {"input": "selfie için iyi kamera, 8 gb ramli iphone", "output": "purpose: selfie; camera: good_front; ram: 8; os: ios"},
+        {"input": "orta segment android, kamerası iyi, oyun oynamam", "output": "price: mid_range; os: android; camera: good; purpose: not_gaming"},
+        {"input": "pahalı android, batarya ömrü çok uzun, selfie için", "output": "price: expensive; os: android; battery: very_long_lasting; purpose: selfie"},
+        {"input": "ucuz iphone, ramı 8 gb, bataryası iyi değil", "output": "price: cheap; os: ios; ram: 8; battery: not_good"},
+        {"input": "kamerası çok iyi, oyun için uygun, iphone", "output": "camera: very_good; purpose: gaming; os: ios"},
+        {"input": "android olsun, 8 gb ram, 10000 tl altı", "output": "os: android; ram: 8; price <= 10000"},
+        {"input": "selfie için en iyi kamera, orta fiyatlı iphone", "output": "purpose: selfie; camera: best_front; price: mid_range; os: ios"},
+        {"input": "ramı yüksek, bataryası uzun giden, pahalı olmayan", "output": "ram: high; battery: long_lasting; price: not_expensive"},
+        {"input": "kamerası iyi, uygun fiyatlı, oyun için", "output": "camera: good; price: affordable; purpose: gaming"},
+        {"input": "iphone olsun, 5000 mah batarya, oyun oynamam", "output": "os: ios; battery: 5000; purpose: not_gaming"},
+        {"input": "android olsun, 12 gb ram, kamerası iyi", "output": "os: android; ram: 12; camera: good"},
+        {"input": "oyun için, 7000 mah batarya, uygun fiyatlı", "output": "purpose: gaming; battery: 7000; price: affordable"},
+        {"input": "selfie için, 16 gb ram, pahalı değil", "output": "purpose: selfie; ram: 16; price: not_expensive"},
+        {"input": "orta segment android, bataryası iyi, oyun için", "output": "price: mid_range; os: android; battery: good; purpose: gaming"},
+        {"input": "pahalı iphone, oyun için, 12 gb ram", "output": "price: expensive; os: ios; purpose: gaming; ram: 12"},
+        {"input": "ucuz android, kamerası iyi, selfie için", "output": "price: cheap; os: android; camera: good; purpose: selfie"},
+        {"input": "kamerası çok iyi, bataryası uzun, android", "output": "camera: very_good; battery: long_lasting; os: android"},
+        {"input": "oyun için uygun fiyatlı, ramı 12 gb", "output": "purpose: gaming; price: affordable; ram: 12"},
+        {"input": "selfie için en iyi kamera, 20000 tl civarı iphone", "output": "purpose: selfie; camera: best_front; price: 20000; os: ios"},
+        {"input": "orta segment iphone, oyun için, 16 gb ram", "output": "price: mid_range; os: ios; purpose: gaming; ram: 16"},
+        {"input": "pahalı bir telefon, ramı yüksek, bataryası uzun", "output": "price: expensive; ram: high; battery: long_lasting"},
+        {"input": "ucuz bir android, kamerası iyi, oyun oynamam", "output": "price: cheap; os: android; camera: good; purpose: not_gaming"},
+        {"input": "iphone olsun, 5000 mah batarya, selfie için", "output": "os: ios; battery: 5000; purpose: selfie"},
+        {"input": "android olsun, 16 gb ramli, kamerası iyi", "output": "os: android; ram: 16; camera: good"},
+        {"input": "oyun için 7000 mah batarya, uygun fiyatlı", "output": "purpose: gaming; battery: 7000; price: affordable"},
+        {"input": "selfie için iyi kamera, 8 gb ramli iphone", "output": "purpose: selfie; camera: good_front; ram: 8; os: ios"},
+        {"input": "orta segment android, kamerası iyi, oyun oynamam", "output": "price: mid_range; os: android; camera: good; purpose: not_gaming"},
+        {"input": "pahalı android, batarya ömrü çok uzun, selfie için", "output": "price: expensive; os: android; battery: very_long_lasting; purpose: selfie"},
+        {"input": "ucuz iphone, ramı 8 gb, bataryası iyi değil", "output": "price: cheap; os: ios; ram: 8; battery: not_good"},
+        {"input": "kamerası çok iyi, oyun için uygun, iphone", "output": "camera: very_good; purpose: gaming; os: ios"},
+        {"input": "android olsun, 8 gb ram, 10000 tl altı", "output": "os: android; ram: 8; price <= 10000"},
+        {"input": "selfie için en iyi kamera, orta fiyatlı iphone", "output": "purpose: selfie; camera: best_front; price: mid_range; os: ios"},
+        {"input": "ramı yüksek, bataryası uzun giden, pahalı olmayan", "output": "ram: high; battery: long_lasting; price: not_expensive"},
+        {"input": "kamerası iyi, uygun fiyatlı, oyun için", "output": "camera: good; price: affordable; purpose: gaming"},
+        {"input": "iphone olsun, 5000 mah batarya, oyun oynamam", "output": "os: ios; battery: 5000; purpose: not_gaming"},
+        {"input": "android olsun, 12 gb ram, kamerası iyi", "output": "os: android; ram: 12; camera: good"},
+        {"input": "oyun için, 7000 mah batarya, uygun fiyatlı", "output": "purpose: gaming; battery: 7000; price: affordable"},
+        {"input": "selfie için, 16 gb ram, pahalı değil", "output": "purpose: selfie; ram: 16; price: not_expensive"},
+        {"input": "orta segment android, bataryası iyi, oyun için", "output": "price: mid_range; os: android; battery: good; purpose: gaming"},
+        {"input": "pahalı iphone, oyun için, 12 gb ram", "output": "price: expensive; os: ios; purpose: gaming; ram: 12"},
+        {"input": "ucuz android, kamerası iyi, selfie için", "output": "price: cheap; os: android; camera: good; purpose: selfie"},
+        {"input": "kamerası çok iyi, bataryası uzun, android", "output": "camera: very_good; battery: long_lasting; os: android"},
+        {"input": "oyun için uygun fiyatlı, ramı 12 gb", "output": "purpose: gaming; price: affordable; ram: 12"},
+        {"input": "selfie için en iyi kamera, 20000 tl civarı iphone", "output": "purpose: selfie; camera: best_front; price: 20000; os: ios"},
+        {"input": "orta segment iphone, oyun için, 16 gb ram", "output": "price: mid_range; os: ios; purpose: gaming; ram: 16"},
+        {"input": "pahalı bir telefon, ramı yüksek, bataryası uzun", "output": "price: expensive; ram: high; battery: long_lasting"},
+        {"input": "ucuz bir android, kamerası iyi, oyun oynamam", "output": "price: cheap; os: android; camera: good; purpose: not_gaming"},
+        {"input": "iphone olsun, 5000 mah batarya, selfie için", "output": "os: ios; battery: 5000; purpose: selfie"},
+        {"input": "android olsun, 16 gb ramli, kamerası iyi", "output": "os: android; ram: 16; camera: good"},
+        {"input": "oyun için 7000 mah batarya, uygun fiyatlı", "output": "purpose: gaming; battery: 7000; price: affordable"},
+        {"input": "selfie için iyi kamera, 8 gb ramli iphone", "output": "purpose: selfie; camera: good_front; ram: 8; os: ios"},
+        {"input": "orta segment android, kamerası iyi, oyun oynamam", "output": "price: mid_range; os: android; camera: good; purpose: not_gaming"},
+        {"input": "pahalı android, batarya ömrü çok uzun, selfie için", "output": "price: expensive; os: android; battery: very_long_lasting; purpose: selfie"},
+        {"input": "ucuz iphone, ramı 8 gb, bataryası iyi değil", "output": "price: cheap; os: ios; ram: 8; battery: not_good"},
+        {"input": "kamerası çok iyi, oyun için uygun, iphone", "output": "camera: very_good; purpose: gaming; os: ios"},
+        {"input": "android olsun, 8 gb ram, 10000 tl altı", "output": "os: android; ram: 8; price <= 10000"},
+        {"input": "selfie için en iyi kamera, orta fiyatlı iphone", "output": "purpose: selfie; camera: best_front; price: mid_range; os: ios"},
+        {"input": "ramı yüksek, bataryası uzun giden, pahalı olmayan", "output": "ram: high; battery: long_lasting; price: not_expensive"},
+        {"input": "kamerası iyi, uygun fiyatlı, oyun için", "output": "camera: good; price: affordable; purpose: gaming"},
+        {"input": "iphone olsun, 5000 mah batarya, oyun oynamam", "output": "os: ios; battery: 5000; purpose: not_gaming"},
+        {"input": "android olsun, 12 gb ram, kamerası iyi", "output": "os: android; ram: 12; camera: good"},
+        {"input": "oyun için, 7000 mah batarya, uygun fiyatlı", "output": "purpose: gaming; battery: 7000; price: affordable"},
+        {"input": "selfie için, 16 gb ram, pahalı değil", "output": "purpose: selfie; ram: 16; price: not_expensive"},
+        {"input": "orta segment android, bataryası iyi, oyun için", "output": "price: mid_range; os: android; battery: good; purpose: gaming"},
+        {"input": "pahalı iphone, oyun için, 12 gb ram", "output": "price: expensive; os: ios; purpose: gaming; ram: 12"},
+        {"input": "ucuz android, kamerası iyi, selfie için", "output": "price: cheap; os: android; camera: good; purpose: selfie"},
+        {"input": "kamerası çok iyi, bataryası uzun, android", "output": "camera: very_good; battery: long_lasting; os: android"},
+        {"input": "oyun için uygun fiyatlı, ramı 12 gb", "output": "purpose: gaming; price: affordable; ram: 12"},
+        {"input": "selfie için en iyi kamera, 20000 tl civarı iphone", "output": "purpose: selfie; camera: best_front; price: 20000; os: ios"},
+        {"input": "orta segment iphone, oyun için, 16 gb ram", "output": "price: mid_range; os: ios; purpose: gaming; ram: 16"},
+        {"input": "pahalı bir telefon, ramı yüksek, bataryası uzun", "output": "price: expensive; ram: high; battery: long_lasting"},
+        {"input": "ucuz bir android, kamerası iyi, oyun oynamam", "output": "price: cheap; os: android; camera: good; purpose: not_gaming"},
+        {"input": "iphone olsun, 5000 mah batarya, selfie için", "output": "os: ios; battery: 5000; purpose: selfie"},
+        {"input": "android olsun, 16 gb ramli, kamerası iyi", "output": "os: android; ram: 16; camera: good"},
+        {"input": "oyun için 7000 mah batarya, uygun fiyatlı", "output": "purpose: gaming; battery: 7000; price: affordable"},
+        {"input": "selfie için iyi kamera, 8 gb ramli iphone", "output": "purpose: selfie; camera: good_front; ram: 8; os: ios"},
+        {"input": "orta segment android, kamerası iyi, oyun oynamam", "output": "price: mid_range; os: android; camera: good; purpose: not_gaming"},
+        {"input": "pahalı android, batarya ömrü çok uzun, selfie için", "output": "price: expensive; os: android; battery: very_long_lasting; purpose: selfie"},
+        {"input": "ucuz iphone, ramı 8 gb, bataryası iyi değil", "output": "price: cheap; os: ios; ram: 8; battery: not_good"},
+        {"input": "kamerası çok iyi, oyun için uygun, iphone", "output": "camera: very_good; purpose: gaming; os: ios"},
+        {"input": "android olsun, 8 gb ram, 10000 tl altı", "output": "os: android; ram: 8; price <= 10000"},
+        {"input": "selfie için en iyi kamera, orta fiyatlı iphone", "output": "purpose: selfie; camera: best_front; price: mid_range; os: ios"},
+        {"input": "ramı yüksek, bataryası uzun giden, pahalı olmayan", "output": "ram: high; battery: long_lasting; price: not_expensive"},
+        {"input": "kamerası iyi, uygun fiyatlı, oyun için", "output": "camera: good; price: affordable; purpose: gaming"},
+        {"input": "iphone olsun, 5000 mah batarya, oyun oynamam", "output": "os: ios; battery: 5000; purpose: not_gaming"},
+        {"input": "android olsun, 12 gb ram, kamerası iyi", "output": "os: android; ram: 12; camera: good"},
+        {"input": "oyun için, 7000 mah batarya, uygun fiyatlı", "output": "purpose: gaming; battery: 7000; price: affordable"},
+        {"input": "selfie için, 16 gb ram, pahalı değil", "output": "purpose: selfie; ram: 16; price: not_expensive"},
+        {"input": "orta segment android, bataryası iyi, oyun için", "output": "price: mid_range; os: android; battery: good; purpose: gaming"},
+        {"input": "pahalı iphone, oyun için, 12 gb ram", "output": "price: expensive; os: ios; purpose: gaming; ram: 12"},
+        {"input": "ucuz android, kamerası iyi, selfie için", "output": "price: cheap; os: android; camera: good; purpose: selfie"},
+        {"input": "kamerası çok iyi, bataryası uzun, android", "output": "camera: very_good; battery: long_lasting; os: android"},
+        {"input": "oyun için uygun fiyatlı, ramı 12 gb", "output": "purpose: gaming; price: affordable; ram: 12"},
+        {"input": "selfie için en iyi kamera, 20000 tl civarı iphone", "output": "purpose: selfie; camera: best_front; price: 20000; os: ios"},
+        {"input": "orta segment iphone, oyun için, 16 gb ram", "output": "price: mid_range; os: ios; purpose: gaming; ram: 16"},
+        {"input": "pahalı bir telefon, ramı yüksek, bataryası uzun", "output": "price: expensive; ram: high; battery: long_lasting"},
+        {"input": "ucuz bir android, kamerası iyi, oyun oynamam", "output": "price: cheap; os: android; camera: good; purpose: not_gaming"},
+        {"input": "iphone olsun, 5000 mah batarya, selfie için", "output": "os: ios; battery: 5000; purpose: selfie"},
+        {"input": "android olsun, 16 gb ramli, kamerası iyi", "output": "os: android; ram: 16; camera: good"},
+        {"input": "oyun için 7000 mah batarya, uygun fiyatlı", "output": "purpose: gaming; battery: 7000; price: affordable"},
+        {"input": "selfie için iyi kamera, 8 gb ramli iphone", "output": "purpose: selfie; camera: good_front; ram: 8; os: ios"},
+        {"input": "orta segment android, kamerası iyi, oyun oynamam", "output": "price: mid_range; os: android; camera: good; purpose: not_gaming"},
+        {"input": "pahalı android, batarya ömrü çok uzun, selfie için", "output": "price: expensive; os: android; battery: very_long_lasting; purpose: selfie"},
+        {"input": "ucuz iphone, ramı 8 gb, bataryası iyi değil", "output": "price: cheap; os: ios; ram: 8; battery: not_good"},
+        {"input": "kamerası çok iyi, oyun için uygun, iphone", "output": "camera: very_good; purpose: gaming; os: ios"},
+        {"input": "android olsun, 8 gb ram, 10000 tl altı", "output": "os: android; ram: 8; price <= 10000"},
+        {"input": "selfie için en iyi kamera, orta fiyatlı iphone", "output": "purpose: selfie; camera: best_front; price: mid_range; os: ios"},
+        {"input": "ramı yüksek, bataryası uzun giden, pahalı olmayan", "output": "ram: high; battery: long_lasting; price: not_expensive"},
+        {"input": "kamerası iyi, uygun fiyatlı, oyun için", "output": "camera: good; price: affordable; purpose: gaming"},
+        {"input": "iphone olsun, 5000 mah batarya, oyun oynamam", "output": "os: ios; battery: 5000; purpose: not_gaming"},
+        {"input": "android olsun, 12 gb ram, kamerası iyi", "output": "os: android; ram: 12; camera: good"},
+        {"input": "oyun için, 7000 mah batarya, uygun fiyatlı", "output": "purpose: gaming; battery: 7000; price: affordable"},
+        {"input": "selfie için, 16 gb ram, pahalı değil", "output": "purpose: selfie; ram: 16; price: not_expensive"},
+        {"input": "orta segment android, bataryası iyi, oyun için", "output": "price: mid_range; os: android; battery: good; purpose: gaming"},
+        {"input": "pahalı iphone, oyun için, 12 gb ram", "output": "price: expensive; os: ios; purpose: gaming; ram: 12"},
+        {"input": "ucuz android, kamerası iyi, selfie için", "output": "price: cheap; os: android; camera: good; purpose: selfie"},
+        {"input": "kamerası çok iyi, bataryası uzun, android", "output": "camera: very_good; battery: long_lasting; os: android"},
+        {"input": "oyun için uygun fiyatlı, ramı 12 gb", "output": "purpose: gaming; price: affordable; ram: 12"},
+        {"input": "selfie için en iyi kamera, 20000 tl civarı iphone", "output": "purpose: selfie; camera: best_front; price: 20000; os: ios"},
+        {"input": "orta segment iphone, oyun için, 16 gb ram", "output": "price: mid_range; os: ios; purpose: gaming; ram: 16"},
+        {"input": "pahalı bir telefon, ramı yüksek, bataryası uzun", "output": "price: expensive; ram: high; battery: long_lasting"},
+        {"input": "ucuz bir android, kamerası iyi, oyun oynamam", "output": "price: cheap; os: android; camera: good; purpose: not_gaming"},
+        {"input": "iphone olsun, 5000 mah batarya, selfie için", "output": "os: ios; battery: 5000; purpose: selfie"},
+        {"input": "android olsun, 16 gb ramli, kamerası iyi", "output": "os: android; ram: 16; camera: good"},
+        {"input": "oyun için 7000 mah batarya, uygun fiyatlı", "output": "purpose: gaming; battery: 7000; price: affordable"},
+        {"input": "selfie için iyi kamera, 8 gb ramli iphone", "output": "purpose: selfie; camera: good_front; ram: 8; os: ios"},
+        {"input": "orta segment android, kamerası iyi, oyun oynamam", "output": "price: mid_range; os: android; camera: good; purpose: not_gaming"},
+        {"input": "pahalı android, batarya ömrü çok uzun, selfie için", "output": "price: expensive; os: android; battery: very_long_lasting; purpose: selfie"},
+        {"input": "ucuz iphone, ramı 8 gb, bataryası iyi değil", "output": "price: cheap; os: ios; ram: 8; battery: not_good"},
+        {"input": "kamerası çok iyi, oyun için uygun, iphone", "output": "camera: very_good; purpose: gaming; os: ios"},
+        {"input": "android olsun, 8 gb ram, 10000 tl altı", "output": "os: android; ram: 8; price <= 10000"},
+        {"input": "selfie için en iyi kamera, orta fiyatlı iphone", "output": "purpose: selfie; camera: best_front; price: mid_range; os: ios"},
+        {"input": "ramı yüksek, bataryası uzun giden, pahalı olmayan", "output": "ram: high; battery: long_lasting; price: not_expensive"},
+        {"input": "kamerası iyi, uygun fiyatlı, oyun için", "output": "camera: good; price: affordable; purpose: gaming"},
+        {"input": "iphone olsun, 5000 mah batarya, oyun oynamam", "output": "os: ios; battery: 5000; purpose: not_gaming"},
+        {"input": "android olsun, 12 gb ram, kamerası iyi", "output": "os: android; ram: 12; camera: good"},
+        {"input": "oyun için, 7000 mah batarya, uygun fiyatlı", "output": "purpose: gaming; battery: 7000; price: affordable"},
+        {"input": "selfie için, 16 gb ram, pahalı değil", "output": "purpose: selfie; ram: 16; price: not_expensive"},
+        {"input": "orta segment android, bataryası iyi, oyun için", "output": "price: mid_range; os: android; battery: good; purpose: gaming"},
+        {"input": "pahalı iphone, oyun için, 12 gb ram", "output": "price: expensive; os: ios; purpose: gaming; ram: 12"},
+        {"input": "ucuz android, kamerası iyi, selfie için", "output": "price: cheap; os: android; camera: good; purpose: selfie"},
+        {"input": "kamerası çok iyi, bataryası uzun, android", "output": "camera: very_good; battery: long_lasting; os: android"},
+        {"input": "oyun için uygun fiyatlı, ramı 12 gb", "output": "purpose: gaming; price: affordable; ram: 12"},
+        {"input": "selfie için en iyi kamera, 20000 tl civarı iphone", "output": "purpose: selfie; camera: best_front; price: 20000; os: ios"},
+        {"input": "orta segment iphone, oyun için, 16 gb ram", "output": "price: mid_range; os: ios; purpose: gaming; ram: 16"},
+        {"input": "pahalı bir telefon, ramı yüksek, bataryası uzun", "output": "price: expensive; ram: high; battery: long_lasting"},
+        {"input": "ucuz bir android, kamerası iyi, oyun oynamam", "output": "price: cheap; os: android; camera: good; purpose: not_gaming"},
+        {"input": "iphone olsun, 5000 mah batarya, selfie için", "output": "os: ios; battery: 5000; purpose: selfie"},
+        {"input": "android olsun, 16 gb ramli, kamerası iyi", "output": "os: android; ram: 16; camera: good"},
+        {"input": "oyun için 7000 mah batarya, uygun fiyatlı", "output": "purpose: gaming; battery: 7000; price: affordable"},
+        {"input": "selfie için iyi kamera, 8 gb ramli iphone", "output": "purpose: selfie; camera: good_front; ram: 8; os: ios"},
+        {"input": "orta segment android, kamerası iyi, oyun oynamam", "output": "price: mid_range; os: android; camera: good; purpose: not_gaming"},
+        {"input": "pahalı android, batarya ömrü çok uzun, selfie için", "output": "price: expensive; os: android; battery: very_long_lasting; purpose: selfie"},
+        {"input": "ucuz iphone, ramı 8 gb, bataryası iyi değil", "output": "price: cheap; os: ios; ram: 8; battery: not_good"},
+        {"input": "kamerası çok iyi, oyun için uygun, iphone", "output": "camera: very_good; purpose: gaming; os: ios"},
+        {"input": "android olsun, 8 gb ram, 10000 tl altı", "output": "os: android; ram: 8; price <= 10000"},
+        {"input": "selfie için en iyi kamera, orta fiyatlı iphone", "output": "purpose: selfie; camera: best_front; price: mid_range; os: ios"},
+        {"input": "ramı yüksek, bataryası uzun giden, pahalı olmayan", "output": "ram: high; battery: long_lasting; price: not_expensive"},
+        {"input": "kamerası iyi, uygun fiyatlı, oyun için", "output": "camera: good; price: affordable; purpose: gaming"},
+        {"input": "iphone olsun, 5000 mah batarya, oyun oynamam", "output": "os: ios; battery: 5000; purpose: not_gaming"},
+        {"input": "android olsun, 12 gb ram, kamerası iyi", "output": "os: android; ram: 12; camera: good"},
+        {"input": "oyun için, 7000 mah batarya, uygun fiyatlı", "output": "purpose: gaming; battery: 7000; price: affordable"},
+        {"input": "selfie için, 16 gb ram, pahalı değil", "output": "purpose: selfie; ram: 16; price: not_expensive"},
+        {"input": "orta segment android, bataryası iyi, oyun için", "output": "price: mid_range; os: android; battery: good; purpose: gaming"},
+        {"input": "pahalı iphone, oyun için, 12 gb ram", "output": "price: expensive; os: ios; purpose: gaming; ram: 12"},
+        {"input": "ucuz android, kamerası iyi, selfie için", "output": "price: cheap; os: android; camera: good; purpose: selfie"},
+        {"input": "kamerası çok iyi, bataryası uzun, android", "output": "camera: very_good; battery: long_lasting; os: android"},
+        {"input": "oyun için uygun fiyatlı, ramı 12 gb", "output": "purpose: gaming; price: affordable; ram: 12"},
+        {"input": "selfie için en iyi kamera, 20000 tl civarı iphone", "output": "purpose: selfie; camera: best_front; price: 20000; os: ios"},
+        {"input": "orta segment iphone, oyun için, 16 gb ram", "output": "price: mid_range; os: ios; purpose: gaming; ram: 16"},
+        {"input": "pahalı bir telefon, ramı yüksek, bataryası uzun", "output": "price: expensive; ram: high; battery: long_lasting"},
+        {"input": "ucuz bir android, kamerası iyi, oyun oynamam", "output": "price: cheap; os: android; camera: good; purpose: not_gaming"},
+        {"input": "iphone olsun, 5000 mah batarya, selfie için", "output": "os: ios; battery: 5000; purpose: selfie"},
+        {"input": "android olsun, 16 gb ramli, kamerası iyi", "output": "os: android; ram: 16; camera: good"},
+        {"input": "oyun için 7000 mah batarya, uygun fiyatlı", "output": "purpose: gaming; battery: 7000; price: affordable"},
+        {"input": "selfie için iyi kamera, 8 gb ramli iphone", "output": "purpose: selfie; camera: good_front; ram: 8; os: ios"},
+        {"input": "orta segment android, kamerası iyi, oyun oynamam", "output": "price: mid_range; os: android; camera: good; purpose: not_gaming"},
+        {"input": "pahalı android, batarya ömrü çok uzun, selfie için", "output": "price: expensive; os: android; battery: very_long_lasting; purpose: selfie"},
+        {"input": "ucuz iphone, ramı 8 gb, bataryası iyi değil", "output": "price: cheap; os: ios; ram: 8; battery: not_good"},
+        {"input": "kamerası çok iyi, oyun için uygun, iphone", "output": "camera: very_good; purpose: gaming; os: ios"},
+        {"input": "android olsun, 8 gb ram, 10000 tl altı", "output": "os: android; ram: 8; price <= 10000"},
+        {"input": "selfie için en iyi kamera, orta fiyatlı iphone", "output": "purpose: selfie; camera: best_front; price: mid_range; os: ios"},
+        {"input": "ramı yüksek, bataryası uzun giden, pahalı olmayan", "output": "ram: high; battery: long_lasting; price: not_expensive"},
+        {"input": "kamerası iyi, uygun fiyatlı, oyun için", "output": "camera: good; price: affordable; purpose: gaming"},
+        {"input": "iphone olsun, 5000 mah batarya, oyun oynamam", "output": "os: ios; battery: 5000; purpose: not_gaming"},
+        {"input": "android olsun, 12 gb ram, kamerası iyi", "output": "os: android; ram: 12; camera: good"},
+        {"input": "oyun için, 7000 mah batarya, uygun fiyatlı", "output": "purpose: gaming; battery: 7000; price: affordable"},
+        {"input": "selfie için, 16 gb ram, pahalı değil", "output": "purpose: selfie; ram: 16; price: not_expensive"},
+        {"input": "orta segment android, bataryası iyi, oyun için", "output": "price: mid_range; os: android; battery: good; purpose: gaming"},
+        {"input": "pahalı iphone, oyun için, 12 gb ram", "output": "price: expensive; os: ios; purpose: gaming; ram: 12"},
+        {"input": "ucuz android, kamerası iyi, selfie için", "output": "price: cheap; os: android; camera: good; purpose: selfie"},
+        {"input": "kamerası çok iyi, bataryası uzun, android", "output": "camera: very_good; battery: long_lasting; os: android"},
+        {"input": "oyun için uygun fiyatlı, ramı 12 gb", "output": "purpose: gaming; price: affordable; ram: 12"},
+        {"input": "selfie için en iyi kamera, 20000 tl civarı iphone", "output": "purpose: selfie; camera: best_front; price: 20000; os: ios"},
+        {"input": "orta segment iphone, oyun için, 16 gb ram", "output": "price: mid_range; os: ios; purpose: gaming; ram: 16"},
+        {"input": "pahalı bir telefon, ramı yüksek, bataryası uzun", "output": "price: expensive; ram: high; battery: long_lasting"},
+        {"input": "ucuz bir android, kamerası iyi, oyun oynamam", "output": "price: cheap; os: android; camera: good; purpose: not_gaming"},
+        {"input": "iphone olsun, 5000 mah batarya, selfie için", "output": "os: ios; battery: 5000; purpose: selfie"},
+        {"input": "android olsun, 16 gb ramli, kamerası iyi", "output": "os: android; ram: 16; camera: good"},
+        {"input": "oyun için 7000 mah batarya, uygun fiyatlı", "output": "purpose: gaming; battery: 7000; price: affordable"},
+        {"input": "selfie için iyi kamera, 8 gb ramli iphone", "output": "purpose: selfie; camera: good_front; ram: 8; os: ios"},
+        {"input": "orta segment android, kamerası iyi, oyun oynamam", "output": "price: mid_range; os: android; camera: good; purpose: not_gaming"},
+        {"input": "pahalı android, batarya ömrü çok uzun, selfie için", "output": "price: expensive; os: android; battery: very_long_lasting; purpose: selfie"},
+        {"input": "ucuz iphone, ramı 8 gb, bataryası iyi değil", "output": "price: cheap; os: ios; ram: 8; battery: not_good"},
+        {"input": "kamerası çok iyi, oyun için uygun, iphone", "output": "camera: very_good; purpose: gaming; os: ios"},
+        {"input": "android olsun, 8 gb ram, 10000 tl altı", "output": "os: android; ram: 8; price <= 10000"},
+        {"input": "selfie için en iyi kamera, orta fiyatlı iphone", "output": "purpose: selfie; camera: best_front; price: mid_range; os: ios"},
+        {"input": "ramı yüksek, bataryası uzun giden, pahalı olmayan", "output": "ram: high; battery: long_lasting; price: not_expensive"},
+        {"input": "kamerası iyi, uygun fiyatlı, oyun için", "output": "camera: good; price: affordable; purpose: gaming"},
+        {"input": "iphone olsun, 5000 mah batarya, oyun oynamam", "output": "os: ios; battery: 5000; purpose: not_gaming"},
+        {"input": "android olsun, 12 gb ram, kamerası iyi", "output": "os: android; ram: 12; camera: good"},
+        {"input": "oyun için, 7000 mah batarya, uygun fiyatlı", "output": "purpose: gaming; battery: 7000; price: affordable"},
+        {"input": "selfie için, 16 gb ram, pahalı değil", "output": "purpose: selfie; ram: 16; price: not_expensive"},
+        {"input": "orta segment android, bataryası iyi, oyun için", "output": "price: mid_range; os: android; battery: good; purpose: gaming"},
+        {"input": "pahalı iphone, oyun için, 12 gb ram", "output": "price: expensive; os: ios; purpose: gaming; ram: 12"},
+        {"input": "ucuz android, kamerası iyi, selfie için", "output": "price: cheap; os: android; camera: good; purpose: selfie"},
+        {"input": "kamerası çok iyi, bataryası uzun, android", "output": "camera: very_good; battery: long_lasting; os: android"},
+        {"input": "oyun için uygun fiyatlı, ramı 12 gb", "output": "purpose: gaming; price: affordable; ram: 12"},
+        {"input": "selfie için en iyi kamera, 20000 tl civarı iphone", "output": "purpose: selfie; camera: best_front; price: 20000; os: ios"},
+        {"input": "orta segment iphone, oyun için, 16 gb ram", "output": "price: mid_range; os: ios; purpose: gaming; ram: 16"},
+        {"input": "pahalı bir telefon, ramı yüksek, bataryası uzun", "output": "price: expensive; ram: high; battery: long_lasting"},
+        {"input": "ucuz bir android, kamerası iyi, oyun oynamam", "output": "price: cheap; os: android; camera: good; purpose: not_gaming"},
+        {"input": "iphone olsun, 5000 mah batarya, selfie için", "output": "os: ios; battery: 5000; purpose: selfie"},
+        {"input": "android olsun, 16 gb ramli, kamerası iyi", "output": "os: android; ram: 16; camera: good"},
+        {"input": "oyun için 7000 mah batarya, uygun fiyatlı", "output": "purpose: gaming; battery: 7000; price: affordable"},
+        {"input": "selfie için iyi kamera, 8 gb ramli iphone", "output": "purpose: selfie; camera: good_front; ram: 8; os: ios"},
+        {"input": "orta segment android, kamerası iyi, oyun oynamam", "output": "price: mid_range; os: android; camera: good; purpose: not_gaming"},
+        {"input": "pahalı android, batarya ömrü çok uzun, selfie için", "output": "price: expensive; os: android; battery: very_long_lasting; purpose: selfie"},
+        {"input": "ucuz iphone, ramı 8 gb, bataryası iyi değil", "output": "price: cheap; os: ios; ram: 8; battery: not_good"},
+        {"input": "kamerası çok iyi, oyun için uygun, iphone", "output": "camera: very_good; purpose: gaming; os: ios"},
+        {"input": "android olsun, 8 gb ram, 10000 tl altı", "output": "os: android; ram: 8; price <= 10000"},
+        {"input": "selfie için en iyi kamera, orta fiyatlı iphone", "output": "purpose: selfie; camera: best_front; price: mid_range; os: ios"},
+        {"input": "ramı yüksek, bataryası uzun giden, pahalı olmayan", "output": "ram: high; battery: long_lasting; price: not_expensive"},
+        {"input": "kamerası iyi, uygun fiyatlı, oyun için", "output": "camera: good; price: affordable; purpose: gaming"},
+        {"input": "iphone olsun, 5000 mah batarya, oyun oynamam", "output": "os: ios; battery: 5000; purpose: not_gaming"},
+        {"input": "android olsun, 12 gb ram, kamerası iyi", "output": "os: android; ram: 12; camera: good"},
+        {"input": "oyun için, 7000 mah batarya, uygun fiyatlı", "output": "purpose: gaming; battery: 7000; price: affordable"},
+        {"input": "selfie için, 16 gb ram, pahalı değil", "output": "purpose: selfie; ram: 16; price: not_expensive"},
+        {"input": "orta segment android, bataryası iyi, oyun için", "output": "price: mid_range; os: android; battery: good; purpose: gaming"},
+        {"input": "pahalı iphone, oyun için, 12 gb ram", "output": "price: expensive; os: ios; purpose: gaming; ram: 12"},
+        {"input": "ucuz android, kamerası iyi, selfie için", "output": "price: cheap; os: android; camera: good; purpose: selfie"},
+        {"input": "kamerası çok iyi, bataryası uzun, android", "output": "camera: very_good; battery: long_lasting; os: android"},
+        {"input": "oyun için uygun fiyatlı, ramı 12 gb", "output": "purpose: gaming; price: affordable; ram: 12"},
+        {"input": "selfie için en iyi kamera, 20000 tl civarı iphone", "output": "purpose: selfie; camera: best_front; price: 20000; os: ios"},
+        {"input": "orta segment iphone, oyun için, 16 gb ram", "output": "price: mid_range; os: ios; purpose: gaming; ram: 16"},
+        {"input": "pahalı bir telefon, ramı yüksek, bataryası uzun", "output": "price: expensive; ram: high; battery: long_lasting"},
+        {"input": "ucuz bir android, kamerası iyi, oyun oynamam", "output": "price: cheap; os: android; camera: good; purpose: not_gaming"},
+        {"input": "iphone olsun, 5000 mah batarya, selfie için", "output": "os: ios; battery: 5000; purpose: selfie"},
+        {"input": "android olsun, 16 gb ramli, kamerası iyi", "output": "os: android; ram: 16; camera: good"},
+        {"input": "oyun için 7000 mah batarya, uygun fiyatlı", "output": "purpose: gaming; battery: 7000; price: affordable"},
+        {"input": "selfie için iyi kamera, 8 gb ramli iphone", "output": "purpose: selfie; camera: good_front; ram: 8; os: ios"},
+        {"input": "orta segment android, kamerası iyi, oyun oynamam", "output": "price: mid_range; os: android; camera: good; purpose: not_gaming"},
+        {"input": "pahalı android, batarya ömrü çok uzun, selfie için", "output": "price: expensive; os: android; battery: very_long_lasting; purpose: selfie"},
+        {"input": "ucuz iphone, ramı 8 gb, bataryası iyi değil", "output": "price: cheap; os: ios; ram: 8; battery: not_good"},
+        {"input": "kamerası çok iyi, oyun için uygun, iphone", "output": "camera: very_good; purpose: gaming; os: ios"},
+        {"input": "android olsun, 8 gb ram, 10000 tl altı", "output": "os: android; ram: 8; price <= 10000"},
+        {"input": "selfie için en iyi kamera, orta fiyatlı iphone", "output": "purpose: selfie; camera: best_front; price: mid_range; os: ios"},
+        {"input": "ramı yüksek, bataryası uzun giden, pahalı olmayan", "output": "ram: high; battery: long_lasting; price: not_expensive"},
+        {"input": "kamerası iyi, uygun fiyatlı, oyun için", "output": "camera: good; price: affordable; purpose: gaming"},
+        {"input": "iphone olsun, 5000 mah batarya, oyun oynamam", "output": "os: ios; battery: 5000; purpose: not_gaming"},
+        {"input": "android olsun, 12 gb ram, kamerası iyi", "output": "os: android; ram: 12; camera: good"},
+        {"input": "oyun için, 7000 mah batarya, uygun fiyatlı", "output": "purpose: gaming; battery: 7000; price: affordable"},
+        {"input": "selfie için, 16 gb ram, pahalı değil", "output": "purpose: selfie; ram: 16; price: not_expensive"},
+        {"input": "orta segment android, bataryası iyi, oyun için", "output": "price: mid_range; os: android; battery: good; purpose: gaming"},
+        {"input": "pahalı iphone, oyun için, 12 gb ram", "output": "price: expensive; os: ios; purpose: gaming; ram: 12"},
+        {"input": "ucuz android, kamerası iyi, selfie için", "output": "price: cheap; os: android; camera: good; purpose: selfie"},
+        {"input": "kamerası çok iyi, bataryası uzun, android", "output": "camera: very_good; battery: long_lasting; os: android"},
+        {"input": "oyun için uygun fiyatlı, ramı 12 gb", "output": "purpose: gaming; price: affordable; ram: 12"},
+        {"input": "selfie için en iyi kamera, 20000 tl civarı iphone", "output": "purpose: selfie; camera: best_front; price: 20000; os: ios"},
+        {"input": "orta segment iphone, oyun için, 16 gb ram", "output": "price: mid_range; os: ios; purpose: gaming; ram: 16"},
+        {"input": "pahalı bir telefon, ramı yüksek, bataryası uzun", "output": "price: expensive; ram: high; battery: long_lasting"},
+        {"input": "ucuz bir android, kamerası iyi, oyun oynamam", "output": "price: cheap; os: android; camera: good; purpose: not_gaming"},
+        {"input": "iphone olsun, 5000 mah batarya, selfie için", "output": "os: ios; battery: 5000; purpose: selfie"},
+        {"input": "android olsun, 16 gb ramli, kamerası iyi", "output": "os: android; ram: 16; camera: good"},
+        {"input": "oyun için 7000 mah batarya, uygun fiyatlı", "output": "purpose: gaming; battery: 7000; price: affordable"},
+        {"input": "selfie için iyi kamera, 8 gb ramli iphone", "output": "purpose: selfie; camera: good_front; ram: 8; os: ios"},
+        {"input": "orta segment android, kamerası iyi, oyun oynamam", "output": "price: mid_range; os: android; camera: good; purpose: not_gaming"},
+        {"input": "pahalı android, batarya ömrü çok uzun, selfie için", "output": "price: expensive; os: android; battery: very_long_lasting; purpose: selfie"},
+        {"input": "ucuz iphone, ramı 8 gb, bataryası iyi değil", "output": "price: cheap; os: ios; ram: 8; battery: not_good"},
+        {"input": "kamerası çok iyi, oyun için uygun, iphone", "output": "camera: very_good; purpose: gaming; os: ios"},
+        {"input": "android olsun, 8 gb ram, 10000 tl altı", "output": "os: android; ram: 8; price <= 10000"},
+        {"input": "selfie için en iyi kamera, orta fiyatlı iphone", "output": "purpose: selfie; camera: best_front; price: mid_range; os: ios"},
+        {"input": "ramı yüksek, bataryası uzun giden, pahalı olmayan", "output": "ram: high; battery: long_lasting; price: not_expensive"},
+        {"input": "kamerası iyi, uygun fiyatlı, oyun için", "output": "camera: good; price: affordable; purpose: gaming"},
+        {"input": "iphone olsun, 5000 mah batarya, oyun oynamam", "output": "os: ios; battery: 5000; purpose: not_gaming"},
+        {"input": "android olsun, 12 gb ram, kamerası iyi", "output": "os: android; ram: 12; camera: good"},
+        {"input": "oyun için, 7000 mah batarya, uygun fiyatlı", "output": "purpose: gaming; battery: 7000; price: affordable"},
+        {"input": "selfie için, 16 gb ram, pahalı değil", "output": "purpose: selfie; ram: 16; price: not_expensive"},
+        {"input": "orta segment android, bataryası iyi, oyun için", "output": "price: mid_range; os: android; battery: good; purpose: gaming"},
+        {"input": "pahalı iphone, oyun için, 12 gb ram", "output": "price: expensive; os: ios; purpose: gaming; ram: 12"},
+        {"input": "ucuz android, kamerası iyi, selfie için", "output": "price: cheap; os: android; camera: good; purpose: selfie"},
+        {"input": "kamerası çok iyi, bataryası uzun, android", "output": "camera: very_good; battery: long_lasting; os: android"},
+        {"input": "oyun için uygun fiyatlı, ramı 12 gb", "output": "purpose: gaming; price: affordable; ram: 12"},
+        {"input": "selfie için en iyi kamera, 20000 tl civarı iphone", "output": "purpose: selfie; camera: best_front; price: 20000; os: ios"},
+        {"input": "orta segment iphone, oyun için, 16 gb ram", "output": "price: mid_range; os: ios; purpose: gaming; ram: 16"},
+        {"input": "pahalı bir telefon, ramı yüksek, bataryası uzun", "output": "price: expensive; ram: high; battery: long_lasting"},
+        {"input": "ucuz bir android, kamerası iyi, oyun oynamam", "output": "price: cheap; os: android; camera: good; purpose: not_gaming"},
+        {"input": "iphone olsun, 5000 mah batarya, selfie için", "output": "os: ios; battery: 5000; purpose: selfie"},
+        {"input": "android olsun, 16 gb ramli, kamerası iyi", "output": "os: android; ram: 16; camera: good"},
+        {"input": "oyun için 7000 mah batarya, uygun fiyatlı", "output": "purpose: gaming; battery: 7000; price: affordable"},
+        {"input": "selfie için iyi kamera, 8 gb ramli iphone", "output": "purpose: selfie; camera: good_front; ram: 8; os: ios"},
+        {"input": "orta segment android, kamerası iyi, oyun oynamam", "output": "price: mid_range; os: android; camera: good; purpose: not_gaming"},
+        {"input": "pahalı android, batarya ömrü çok uzun, selfie için", "output": "price: expensive; os: android; battery: very_long_lasting; purpose: selfie"},
+        {"input": "ucuz iphone, ramı 8 gb, bataryası iyi değil", "output": "price: cheap; os: ios; ram: 8; battery: not_good"},
+        {"input": "kamerası çok iyi, oyun için uygun, iphone", "output": "camera: very_good; purpose: gaming; os: ios"},
+        {"input": "android olsun, 8 gb ram, 10000 tl altı", "output": "os: android; ram: 8; price <= 10000"},
+        {"input": "selfie için en iyi kamera, orta fiyatlı iphone", "output": "purpose: selfie; camera: best_front; price: mid_range; os: ios"},
+        {"input": "ramı yüksek, bataryası uzun giden, pahalı olmayan", "output": "ram: high; battery: long_lasting; price: not_expensive"},
+        {"input": "kamerası iyi, uygun fiyatlı, oyun için", "output": "camera: good; price: affordable; purpose: gaming"},
+        {"input": "iphone olsun, 5000 mah batarya, oyun oynamam", "output": "os: ios; battery: 5000; purpose: not_gaming"},
+        {"input": "android olsun, 12 gb ram, kamerası iyi", "output": "os: android; ram: 12; camera: good"},
+        {"input": "oyun için, 7000 mah batarya, uygun fiyatlı", "output": "purpose: gaming; battery: 7000; price: affordable"},
+        {"input": "selfie için, 16 gb ram, pahalı değil", "output": "purpose: selfie; ram: 16; price: not_expensive"},
+        {"input": "orta segment android, bataryası iyi, oyun için", "output": "price: mid_range; os: android; battery: good; purpose: gaming"},
+        {"input": "pahalı iphone, oyun için, 12 gb ram", "output": "price: expensive; os: ios; purpose: gaming; ram: 12"},
+        {"input": "ucuz android, kamerası iyi, selfie için", "output": "price: cheap; os: android; camera: good; purpose: selfie"},
+        {"input": "kamerası çok iyi, bataryası uzun, android", "output": "camera: very_good; battery: long_lasting; os: android"},
+        {"input": "oyun için uygun fiyatlı, ramı 12 gb", "output": "purpose: gaming; price: affordable; ram: 12"},
+        {"input": "selfie için en iyi kamera, 20000 tl civarı iphone", "output": "purpose: selfie; camera: best_front; price: 20000; os: ios"},
+        {"input": "orta segment iphone, oyun için, 16 gb ram", "output": "price: mid_range; os: ios; purpose: gaming; ram: 16"},
+        {"input": "pahalı bir telefon, ramı yüksek, bataryası uzun", "output": "price: expensive; ram: high; battery: long_lasting"},
+        {"input": "ucuz bir android, kamerası iyi, oyun oynamam", "output": "price: cheap; os: android; camera: good; purpose: not_gaming"},
+        {"input": "iphone olsun, 5000 mah batarya, selfie için", "output": "os: ios; battery: 5000; purpose: selfie"},
+        {"input": "android olsun, 16 gb ramli, kamerası iyi", "output": "os: android; ram: 16; camera: good"},
+        {"input": "oyun için 7000 mah batarya, uygun fiyatlı", "output": "purpose: gaming; battery: 7000; price: affordable"},
+        {"input": "selfie için iyi kamera, 8 gb ramli iphone", "output": "purpose: selfie; camera: good_front; ram: 8; os: ios"},
+        {"input": "orta segment android, kamerası iyi, oyun oynamam", "output": "price: mid_range; os: android; camera: good; purpose: not_gaming"},
+        {"input": "pahalı android, batarya ömrü çok uzun, selfie için", "output": "price: expensive; os: android; battery: very_long_lasting; purpose: selfie"},
+        {"input": "ucuz iphone, ramı 8 gb, bataryası iyi değil", "output": "price: cheap; os: ios; ram: 8; battery: not_good"},
+        {"input": "kamerası çok iyi, oyun için uygun, iphone", "output": "camera: very_good; purpose: gaming; os: ios"},
+        {"input": "android olsun, 8 gb ram, 10000 tl altı", "output": "os: android; ram: 8; price <= 10000"},
+        {"input": "selfie için en iyi kamera, orta fiyatlı iphone", "output": "purpose: selfie; camera: best_front; price: mid_range; os: ios"},
+        {"input": "ramı yüksek, bataryası uzun giden, pahalı olmayan", "output": "ram: high; battery: long_lasting; price: not_expensive"},
+        {"input": "kamerası iyi, uygun fiyatlı, oyun için", "output": "camera: good; price: affordable; purpose: gaming"},
+        {"input": "iphone olsun, 5000 mah batarya, oyun oynamam", "output": "os: ios; battery: 5000; purpose: not_gaming"},
+        {"input": "android olsun, 12 gb ram, kamerası iyi", "output": "os: android; ram: 12; camera: good"},
+        {"input": "oyun için, 7000 mah batarya, uygun fiyatlı", "output": "purpose: gaming; battery: 7000; price: affordable"},
+        {"input": "selfie için, 16 gb ram, pahalı değil", "output": "purpose: selfie; ram: 16; price: not_expensive"},
+        {"input": "orta segment android, bataryası iyi, oyun için", "output": "price: mid_range; os: android; battery: good; purpose: gaming"},
+        {"input": "pahalı iphone, oyun için, 12 gb ram", "output": "price: expensive; os: ios; purpose: gaming; ram: 12"},
+        {"input": "ucuz android, kamerası iyi, selfie için", "output": "price: cheap; os: android; camera: good; purpose: selfie"},
+        {"input": "kamerası çok iyi, bataryası uzun, android", "output": "camera: very_good; battery: long_lasting; os: android"},
+        {"input": "oyun için uygun fiyatlı, ramı 12 gb", "output": "purpose: gaming; price: affordable; ram: 12"},
+        {"input": "selfie için en iyi kamera, 20000 tl civarı iphone", "output": "purpose: selfie; camera: best_front; price: 20000; os: ios"},
+        {"input": "orta segment iphone, oyun için, 16 gb ram", "output": "price: mid_range; os: ios; purpose: gaming; ram: 16"},
+        {"input": "pahalı bir telefon, ramı yüksek, bataryası uzun", "output": "price: expensive; ram: high; battery: long_lasting"},
+        {"input": "ucuz bir android, kamerası iyi, oyun oynamam", "output": "price: cheap; os: android; camera: good; purpose: not_gaming"},
+        {"input": "iphone olsun, 5000 mah batarya, selfie için", "output": "os: ios; battery: 5000; purpose: selfie"},
+        {"input": "android olsun, 16 gb ramli, kamerası iyi", "output": "os: android; ram: 16; camera: good"},
+        {"input": "oyun için 7000 mah batarya, uygun fiyatlı", "output": "purpose: gaming; battery: 7000; price: affordable"},
+        {"input": "selfie için iyi kamera, 8 gb ramli iphone", "output": "purpose: selfie; camera: good_front; ram: 8; os: ios"},
+        {"input": "orta segment android, kamerası iyi, oyun oynamam", "output": "price: mid_range; os: android; camera: good; purpose: not_gaming"},
+        {"input": "pahalı android, batarya ömrü çok uzun, selfie için", "output": "price: expensive; os: android; battery: very_long_lasting; purpose: selfie"},
+        {"input": "ucuz iphone, ramı 8 gb, bataryası iyi değil", "output": "price: cheap; os: ios; ram: 8; battery: not_good"},
+        {"input": "kamerası çok iyi, oyun için uygun, iphone", "output": "camera: very_good; purpose: gaming; os: ios"},
+        {"input": "android olsun, 8 gb ram, 10000 tl altı", "output": "os: android; ram: 8; price <= 10000"},
+        {"input": "selfie için en iyi kamera, orta fiyatlı iphone", "output": "purpose: selfie; camera: best_front; price: mid_range; os: ios"},
+        {"input": "ramı yüksek, bataryası uzun giden, pahalı olmayan", "output": "ram: high; battery: long_lasting; price: not_expensive"},
+        {"input": "kamerası iyi, uygun fiyatlı, oyun için", "output": "camera: good; price: affordable; purpose: gaming"},
+        {"input": "iphone olsun, 5000 mah batarya, oyun oynamam", "output": "os: ios; battery: 5000; purpose: not_gaming"},
+        {"input": "android olsun, 12 gb ram, kamerası iyi", "output": "os: android; ram: 12; camera: good"},
+        {"input": "oyun için, 7000 mah batarya, uygun fiyatlı", "output": "purpose: gaming; battery: 7000; price: affordable"},
+        {"input": "selfie için, 16 gb ram, pahalı değil", "output": "purpose: selfie; ram: 16; price: not_expensive"},
+        {"input": "orta segment android, bataryası iyi, oyun için", "output": "price: mid_range; os: android; battery: good; purpose: gaming"},
+        {"input": "pahalı iphone, oyun için, 12 gb ram", "output": "price: expensive; os: ios; purpose: gaming; ram: 12"},
+        {"input": "ucuz android, kamerası iyi, selfie için", "output": "price: cheap; os: android; camera: good; purpose: selfie"},
+        {"input": "kamerası çok iyi, bataryası uzun, android", "output": "camera: very_good; battery: long_lasting; os: android"},
+        {"input": "oyun için uygun fiyatlı, ramı 12 gb", "output": "purpose: gaming; price: affordable; ram: 12"},
+        {"input": "selfie için en iyi kamera, 20000 tl civarı iphone", "output": "purpose: selfie; camera: best_front; price: 20000; os: ios"},
+        {"input": "orta segment iphone, oyun için, 16 gb ram", "output": "price: mid_range; os: ios; purpose: gaming; ram: 16"},
+        {"input": "pahalı bir telefon, ramı yüksek, bataryası uzun", "output": "price: expensive; ram: high; battery: long_lasting"},
+        {"input": "ucuz bir android, kamerası iyi, oyun oynamam", "output": "price: cheap; os: android; camera: good; purpose: not_gaming"},
+        {"input": "iphone olsun, 5000 mah batarya, selfie için", "output": "os: ios; battery: 5000; purpose: selfie"},
+        {"input": "android olsun, 16 gb ramli, kamerası iyi", "output": "os: android; ram: 16; camera: good"},
+        {"input": "oyun için 7000 mah batarya, uygun fiyatlı", "output": "purpose: gaming; battery: 7000; price: affordable"},
+        {"input": "selfie için iyi kamera, 8 gb ramli iphone", "output": "purpose: selfie; camera: good_front; ram: 8; os: ios"},
+        {"input": "orta segment android, kamerası iyi, oyun oynamam", "output": "price: mid_range; os: android; camera: good; purpose: not_gaming"},
+        {"input": "pahalı android, batarya ömrü çok uzun, selfie için", "output": "price: expensive; os: android; battery: very_long_lasting; purpose: selfie"},
+        {"input": "ucuz iphone, ramı 8 gb, bataryası iyi değil", "output": "price: cheap; os: ios; ram: 8; battery: not_good"},
+        {"input": "kamerası çok iyi, oyun için uygun, iphone", "output": "camera: very_good; purpose: gaming; os: ios"},
+        {"input": "android olsun, 8 gb ram, 10000 tl altı", "output": "os: android; ram: 8; price <= 10000"},
+        {"input": "selfie için en iyi kamera, orta fiyatlı iphone", "output": "purpose: selfie; camera: best_front; price: mid_range; os: ios"},
+        {"input": "ramı yüksek, bataryası uzun giden, pahalı olmayan", "output": "ram: high; battery: long_lasting; price: not_expensive"},
+        {"input": "kamerası iyi, uygun fiyatlı, oyun için", "output": "camera: good; price: affordable; purpose: gaming"},
+        {"input": "iphone olsun, 5000 mah batarya, oyun oynamam", "output": "os: ios; battery: 5000; purpose: not_gaming"},
+        {"input": "android olsun, 12 gb ram, kamerası iyi", "output": "os: android; ram: 12; camera: good"},
+        {"input": "oyun için, 7000 mah batarya, uygun fiyatlı", "output": "purpose: gaming; battery: 7000; price: affordable"},
+        {"input": "selfie için, 16 gb ram, pahalı değil", "output": "purpose: selfie; ram: 16; price: not_expensive"},
+        {"input": "orta segment android, bataryası iyi, oyun için", "output": "price: mid_range; os: android; battery: good; purpose: gaming"},
+        {"input": "pahalı iphone, oyun için, 12 gb ram", "output": "price: expensive; os: ios; purpose: gaming; ram: 12"},
+        {"input": "ucuz android, kamerası iyi, selfie için", "output": "price: cheap; os: android; camera: good; purpose: selfie"},
+        {"input": "kamerası çok iyi, bataryası uzun, android", "output": "camera: very_good; battery: long_lasting; os: android"},
+        {"input": "oyun için uygun fiyatlı, ramı 12 gb", "output": "purpose: gaming; price: affordable; ram: 12"},
+        {"input": "selfie için en iyi kamera, 20000 tl civarı iphone", "output": "purpose: selfie; camera: best_front; price: 20000; os: ios"},
+        {"input": "orta segment iphone, oyun için, 16 gb ram", "output": "price: mid_range; os: ios; purpose: gaming; ram: 16"},
+        {"input": "pahalı bir telefon, ramı yüksek, bataryası uzun", "output": "price: expensive; ram: high; battery: long_lasting"},
+        {"input": "ucuz bir android, kamerası iyi, oyun oynamam", "output": "price: cheap; os: android; camera: good; purpose: not_gaming"},
+        {"input": "iphone olsun, 5000 mah batarya, selfie için", "output": "os: ios; battery: 5000; purpose: selfie"},
+        {"input": "android olsun, 16 gb ramli, kamerası iyi", "output": "os: android; ram: 16; camera: good"},
+        {"input": "oyun için 7000 mah batarya, uygun fiyatlı", "output": "purpose: gaming; battery: 7000; price: affordable"},
+        {"input": "selfie için iyi kamera, 8 gb ramli iphone", "output": "purpose: selfie; camera: good_front; ram: 8; os: ios"},
+        {"input": "orta segment android, kamerası iyi, oyun oynamam", "output": "price: mid_range; os: android; camera: good; purpose: not_gaming"},
+        {"input": "pahalı android, batarya ömrü çok uzun, selfie için", "output": "price: expensive; os: android; battery: very_long_lasting; purpose: selfie"},
+        {"input": "ucuz iphone, ramı 8 gb, bataryası iyi değil", "output": "price: cheap; os: ios; ram: 8; battery: not_good"},
+        {"input": "kamerası çok iyi, oyun için uygun, iphone", "output": "camera: very_good; purpose: gaming; os: ios"},
+        {"input": "android olsun, 8 gb ram, 10000 tl altı", "output": "os: android; ram: 8; price <= 10000"},
+        {"input": "selfie için en iyi kamera, orta fiyatlı iphone", "output": "purpose: selfie; camera: best_front; price: mid_range; os: ios"},
+        {"input": "ramı yüksek, bataryası uzun giden, pahalı olmayan", "output": "ram: high; battery: long_lasting; price: not_expensive"},
+        {"input": "kamerası iyi, uygun fiyatlı, oyun için", "output": "camera: good; price: affordable; purpose: gaming"},
+        {"input": "iphone olsun, 5000 mah batarya, oyun oynamam", "output": "os: ios; battery: 5000; purpose: not_gaming"},
+        {"input": "android olsun, 12 gb ram, kamerası iyi", "output": "os: android; ram: 12; camera: good"},
+        {"input": "oyun için, 7000 mah batarya, uygun fiyatlı", "output": "purpose: gaming; battery: 7000; price: affordable"},
+        {"input": "selfie için, 16 gb ram, pahalı değil", "output": "purpose: selfie; ram: 16; price: not_expensive"},
+        {"input": "orta segment android, bataryası iyi, oyun için", "output": "price: mid_range; os: android; battery: good; purpose: gaming"},
+        {"input": "pahalı iphone, oyun için, 12 gb ram", "output": "price: expensive; os: ios; purpose: gaming; ram: 12"},
+        {"input": "ucuz android, kamerası iyi, selfie için", "output": "price: cheap; os: android; camera: good; purpose: selfie"},
+        {"input": "kamerası çok iyi, bataryası uzun, android", "output": "camera: very_good; battery: long_lasting; os: android"},
+        {"input": "oyun için uygun fiyatlı, ramı 12 gb", "output": "purpose: gaming; price: affordable; ram: 12"},
+        {"input": "selfie için en iyi kamera, 20000 tl civarı iphone", "output": "purpose: selfie; camera: best_front; price: 20000; os: ios"},
+        {"input": "orta segment iphone, oyun için, 16 gb ram", "output": "price: mid_range; os: ios; purpose: gaming; ram: 16"},
+        {"input": "pahalı bir telefon, ramı yüksek, bataryası uzun", "output": "price: expensive; ram: high; battery: long_lasting"},
+        {"input": "ucuz bir android, kamerası iyi, oyun oynamam", "output": "price: cheap; os: android; camera: good; purpose: not_gaming"},
+        {"input": "iphone olsun, 5000 mah batarya, selfie için", "output": "os: ios; battery: 5000; purpose: selfie"},
+        {"input": "android olsun, 16 gb ramli, kamerası iyi", "output": "os: android; ram: 16; camera: good"},
+        {"input": "oyun için 7000 mah batarya, uygun fiyatlı", "output": "purpose: gaming; battery: 7000; price: affordable"},
+        {"input": "selfie için iyi kamera, 8 gb ramli iphone", "output": "purpose: selfie; camera: good_front; ram: 8; os: ios"},
+        {"input": "orta segment android, kamerası iyi, oyun oynamam", "output": "price: mid_range; os: android; camera: good; purpose: not_gaming"},
+        {"input": "pahalı android, batarya ömrü çok uzun, selfie için", "output": "price: expensive; os: android; battery: very_long_lasting; purpose: selfie"},
+        {"input": "ucuz iphone, ramı 8 gb, bataryası iyi değil", "output": "price: cheap; os: ios; ram: 8; battery: not_good"},
+        {"input": "kamerası çok iyi, oyun için uygun, iphone", "output": "camera: very_good; purpose: gaming; os: ios"}
 
-# Function to create training data
-def create_training_data():
-    """Örneklem eğitim verileri oluşturur ve ön işleme uygular."""
+    ]
+
+    # DataFrame oluştur ve CSV olarak kaydet
+    df = pd.DataFrame(examples)
+    df.to_csv("telefon_dataset.csv", index=False)
+    return df
+
+class PhoneDataset(Dataset):
+    def __init__(self, dataframe, tokenizer, max_length=128):
+        self.dataframe = dataframe
+        self.tokenizer = tokenizer
+        self.max_length = max_length
     
-    training_data = []
-
-    # Ön işleme fonksiyonu
-    def preprocess_text(text):
-        # 1. Tüm metni küçük harfe dönüştür
-        text = text.lower()
+    def __len__(self):
+        return len(self.dataframe)
+    
+    def __getitem__(self, idx):
+        input_text = self.dataframe.iloc[idx]["input"]
+        output_text = self.dataframe.iloc[idx]["output"]
         
-        # 2. Sayı olmayan ve harf olmayan karakterleri boşlukla değiştir
-        # (Örn: !, ?, ., ,, vb. kaldırır, sayıları korur)
-        # Sadece harf, sayı ve boşluk bırakmak istiyorsak:
-        # text = re.sub(r'[^a-zA-Z0-9çÇğĞıİöÖşŞüÜ\s]', '', text)
-        # Ancak, bu örnekte 'TL' veya 'GB' gibi ifadelerin bitişik kalması daha iyi olabilir.
-        # Bu nedenle, sadece noktalama işaretlerini hedefleyelim:
-        text = re.sub(r'[^\w\s]', '', text) # Alfabetik karakterler, sayılar ve boşluk dışındakileri kaldırır
+        # Tokenization
+        input_encoding = self.tokenizer(
+            input_text,
+            padding="max_length",
+            truncation=True,
+            max_length=self.max_length,
+            return_tensors="pt"
+        )
         
-        # Fazla boşlukları tek boşluğa dönüştür
-        text = re.sub(r'\s+', ' ', text).strip()
-        return text
-
-    # Veri örnekleri (eski haliyle aynı, preprocess_text ile işlenecek)
-    # ... (buraya orijinal price_examples, ram_examples, os_examples vb. eklenecek)
-    # Kopyala yapıştır kolaylığı için kısaltılmış örnekler:
-    price_examples = [
-        ("Fiyatı 10000'den az olsun", "price < 10000"),
-        ("10 bin tl altı telefonlar", "price < 10000"),
-        ("Fiyatı 10000 TL altında olan telefonlar", "price < 10000"),
-        ("15000 TL'den pahalı olmasın lütfen", "price < 15000"),
-        ("15000 TL fiyat sınırım var", "price < 15000"),
-        ("5000 TL civarı telefonlar", "price ~ 5000"),
-        ("Fiyatı 8000-12000 TL arası olsun", "price >= 8000 AND price <= 12000"),
-        ("Bütçem 20000 TL", "price <= 20000"),
-        ("En fazla 12000 TL'ye kadar", "price <= 12000"),
-        ("En ucuz telefonlar", "price ASC"),
-        ("En pahalı telefonlar", "price DESC"),
-        ("20000 TL'den daha pahalı telefonlar", "price > 20000"),
-        ("Fiyatı 7000 ile 14000 arasında", "price >= 7000 AND price <= 14000"),
-        ("Ucuz bir telefon bakıyorum", "price ASC"),
-        ("Pahalı telefonlar ilgimi çekiyor", "price DESC"),
-        ("18000 TL'ye kadar bir model arıyorum", "price <= 18000"),
-        ("Fiyatı 9000 TL'yi geçmesin", "price < 9000"),
-        ("3000 TL ile 6000 TL arasında telefonlar", "price >= 3000 AND price <= 6000"),
-        ("Bütçe dostu telefonlar", "price ASC"),
-    ]
-    
-    # Enhanced RAM Examples
-    ram_examples = [
-        ("RAM'i 6GB'tan fazla olsun", "ram > 6"),
-        ("En az 8GB RAM", "ram >= 8"),
-        ("RAM 12GB olsun", "ram = 12"),
-        ("16GB RAM olan telefonlar", "ram = 16"),
-        ("RAM'i 6-8 GB arası", "ram >= 6 AND ram <= 8"),
-        ("RAM'i yüksek telefonlar", "ram DESC"),
-        ("6 GB RAM'den az olmayan telefonlar", "ram >= 6"),
-        ("Minimum 4GB RAM", "ram >= 4"),
-        ("Çok hızlı, yüksek RAM'li bir telefon", "ram DESC"),
-        ("8 gigabayt RAM'li telefonlar", "ram = 8"),
-    ]
-    
-    # Enhanced Operating System/Brand Examples
-    os_examples = [
-        ("Android telefonlar", "os = 'Android'"),
-        ("iOS işletim sistemli telefonlar", "os = 'iOS'"),
-        ("iPhone önerisi istiyorum", "os = 'iOS'"),
-        ("Samsung telefonlar", "brand = 'Samsung'"),
-        ("Sadece Apple telefon olsun", "brand = 'Apple'"),
-        ("Xiaomi telefonları göster", "brand = 'Xiaomi'"),
-        ("Huawei markalı telefonlar", "brand = 'Huawei'"),
-        ("Google Pixel telefonlar", "brand = 'Google'"),
-        ("En son çıkan Android'ler", "os = 'Android' AND release_date DESC"),
-        ("En iyi iOS deneyimi", "os = 'iOS'"),
-    ]
-    
-    # Enhanced Battery Examples
-    battery_examples = [
-        ("Bataryası güçlü telefonlar", "battery DESC"),
-        ("5000 mAh üzeri batarya", "battery > 5000"),
-        ("Bataryası en az 4000 mAh olsun", "battery >= 4000"),
-        ("Batarya kapasitesi yüksek telefonlar", "battery DESC"),
-        ("Uzun pil ömrü olan telefonlar", "battery DESC"),
-        ("6000 mAh bataryalı telefonlar", "battery = 6000"),
-        ("Düşük batarya tüketimi olan telefonlar", "battery ASC"), # Might imply smaller battery, or efficiency, tricky
-        ("Bataryası 4500 mAh ve üstü", "battery >= 4500"),
-    ]
-    
-    # Enhanced Camera Examples
-    camera_examples = [
-        ("Kamerası iyi telefonlar", "camera DESC"),
-        ("En iyi kameralı telefonlar", "camera DESC"),
-        ("48 MP üzeri kamera", "camera > 48"),
-        ("Kamera çözünürlüğü yüksek olanlar", "camera DESC"),
-        ("Kamerası en az 64 MP olsun", "camera >= 64"),
-        ("Ön kamerası başarılı telefonlar", "front_camera DESC"),
-        ("Çift kameralı telefonlar", "num_cameras = 2"), # Example, assumes this feature exists
-        ("108 MP ana kameralı telefon", "camera = 108"),
-        ("Gece modu iyi olan telefonlar", "camera DESC"), # Implies camera quality
-    ]
-
-    # Enhanced Screen Examples
-    screen_examples = [
-        ("Büyük ekranlı telefonlar", "screen_size DESC"),
-        ("6.5 inç üzeri ekranlı telefonlar", "screen_size > 6.5"),
-        ("Kompakt boyutlu telefonlar", "screen_size ASC"),
-        ("AMOLED ekranlı telefonlar", "screen_type = 'AMOLED'"),
-        ("Yüksek yenileme hızlı ekranlar", "refresh_rate DESC"),
-        ("Full HD+ ekranlı telefonlar", "resolution = 'FHD+'"), # Example
-    ]
-
-    # Enhanced Storage Examples
-    storage_examples = [
-        ("256 GB depolama alanı", "storage = 256"),
-        ("512 GB hafızalı telefonlar", "storage = 512"),
-        ("Yeterli depolama alanı olan telefonlar", "storage DESC"),
-        ("128 GB'tan az olmasın", "storage >= 128"),
-    ]
-
-    # Enhanced Mixed Examples
-    mixed_examples = [
-        ("Fiyatı 10000den az, RAMi 6dan yukarı telefonlar", "price < 10000 AND ram > 6"),
-        ("8GB RAM ve 5000 mAh bataryalı telefonlar", "ram = 8 AND battery >= 5000"),
-        ("Android, 12GB RAM ve fiyatı 15000 TL altı", "os = 'Android' AND ram = 12 AND price < 15000"),
-        ("Xiaomi marka, bataryası 4500 mAh üzeri ve fiyatı 12000 TL altı", "brand = 'Xiaomi' AND battery > 4500 AND price < 12000"),
-        ("iPhone, 256 GB depolama ve kamerası iyi olan", "os = 'iOS' AND storage = 256 AND camera DESC"),
-        ("Fiyatı 8000-15000 TL arası, Android ve en az 8GB RAM", "price >= 8000 AND price <= 15000 AND os = 'Android' AND ram >= 8"),
-        ("Samsung marka, 20000 TL altı, RAM'i yüksek", "brand = 'Samsung' AND price < 20000 AND ram DESC"),
-        ("Bataryası güçlü ve 12000 TL altı telefonlar", "battery DESC AND price < 12000"),
-        ("En iyi kameralı Android telefonlar", "camera DESC AND os = 'Android'"),
-        ("iyi bir oyun telefonu istiyorum", "ram DESC AND processor DESC"),
-        ("Uygun fiyatlı iyi bir telefon arıyorum", "price ASC AND (ram >= 6 OR camera >= 48)"),
-        ("10000 TL altı iyi kameralı telefonlar", "price < 10000 AND camera DESC"),
-        ("Bataryası uzun ömürlü ve Android telefonlar", "battery DESC AND os = 'Android'"),
-        ("En yeni Apple telefonları göster", "brand = 'Apple' AND release_date DESC"),
-        ("6.5 inç üzeri ekranlı, bataryası iyi telefonlar", "screen_size > 6.5 AND battery DESC"),
-        ("Hem ucuz hem de iyi kameralı telefonlar", "price ASC AND camera DESC"),
-        ("Samsung veya Apple, RAM'i 8GB'tan fazla", "brand IN ('Samsung', 'Apple') AND ram > 8"),
-        ("Hızlı işlemcili Android telefonlar", "os = 'Android' AND processor DESC"),
-        ("256 GB depolama ve 6.2 inç ekranlı", "storage = 256 AND screen_size = 6.2"),
-        ("En yeni model Xiaomi telefonları", "brand = 'Xiaomi' AND release_date DESC"),
-        ("Suya dayanıklı ve bataryası güçlü telefonlar", "water_resistant = TRUE AND battery DESC"),
-        ("Oyun için yüksek performanslı telefon", "processor DESC AND ram DESC AND refresh_rate DESC"),
-        ("Bütçem 12000 TL, Samsung marka ve kamerası iyi olsun", "price <= 12000 AND brand = 'Samsung' AND camera DESC"),
-        ("Android 13 işletim sistemli telefonlar", "os_version = 'Android 13'"), # Example
-        ("Kamerası 64 MP ve fiyatı 15000 TL altı", "camera = 64 AND price < 15000"),
-        ("RAM'i 8 GB ve depolaması 128 GB olan Android telefonlar", "ram = 8 AND storage = 128 AND os = 'Android'"),
-        ("En uygun fiyatlı iPhone'lar", "brand = 'Apple' AND price ASC"),
-        ("4000 mAh üzeri batarya ve 6GB RAM", "battery > 4000 AND ram = 6"),
-        ("Yüksek ekran yenileme hızı ve güçlü işlemci", "refresh_rate DESC AND processor DESC"),
-    ]
-    
-    # Tüm örnekleri birleştir
-    all_examples = price_examples + ram_examples + os_examples + battery_examples + camera_examples + screen_examples + storage_examples + mixed_examples
-    
-    # Veri setini oluştur ve preprocess_text fonksiyonunu uygula
-    for prompt, filter_query in all_examples:
-        # Sadece prompt'u ön işleme alıyoruz, filter_query'yi olduğu gibi bırakıyoruz
-        # çünkü filter_query SQL benzeri bir yapıda ve ona dokunmak istemeyiz.
-        processed_prompt = preprocess_text(prompt)
-        training_data.append({
-            "prompt": processed_prompt,
-            "filter_query": filter_query
-        })
-    
-    return training_data
-
-def main():
-    # Create the dataset
-    print("Veri seti oluşturuluyor...")
-    data = create_training_data()
-
-    # Split the dataset into training and evaluation sets
-    train_data, eval_data = train_test_split(data, test_size=0.2, random_state=42)
-
-    # Convert to HuggingFace Datasets format
-    train_dataset = Dataset.from_pandas(pd.DataFrame(train_data))
-    eval_dataset = Dataset.from_pandas(pd.DataFrame(eval_data))
-
-    # Use mT5 model (multilingual and for seq2seq)
-    model_name = "google/mt5-small"
-    print(f"Model yükleniyor: {model_name}")
-    tokenizer = AutoTokenizer.from_pretrained(model_name)
-    model = AutoModelForSeq2SeqLM.from_pretrained(model_name).to(device) # Move model to device
-
-    # Data preparation function
-    def preprocess_function(examples):
-        inputs = tokenizer(examples["prompt"], truncation=True, padding="max_length", max_length=128)
-        outputs = tokenizer(examples["filter_query"], truncation=True, padding="max_length", max_length=128)
+        # T5 için özel bir yaklaşım: prefix kullanılmamalı
+        output_encoding = self.tokenizer(
+            output_text,  # prefix kullanmadan direkt çıktıyı tokenize et
+            padding="max_length",
+            truncation=True,
+            max_length=self.max_length,
+            return_tensors="pt"
+        )
         
-        # Create decoder input_ids for labels
-        batch = {
-            "input_ids": inputs.input_ids,
-            "attention_mask": inputs.attention_mask,
-            "labels": outputs.input_ids, # labels directly from tokenized output
+        # labels için özel işlem (decoder_input_ids'i değil labels'ı kullanıyoruz)
+        labels = output_encoding["input_ids"].clone()
+        labels[labels == self.tokenizer.pad_token_id] = -100  # padding token'ları -100 olarak değiştir
+        
+        return {
+            "input_ids": input_encoding["input_ids"].squeeze(),
+            "attention_mask": input_encoding["attention_mask"].squeeze(),
+            "labels": labels.squeeze()
         }
-        
-        # Replace padding token id in labels with -100 so it's ignored in loss calculation
-        batch["labels"] = [
-            [-100 if token == tokenizer.pad_token_id else token for token in labels] 
-            for labels in batch["labels"]
-        ]
-        
-        return batch
 
-    # Tokenize the datasets
-    print("Veri setleri tokenize ediliyor...")
-    tokenized_train = train_dataset.map(preprocess_function, batched=True, remove_columns=["prompt", "filter_query"])
-    tokenized_eval = eval_dataset.map(preprocess_function, batched=True, remove_columns=["prompt", "filter_query"])
+def preprocess_function(examples, tokenizer, max_input_length=128, max_target_length=128):
+    inputs = examples["input"]
+    targets = examples["output"]
+    
+    model_inputs = tokenizer(
+        inputs, max_length=max_input_length, padding="max_length", truncation=True
+    )
+    
+    # Labels için etiketlerin tokenize edilmiş hali
+    labels = tokenizer(
+        targets, max_length=max_target_length, padding="max_length", truncation=True
+    )["input_ids"]
+    
+    # Padding tokenlerini -100 ile değiştir (Hugging Face loss fonksiyonu için)
+    for i in range(len(labels)):
+        labels[i] = [token if token != tokenizer.pad_token_id else -100 for token in labels[i]]
+    
+    model_inputs["labels"] = labels
+    return model_inputs
 
-    # Define training arguments
-    from transformers.trainer_utils import IntervalStrategy
-    data_collator = DataCollatorForSeq2Seq(tokenizer, model=model)
+def compute_metrics(eval_preds):
+    preds, labels = eval_preds
+    if isinstance(preds, tuple):
+        preds = preds[0]
+    
+    # preds'i PyTorch tensörü veya NumPy dizisi ise bir Python listesine dönüştür
+    # Hatanın "out of range integral type conversion attempted" olması,
+    # preds içindeki değerlerin tokenizer'ın beklediği integer aralığının dışında olduğunu düşündürüyor olabilir.
+    # En güvenilir yol, PyTorch tensörünü veya NumPy dizisini bir Python listesine dönüştürmektir.
+    
+    if isinstance(preds, np.ndarray):
+        preds = preds.tolist() # NumPy dizisini listeye dönüştür
+    elif torch.is_tensor(preds):
+        preds = preds.tolist() # PyTorch tensörünü listeye dönüştür
+    
+    # -100 değerlerini decode edilemeyecek şekilde maskeleyin
+    # labels da bir NumPy dizisi olduğundan, np.where sorunsuz çalışır.
+    labels = np.where(labels != -100, labels, tokenizer.pad_token_id)
+    
+    # labels'ı da aynı şekilde listeye dönüştürmek daha güvenli olabilir
+    if isinstance(labels, np.ndarray):
+        labels = labels.tolist()
+    elif torch.is_tensor(labels):
+        labels = labels.tolist()
+
+    decoded_preds = tokenizer.batch_decode(preds, skip_special_tokens=True)
+    decoded_labels = tokenizer.batch_decode(labels, skip_special_tokens=True)
+    
+    # Basit bir doğruluk metriği (kesin eşleşme) hesaplayın
+    exact_match = sum([pred == label for pred, label in zip(decoded_preds, decoded_labels)]) / len(decoded_labels)
+    
+    return {"exact_match": exact_match}
+
+if __name__ == "__main__":
+    # Veri setini oluştur veya yükle
+    if not os.path.exists("telefon_dataset.csv"):
+        df = create_example_dataset()
+    else:
+        df = pd.read_csv("telefon_dataset.csv")
+    
+    # Veriyi train ve validation olarak böl
+    train_df, val_df = train_test_split(df, test_size=0.2, random_state=42)
+    
+    # Model ve tokenizer yükleme
+    model_name = "google/mt5-base"  # mT5 modeli Türkçe için daha iyi çalışır
+    tokenizer = AutoTokenizer.from_pretrained(model_name)
+    # T5 modelleri için özel tokenları yönet
+    if tokenizer.pad_token is None:
+        tokenizer.pad_token = tokenizer.eos_token
+    model = AutoModelForSeq2SeqLM.from_pretrained(model_name)
+    
+    # Veri setlerini oluşturma
+    train_dataset = PhoneDataset(train_df, tokenizer)
+    val_dataset = PhoneDataset(val_df, tokenizer)
+    
+    # Eğitim argümanlarını tanımlama
     training_args = Seq2SeqTrainingArguments(
-        output_dir="./phone_filter_model",
-        learning_rate=3e-5, # Slightly reduced learning rate
+        output_dir="./results",
+        eval_strategy="epoch",
+        learning_rate=5e-5,
         per_device_train_batch_size=4,
         per_device_eval_batch_size=4,
-        gradient_accumulation_steps=8, 
         weight_decay=0.01,
         save_total_limit=3,
-        num_train_epochs=30, # Increased epochs
+        num_train_epochs=3,
         predict_with_generate=True,
         logging_dir="./logs",
-        eval_strategy=IntervalStrategy.EPOCH,
-        save_strategy=IntervalStrategy.EPOCH,
-        load_best_model_at_end=True,
-        metric_for_best_model="eval_loss",
-        report_to="none", # Ensure this is set if not using external logging tools
-        fp16=torch.cuda.is_available(), # Use mixed precision training if CUDA is available
+        logging_steps=10,
+        report_to="none"
     )
-
-    # Create the Trainer
+    
+    # Veri toplayıcı tanımlama
+    data_collator = DataCollatorForSeq2Seq(
+        tokenizer=tokenizer,
+        model=model
+    )
+    
+    # Trainer'ı ayarlama
     trainer = Seq2SeqTrainer(
         model=model,
         args=training_args,
-        train_dataset=tokenized_train,
-        eval_dataset=tokenized_eval,
+        train_dataset=train_dataset,
+        eval_dataset=val_dataset,
         tokenizer=tokenizer,
-        data_collator=data_collator
+        data_collator=data_collator,
+        compute_metrics=compute_metrics,
     )
-
-    # Train the model
-    print("🚀 Eğitim başlatılıyor...")
+    
+    # Modeli fine-tune etme
     trainer.train()
-    print("✅ Eğitim tamamlandı.")
+    
+    # Modeli kaydetme
+    model_path = "./phone_query_model"
+    model.save_pretrained(model_path)
+    tokenizer.save_pretrained(model_path)
+    print(f"Model ve tokenizer kaydedildi: {model_path}")
 
-    # Save the trained model
-    model_save_path = "./phone_filter_model"
-    trainer.save_model(model_save_path)
-    tokenizer.save_pretrained(model_save_path)
-    print(f"📦 Model kaydedildi: {model_save_path}")
-
-    # Test the model
-    def generate_filter_query(prompt):
-        inputs = tokenizer(prompt, return_tensors="pt", truncation=True, padding=True).to(device)
-        outputs = model.generate(
-            input_ids=inputs.input_ids,
-            attention_mask=inputs.attention_mask,
-            max_length=128,
-            num_beams=5,
-            early_stopping=True
-        )
-        predicted_query = tokenizer.decode(outputs[0], skip_special_tokens=True)
-        return predicted_query
-
-    # Test with a few examples
-    test_prompts = [
-        "Fiyatı 10000 TL altı ve 8 GB RAM olan telefonlar",
-        "Android telefonlar bataryası yüksek olanlar",
-        "En iyi kameralı Samsung telefonlar",
-    ]
-
-    print("\nTest sonuçları:")
-    for prompt in test_prompts:
-        predicted_query = generate_filter_query(prompt)
-        print(f"Prompt: {prompt}")
-        print(f"Tahmin edilen filtre sorgusu: {predicted_query}\n")
-
-    # Save all training data to a JSON file
-    json_path = "training_data.json"
-    with open(json_path, "w", encoding="utf-8") as f:
-        json.dump(data, f, ensure_ascii=False, indent=4)
-
-    print(f"Eğitim verileri kaydedildi: {json_path}")
-
-if __name__ == "__main__":
-    main()
