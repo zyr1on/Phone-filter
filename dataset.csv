@@ -1,0 +1,1021 @@
+input,output
+6 gb üzeri android telefon öner,os: android; ram >= 6
+6 gb ram ve fiyatı 10000 tl'den ucuz bir telefon istiyorum,ram: 6; price <= 10000
+en az 8 gb rami olan iphone modeli önerir misin,os: ios; ram >= 8
+12 gb ram ve en az 256 gb depolama alanı olan bir android telefon,os: android; ram: 12; storage >= 256
+"bütçem 15000 tl, android ve ram 8 gb olsun",os: android; ram: 8; price <= 15000
+iphone istiyorum ama fiyatı 20000 tl'yi geçmesin,os: ios; price <= 20000
+en az 5000 mah bataryası olan bir android telefon,os: android; battery >= 5000
+hem uygun fiyatlı hem de iyi kamerası olan bir telefon,price: affordable; camera: good
+gaming için ram 12 gb ve ekran boyutu büyük olsun,ram: 12; screen_size: large; purpose: gaming
+hafif ve batarya ömrü uzun olan bir iphone,os: ios; weight: light; battery: long-lasting
+"4 gb ram yeterli, ama depolama alanı büyük olsun",ram: 4; storage: large
+hem android hem de 5g destekli olsun,os: android; network: 5g
+amoled ekranlı ve en az 8 gb ram olan bir telefon,screen_type: amoled; ram >= 8
+öğrenci için uygun fiyatlı bir android telefon,os: android; price: budget; purpose: student
+fotoğraf çekimi için iyi bir iphone modeli,os: ios; camera: good; purpose: photography
+8 gb ram ve batarya ömrü iyi olan bir telefon öner,ram: 8; battery: long-lasting
+oyun için güçlü bir telefon ama 15000 tl altında,purpose: gaming; performance: high; price <= 15000
+en az 12 gb rami olan ve hızlı şarj desteği bulunan telefon,ram >= 12; charging: fast
+su geçirmez özelliği olan bir samsung telefon,brand: samsung; feature: waterproof
+gece fotoğrafçılığı için iyi bir kamerası olan telefon,camera: good; feature: night_photography
+6 gb ram android ve en fazla 8000 tl,os: android; ram: 6; price <= 8000
+iyi bir işlemcisi olan ve 12 gb ram bulunan telefon,processor: good; ram: 12
+minimum 128 gb depolama ve nfc özellikli,storage >= 128; feature: nfc
+çocuklar için dayanıklı ve ucuz bir telefon,durability: high; price: low; purpose: children
+4500 mah üzeri batarya ve android,os: android; battery >= 4500
+8 gb ramli telefon istiyorum,ram: 8
+5000 mah bataryalı ve ucuz bir telefon,battery: 5000; price: cheap
+iyi kamerası olan bir iphone arıyorum,camera: good; os: ios
+oyun oynamak için uygun fiyatlı bir android,purpose: gaming; price: affordable; os: android
+selfie için iyi bir kamera ve uzun batarya,purpose: selfie; camera: good; battery: long_lasting
+12 gb ram ve en fazla 15000 tl fiyatı olan telefon,ram: 12; price <= 15000
+en az 4000 mah bataryası olan bir iphone,battery >= 4000; os: ios
+hem uygun fiyatlı hem de kamerası iyi olan bir android,price: affordable; camera: good; os: android
+oyun için 16 gb ramli telefon,purpose: gaming; ram: 16
+batarya ömrü çok uzun bir iphone,battery: very_long_lasting; os: ios
+4 gb ram yeterli ama kamerası iyi olsun,ram: 4; camera: good
+en az 8 gb ramli telefon,ram >= 8
+fotoğraf çekimi için iyi bir iphone modeli,purpose: photography; camera: good; os: ios
+8 gb ram ve batarya ömrü iyi olan bir telefon öner,ram: 8; battery: long_lasting
+oyun için güçlü bir telefon ama 15000 tl altında,purpose: gaming; price <= 15000
+6 gb ram android ve en fazla 8000 tl,ram: 6; os: android; price <= 8000
+4500 mah üzeri batarya ve android,battery >= 4500; os: android
+en fazla 15000 tl,price <= 15000
+bütçem 15000 tl,price: 15000
+fiyat önemli değil ama kamerası iyi olsun,price: high; camera: good
+12 gb ramli telefon istiyorum,ram: 12
+ramı yüksek bir android,ram: high; os: android
+4 gb ramli ucuz telefon,ram: 4; price: cheap
+en az 6 gb ramli iphone,ram >= 6; os: ios
+oyun için 12 gb ram şart,purpose: gaming; ram: 12
+8 gb ram altı olmasın,ram >= 8
+16 gb ramli cihaz,ram: 16
+düşük ramli bir android arıyorum,ram: low; os: android
+ramı 6 gb olan telefon,ram: 6
+ramı 10 gb olan telefon,ram: 10
+ramı 14 gb olan telefon,ram: 14
+ramı 18 gb olan telefon,ram: 18
+ram olarak 8 gb ve üzeri,ram >= 8
+ram olarak 12 gb ve üzeri,ram >= 12
+ramı yüksek android telefon,ram: high; os: android
+ramı düşük iphone,ram: low; os: ios
+ramı 20 gb olan telefon,ram: 20
+ramı en az 10 gb,ram >= 10
+ramı 4 gb bir android,ram: 4; os: android
+ramı 8 gb bir iphone,ram: 8; os: ios
+ramı 12 gb bir android,ram: 12; os: android
+ramı 16 gb bir android,ram: 16; os: android
+ramı 6 gb olsun,ram: 6
+ram 8 gb olsun,ram: 8
+bataryası çok uzun giden telefon,battery: very_long_lasting
+6000 mah bataryalı bir android,battery: 6000; os: android
+pil ömrü çok önemli bir iphone,battery: very_important; os: ios
+4500 mah üzeri batarya istiyorum,battery >= 4500
+şarjı iki gün giden bir telefon,battery: two_days
+bataryası güçlü bir telefon öner,battery: powerful
+pil kapasitesi yüksek telefon,battery: high_capacity
+3000 mah bataryalı ve ucuz,battery: 3000; price: cheap
+bataryası zayıf olmasın,battery: not_weak
+pil ömrü harika olsun,battery: excellent_life
+5500 mah bataryalı telefon,battery: 5500
+7000 mah bataryalı telefon,battery: 7000
+bataryası uzun giden bir telefon,battery: long_lasting
+bataryası güçlü bir android,battery: powerful; os: android
+bataryası bitmeyen iphone,battery: never_ending; os: ios
+bataryası 4000 mah olan telefon,battery: 4000
+bataryası 8000 mah olan telefon,battery: 8000
+bataryası 9000 mah olan telefon,battery: 9000
+bataryası 10000 mah olan telefon,battery: 10000
+en az 5000 mah batarya,battery >= 5000
+en az 6000 mah batarya,battery >= 6000
+batarya ömrü uzun android,battery: long_lasting; os: android
+batarya ömrü uzun iphone,battery: long_lasting; os: ios
+uygun fiyatlı bir android,price: affordable; os: android
+en fazla 10000 tl'ye telefon,price <= 10000
+ucuz bir iphone var mı,price: cheap; os: ios
+orta segment bir telefon arıyorum,price: mid_range
+20000 tl üzeri bir telefon,price >= 20000
+bütçe dostu android telefon,price: budget; os: android
+pahalı bir iphone,price: expensive; os: ios
+12000 tl civarı bir telefon,price: 12000
+17500 tl'den pahalı olmasın,price <= 17500
+fiyat aralığı 8000-12000 tl arası,price: 8000-12000
+en pahalı telefon,price: most_expensive
+en ucuz telefon,price: cheapest
+3000 tl altı telefon,price <= 3000
+5000 tl üstü telefon,price >= 5000
+7500 tl'ye kadar bir telefon,price <= 7500
+25000 tl'den ucuz iphone,price <= 25000; os: ios
+30000 tl'den pahalı android,price >= 30000; os: android
+fiyatı 10000 tl olan telefon,price: 10000
+fiyatı 15000 tl olan telefon,price: 15000
+sadece ios kullanırım,os: ios
+yeni bir android telefon,os: android
+iphone dışı bir telefon,os: android
+ios ekosisteminde kalmak istiyorum,os: ios
+android olsun yeter,os: android
+iphone olsun yeter,os: ios
+apple telefon istiyorum,os: ios
+google telefon istiyorum,os: android
+samsung telefon istiyorum,os: android
+xiaomi telefon istiyorum,os: android
+huawei telefon istiyorum,os: android
+sadece android cihaz,os: android
+sadece iphone cihaz,os: ios
+kamerası çok iyi olan bir telefon,camera: very_good
+fotoğraf çekmek için en iyi android,purpose: photography; camera: best; os: android
+selfie için iyi ön kamerası olan iphone,purpose: selfie; camera: good_front; os: ios
+kamerası fena olmayan bir telefon,camera: decent
+kamera kalitesi yüksek olsun,camera: high_quality
+fotoğraf çekimi önceliğim,purpose: photography; camera: good
+kamerası güzel olsun,camera: nice
+ön kamera iyi çeksin,camera: good_front
+arka kamera iyi çeksin,camera: good_rear
+kamerası net fotoğraf çeksin,camera: clear_photos
+kamerası sıradan olmasın,camera: not_ordinary
+iyi kameralı ucuz telefon,camera: good; price: cheap
+iphone olsun kamerası çok iyi,os: ios; camera: very_good
+android olsun kamerası iyi,os: android; camera: good
+selfie için en iyi kamera,purpose: selfie; camera: best_front
+fotoğrafçı telefonu istiyorum,purpose: photography; camera: good
+kamerası iyi olan telefon,camera: good
+kamerası kötü olmayan telefon,camera: not_bad
+kamerası en iyi olan android,camera: best; os: android
+kamerası en iyi olan iphone,camera: best; os: ios
+oyun oynamak için tasarlanmış telefon,purpose: gaming
+selfie'lerim güzel çıksın istiyorum,purpose: selfie; camera: good_front
+oyun performansı yüksek bir android,purpose: gaming; os: android
+hem oyun hem de selfie için uygun telefon,purpose: gaming_selfie
+mobil oyunlar için en iyi telefon,purpose: gaming
+selfie odaklı iphone,purpose: selfie; os: ios
+oyuncu telefonu arıyorum,purpose: gaming
+selfie çekmek için harika bir telefon,purpose: selfie; camera: excellent_front
+sadece oyun oynamak için telefon,purpose: gaming_only
+sadece selfie çekmek için telefon,purpose: selfie_only
+oyun ve batarya ömrü benim için önemli,purpose: gaming; battery: long_life
+selfie ve fiyat önceliğim,purpose: selfie; price: important
+oyun oynayanlar için,purpose: gaming
+selfie sevenler için,purpose: selfie
+oyun için telefon,purpose: gaming
+selfie için telefon,purpose: selfie
+"8 gb ramli, bataryası iyi giden android, fiyatı 12000 tl'den ucuz",ram: 8; battery: long_lasting; os: android; price <= 12000
+"iyi kamera ve uygun fiyatlı iphone, selfie için de iyi olsun",camera: good; price: affordable; os: ios; purpose: selfie
+"oyun için 12 gb ram ve büyük batarya, android tercih ederim",purpose: gaming; ram: 12; battery: large; os: android
+"kamerası çok iyi olan android, oyun oynamayacağım",camera: very_good; os: android; purpose: not_gaming
+"bütçem 10000 tl, oyun için uygun, 6 gb ramli bir android",price <= 10000; purpose: gaming; ram: 6; os: android
+"pahalı bir iphone, bataryası uzun giden",price: expensive; os: ios; battery: long_lasting
+"ucuz android, kamerası iyi olsun",price: cheap; os: android; camera: good
+oyun için 16 gb ram ve en az 7000 mah batarya,purpose: gaming; ram: 16; battery >= 7000
+"selfie için en iyi iphone, fiyatı önemli değil",purpose: selfie; camera: best_front; os: ios; price: high
+"orta fiyatlı android, 8 gb ram ve iyi kamera",price: mid_range; os: android; ram: 8; camera: good
+"pil ömrü uzun, ramı yüksek ve android olsun",battery: long_life; ram: high; os: android
+"iphone olsun, kamerası iyi, oyun oynamayacağım",os: ios; camera: good; purpose: not_gaming
+ucuz ve selfie için uygun android,price: cheap; purpose: selfie; os: android
+"oyun için 12 gb ram, bataryası 5000 mah olsun",purpose: gaming; ram: 12; battery: 5000
+"android olsun, kamerası çok iyi, fiyatı 20000 tl'den az",os: android; camera: very_good; price <= 20000
+"iphone olsun, pil ömrü uzun, oyun oynamam",os: ios; battery: long_life; purpose: not_gaming
+"pahalı android, en iyi kameraya sahip",price: expensive; os: android; camera: best
+"bütçe dostu, android, 8 gb ram",price: budget; os: android; ram: 8
+"selfie için iyi kamera, 6 gb ram ve android",purpose: selfie; camera: good_front; ram: 6; os: android
+oyun için 16 gb ram ve iphone,purpose: gaming; ram: 16; os: ios
+"5000 mah batarya, 8 gb ram ve ucuz",battery: 5000; ram: 8; price: cheap
+"kamerası iyi, pahalı olmayan android",camera: good; price: not_expensive; os: android
+"uzun batarya ömrü ve iyi kamera, iphone",battery: long_life; camera: good; os: ios
+"oyun için güçlü, 12 gb ramli android",purpose: gaming; ram: 12; os: android
+"selfie için uygun fiyatlı, 10000 tl'den fazla olmayan bir telefon",purpose: selfie; price <= 10000
+"android olsun, bataryası 6000 mah, fiyatı orta segment",os: android; battery: 6000; price: mid_range
+"iphone olsun, kamerası iyi, pahalı değil",os: ios; camera: good; price: not_expensive
+"8 gb ramli, oyun için tasarlanmış android",ram: 8; purpose: gaming; os: android
+"6 gb ram, iyi kamera ve selfie odaklı iphone",ram: 6; camera: good; purpose: selfie; os: ios
+batarya ömrü uzun ve oyun için güçlü android,battery: long_life; purpose: gaming; os: android
+en az 4000 mah batarya ve uygun fiyatlı android,battery >= 4000; price: affordable; os: android
+"ramı yüksek, fiyatı ucuz ve android",ram: high; price: cheap; os: android
+kamerası çok iyi ve pahalı iphone,camera: very_good; price: expensive; os: ios
+oyun ve selfie için en iyi android,purpose: gaming_selfie; os: android
+"pil ömrü ve ram önemli, android olsun",battery: long_life; ram: high; os: android
+"ucuz bir iphone, kamerası idare etsin",price: cheap; os: ios; camera: decent
+oyun için yüksek ram ve android,purpose: gaming; ram: high; os: android
+selfie için iyi kamera ve ucuz,purpose: selfie; camera: good_front; price: cheap
+"8 gb ramli bir telefon, 10000 tl altında",ram: 8; price <= 10000
+kamerası iyi olan ve 5000 mah bataryalı android,camera: good; battery: 5000; os: android
+oyun oynamak için 12 gb ramli bir iphone,purpose: gaming; ram: 12; os: ios
+selfie odaklı ve fiyatı 8000 tl'yi geçmeyen android,purpose: selfie; price <= 8000; os: android
+"orta segment fiyatlı, iyi kameralı android",price: mid_range; camera: good; os: android
+"pahalı bir oyun telefonu, 16 gb ramli olsun",price: expensive; purpose: gaming; ram: 16
+"iphone olsun, batarya ömrü uzun, kamera orta seviye",os: ios; battery: long_life; camera: average
+"android olsun, ramı yüksek, oyun için",os: android; ram: high; purpose: gaming
+selfie için iyi bir kamera ve ucuz iphone,purpose: selfie; camera: good_front; price: cheap; os: ios
+"8 gb ramli, 5000 mah bataryalı android",ram: 8; battery: 5000; os: android
+"kamerası en iyi, fiyatı 20000 tl üzeri iphone",camera: best; price >= 20000; os: ios
+oyun oynamak ve uzun bataryası olan bir telefon,purpose: gaming; battery: long_lasting
+selfie için uygun fiyatlı android,purpose: selfie; price: affordable; os: android
+12 gb ram ve bataryası uzun giden telefon,ram: 12; battery: long_lasting
+"pahalı bir android, kamerası çok iyi",price: expensive; os: android; camera: very_good
+ucuz ve sadece oyun için android,price: cheap; purpose: gaming_only; os: android
+"iphone olsun, batarya ömrü iyi, selfie için de iyi olsun",os: ios; battery: good; purpose: selfie
+"android olsun, 16 gb ram, 7000 mah batarya",os: android; ram: 16; battery: 7000
+kamerası iyi olan ve 10000 tl altı bir iphone,camera: good; price <= 10000; os: ios
+"oyun için 8 gb ramli, uygun fiyatlı android",purpose: gaming; ram: 8; price: affordable; os: android
+"selfie için en iyi kamera, pahalı olsun",purpose: selfie; camera: best_front; price: expensive
+"orta segment fiyatlı android, kamerası iyi",price: mid_range; os: android; camera: good
+oyun için 12 gb ram ve android,purpose: gaming; ram: 12; os: android
+6000 mah batarya ve uygun fiyatlı bir telefon,battery: 6000; price: affordable
+iyi kamera ve pahalı android,camera: good; price: expensive; os: android
+"iphone, oyun için ideal, 8 gb ram",os: ios; purpose: gaming; ram: 8
+"android, selfie için, 4000 mah batarya",os: android; purpose: selfie; battery: 4000
+"ucuz bir android, ramı 6 gb olsun",price: cheap; os: android; ram: 6
+"pahalı bir iphone, bataryası güçlü",price: expensive; os: ios; battery: powerful
+"kamerası en iyi, fiyatı orta segment android",camera: best; price: mid_range; os: android
+oyun için 16 gb ram ve android,purpose: gaming; ram: 16; os: android
+selfie için uygun fiyatlı iphone,purpose: selfie; price: affordable; os: ios
+"orta segment fiyatlı, 5000 mah bataryalı android",price: mid_range; battery: 5000; os: android
+"iyi kamera, uygun fiyat ve android",camera: good; price: affordable; os: android
+oyun için 12 gb ram ve uygun fiyatlı,purpose: gaming; ram: 12; price: affordable
+"pahalı bir iphone, selfie için çok iyi",price: expensive; os: ios; purpose: selfie; camera: very_good_front
+"6 gb ramli android, bataryası uzun giden",ram: 6; os: android; battery: long_lasting
+oyun için 8 gb ram ve 15000 tl altı,purpose: gaming; ram: 8; price <= 15000
+"kamerası iyi olan android, 20000 tl'den ucuz",camera: good; os: android; price <= 20000
+"selfie için en iyi kamera, 10000 tl civarı",purpose: selfie; camera: best_front; price: 10000
+"iphone olsun, 12 gb ramli, oyun için",os: ios; ram: 12; purpose: gaming
+"android olsun, batarya ömrü uzun, ucuz",os: android; battery: long_lasting; price: cheap
+"pahalı bir android, oyun performansı yüksek",price: expensive; os: android; purpose: gaming
+"ucuz bir iphone, kamerası iyi değil",price: cheap; os: ios; camera: not_good
+"8 gb ramli, iyi kamera ve oyun için android",ram: 8; camera: good; purpose: gaming; os: android
+"5000 mah bataryalı, selfie için uygun iphone",battery: 5000; purpose: selfie; os: ios
+"orta segment fiyatlı, bataryası uzun giden iphone",price: mid_range; battery: long_lasting; os: ios
+"oyun için 16 gb ramli, pahalı olmayan android",purpose: gaming; ram: 16; price: not_expensive; os: android
+"kamerası en iyi, fiyatı uygun, selfie için android",camera: best; price: affordable; purpose: selfie; os: android
+"iphone olsun, 4000 mah batarya, oyun oynamam",os: ios; battery: 4000; purpose: not_gaming
+"android olsun, 12 gb ram, bataryası güçlü",os: android; ram: 12; battery: powerful
+"pahalı bir telefon, ramı yüksek, kamerası iyi olsun",price: expensive; ram: high; camera: good
+"ucuz bir android, bataryası uzun, oyun için",price: cheap; os: android; battery: long_lasting; purpose: gaming
+"selfie için en iyi iphone, bataryası da iyi",purpose: selfie; camera: best_front; os: ios; battery: good
+"oyun için tasarlanmış android, fiyatı orta segment",purpose: gaming; os: android; price: mid_range
+"6 gb ramli, kamerası iyi, fiyatı 10000 tl altı",ram: 6; camera: good; price <= 10000
+"batarya ömrü uzun, uygun fiyatlı android, oyun oynamam",battery: long_lasting; price: affordable; os: android; purpose: not_gaming
+"iphone olsun, 8 gb ram, selfie için uygun",os: ios; ram: 8; purpose: selfie
+"android olsun, 5000 mah batarya, kamerası çok iyi",os: android; battery: 5000; camera: very_good
+"oyun için 16 gb ramli, pahalı bir iphone",purpose: gaming; ram: 16; price: expensive; os: ios
+"selfie için en iyi kamera, 20000 tl'den pahalı olmayan",purpose: selfie; camera: best_front; price <= 20000
+"orta segment fiyatlı android, oyun için güçlü",price: mid_range; os: android; purpose: gaming
+"pahalı bir android, batarya ömrü uzun",price: expensive; os: android; battery: long_lasting
+"ucuz bir iphone, ramı 4 gb olsun",price: cheap; os: ios; ram: 4
+kamerası iyi olan ve 12 gb ramli android,camera: good; ram: 12; os: android
+"oyun için 8 gb ramli, bataryası iyi iphone",purpose: gaming; ram: 8; battery: good; os: ios
+"selfie için uygun, fiyatı 15000 tl altı android",purpose: selfie; price <= 15000; os: android
+"orta segment fiyatlı, 6000 mah bataryalı iphone",price: mid_range; battery: 6000; os: ios
+iyi kamera ve yüksek ramli bir telefon,camera: good; ram: high
+oyun için ve 7000 mah bataryalı android,purpose: gaming; battery: 7000; os: android
+selfie ve kamera önceliği olan iphone,purpose: selfie; camera: high_quality; os: ios
+"ucuz, ramı 6 gb ve android",price: cheap; ram: 6; os: android
+"pahalı, kamerası en iyi iphone",price: expensive; camera: best; os: ios
+"oyun için, 16 gb ram, 5000 mah batarya",purpose: gaming; ram: 16; battery: 5000
+"selfie için, uygun fiyatlı, iyi kamera",purpose: selfie; price: affordable; camera: good
+"android olsun, 8 gb ram, iyi batarya",os: android; ram: 8; battery: good
+"iphone olsun, kamera iyi, oyun oynamam",os: ios; camera: good; purpose: not_gaming
+"orta fiyatlı android, 12 gb ram, iyi kamera",price: mid_range; os: android; ram: 12; camera: good
+"oyun için 16 gb ramli, bataryası uzun iphone",purpose: gaming; ram: 16; battery: long_lasting; os: ios
+"selfie için çok iyi bir kamera, android olsun, ucuz",purpose: selfie; camera: very_good_front; os: android; price: cheap
+"pahalı bir android, oyun için en iyi",price: expensive; os: android; purpose: gaming
+"ucuz bir telefon, ramı düşük, bataryası iyi",price: cheap; ram: low; battery: good
+kamerası iyi olan ve 5000 mah bataryalı iphone,camera: good; battery: 5000; os: ios
+oyun için 8 gb ramli ve uygun fiyatlı iphone,purpose: gaming; ram: 8; price: affordable; os: ios
+"selfie için en iyi kamera, 25000 tl civarı android",purpose: selfie; camera: best_front; price: 25000; os: android
+"orta segment fiyatlı, 12 gb ramli android",price: mid_range; ram: 12; os: android
+"pahalı bir oyun telefonu, bataryası çok uzun giden",price: expensive; purpose: gaming; battery: very_long_lasting
+"iphone olsun, kamerası iyi, 10000 tl altı",os: ios; camera: good; price <= 10000
+"android olsun, ramı yüksek, selfie için uygun",os: android; ram: high; purpose: selfie
+"ramı 6 gb olan, bataryası uzun giden telefon",ram: 6; battery: long_lasting
+"kamerası en iyi, fiyatı uygun olan bir android",camera: best; price: affordable; os: android
+oyun için 12 gb ram ve 6000 mah batarya,purpose: gaming; ram: 12; battery: 6000
+"selfie için uygun, ucuz, android",purpose: selfie; price: cheap; os: android
+"iphone olsun, 8 gb ramli, batarya ömrü iyi",os: ios; ram: 8; battery: good
+"android olsun, kamerası iyi, oyun oynamam",os: android; camera: good; purpose: not_gaming
+"pahalı android, 16 gb ram, iyi kamera",price: expensive; os: android; ram: 16; camera: good
+"ucuz iphone, selfie için uygun değil",price: cheap; os: ios; purpose: not_selfie
+"oyun için 8 gb ram, 5000 mah batarya, uygun fiyatlı",purpose: gaming; ram: 8; battery: 5000; price: affordable
+"kamerası çok iyi, pahalı olmayan iphone",camera: very_good; price: not_expensive; os: ios
+"selfie için en iyi android, bataryası da iyi",purpose: selfie; camera: best_front; os: android; battery: good
+"orta segment fiyatlı, oyun için tasarlanmış iphone",price: mid_range; purpose: gaming; os: ios
+"6 gb ramli, bataryası uzun giden, uygun fiyatlı android",ram: 6; battery: long_lasting; price: affordable; os: android
+"oyun için 12 gb ramli, 7000 mah bataryalı bir telefon",purpose: gaming; ram: 12; battery: 7000
+"kamerası iyi olan android, selfie için de iyi",camera: good; os: android; purpose: selfie
+"iphone olsun, 4 gb ram, ucuz",os: ios; ram: 4; price: cheap
+"android olsun, kamerası iyi, 15000 tl civarı",os: android; camera: good; price: 15000
+"pahalı bir oyun telefonu, 12 gb ramli",price: expensive; purpose: gaming; ram: 12
+"ucuz bir iphone, bataryası iyi giden",price: cheap; os: ios; battery: good
+"selfie için en iyi kamera, 20000 tl altı android",purpose: selfie; camera: best_front; price <= 20000; os: android
+"orta segment fiyatlı, 8 gb ramli iphone",price: mid_range; ram: 8; os: ios
+"oyun için uygun, bataryası uzun giden telefon",purpose: gaming; battery: long_lasting
+"kamerası iyi olan, uygun fiyatlı, android",camera: good; price: affordable; os: android
+"iphone olsun, 16 gb ram, oyun için",os: ios; ram: 16; purpose: gaming
+"android olsun, 6000 mah batarya, selfie için",os: android; battery: 6000; purpose: selfie
+"ucuz, iyi kamera ve android",price: cheap; camera: good; os: android
+"pahalı, batarya ömrü uzun iphone",price: expensive; battery: long_lasting; os: ios
+"oyun için 12 gb ram, orta segment fiyatlı",purpose: gaming; ram: 12; price: mid_range
+"selfie için iyi kamera, 5000 mah batarya",purpose: selfie; camera: good_front; battery: 5000
+"android olsun, 8 gb ramli, ucuz",os: android; ram: 8; price: cheap
+"iphone olsun, kamerası iyi, pahalı",os: ios; camera: good; price: expensive
+"orta fiyatlı android, bataryası uzun, oyun oynamam",price: mid_range; os: android; battery: long_lasting; purpose: not_gaming
+"oyun için 16 gb ramli, uygun fiyatlı iphone",purpose: gaming; ram: 16; price: affordable; os: ios
+"selfie için en iyi kamera, android olsun, pahalı",purpose: selfie; camera: best_front; os: android; price: expensive
+"ramı yüksek, kamerası iyi, oyun için bir telefon",ram: high; camera: good; purpose: gaming
+"bataryası uzun giden, uygun fiyatlı, selfie için",battery: long_lasting; price: affordable; purpose: selfie
+"android olsun, 12 gb ram, bataryası uzun giden",os: android; ram: 12; battery: long_lasting
+"iphone olsun, kamerası iyi, 8 gb ram",os: ios; camera: good; ram: 8
+"oyun için, 5000 mah batarya, android",purpose: gaming; battery: 5000; os: android
+"selfie için, 6 gb ram, ucuz iphone",purpose: selfie; ram: 6; price: cheap; os: ios
+"pahalı bir android, kamerası çok iyi, bataryası da iyi",price: expensive; os: android; camera: very_good; battery: good
+"ucuz bir telefon, ramı 8 gb, bataryası iyi",price: cheap; ram: 8; battery: good
+"kamerası iyi, oyun için, 12 gb ram",camera: good; purpose: gaming; ram: 12
+"bataryası uzun giden, selfie için, android",battery: long_lasting; purpose: selfie; os: android
+"iphone olsun, 16 gb ramli, fiyatı pahalı",os: ios; ram: 16; price: expensive
+"android olsun, 7000 mah bataryalı, uygun fiyatlı",os: android; battery: 7000; price: affordable
+"oyun için en iyi telefon, 12 gb ram",purpose: gaming; ram: 12
+"selfie için çok iyi kamera, ucuz bir android",purpose: selfie; camera: very_good_front; price: cheap; os: android
+"orta segment android, kamerası iyi, bataryası uzun",price: mid_range; os: android; camera: good; battery: long_lasting
+"pahalı bir oyun telefonu, ramı 16 gb",price: expensive; purpose: gaming; ram: 16
+"ucuz bir iphone, bataryası iyi, oyun oynamam",price: cheap; os: ios; battery: good; purpose: not_gaming
+"kamerası iyi olan android, selfie için uygun",camera: good; os: android; purpose: selfie
+"iphone olsun, 8 gb ram, batarya ömrü iyi",os: ios; ram: 8; battery: good
+"android olsun, 6000 mah batarya, oyun için",os: android; battery: 6000; purpose: gaming
+"orta segment, iyi kamera ve oyun için android",price: mid_range; camera: good; purpose: gaming; os: android
+"pahalı iphone, batarya ömrü uzun, selfie için",price: expensive; os: ios; battery: long_lasting; purpose: selfie
+"ucuz android, 12 gb ram, oyun oynamam",price: cheap; os: android; ram: 12; purpose: not_gaming
+"kamerası çok iyi, 15000 tl civarı, android",camera: very_good; price: 15000; os: android
+"oyun için 16 gb ram, uygun fiyatlı, android",purpose: gaming; ram: 16; price: affordable; os: android
+"selfie için en iyi kamera, pahalı olmayan iphone",purpose: selfie; camera: best_front; price: not_expensive; os: ios
+"ramı yüksek, batarya ömrü uzun, android",ram: high; battery: long_lasting; os: android
+"kamerası iyi, uygun fiyatlı, oyun oynamam",camera: good; price: affordable; purpose: not_gaming
+"iphone olsun, 5000 mah batarya, 8 gb ram",os: ios; battery: 5000; ram: 8
+"android olsun, kamerası iyi, 12 gb ram",os: android; camera: good; ram: 12
+"oyun için, 7000 mah batarya, ucuz",purpose: gaming; battery: 7000; price: cheap
+"selfie için, 16 gb ram, pahalı",purpose: selfie; ram: 16; price: expensive
+"orta segment iphone, bataryası iyi, oyun oynamam",price: mid_range; os: ios; battery: good; purpose: not_gaming
+"pahalı android, 12 gb ram, oyun için",price: expensive; os: android; ram: 12; purpose: gaming
+"ucuz iphone, kamerası iyi, selfie için",price: cheap; os: ios; camera: good; purpose: selfie
+"kamerası çok iyi, bataryası uzun, android",camera: very_good; battery: long_lasting; os: android
+"oyun için uygun fiyatlı, ramı 8 gb",purpose: gaming; price: affordable; ram: 8
+"selfie için en iyi kamera, 10000 tl civarı iphone",purpose: selfie; camera: best_front; price: 10000; os: ios
+"orta segment android, oyun için, 8 gb ram",price: mid_range; os: android; purpose: gaming; ram: 8
+"pahalı bir telefon, ramı yüksek, bataryası uzun",price: expensive; ram: high; battery: long_lasting
+"ucuz bir android, kamerası iyi, oyun oynamam",price: cheap; os: android; camera: good; purpose: not_gaming
+"iphone olsun, 5000 mah batarya, selfie için",os: ios; battery: 5000; purpose: selfie
+"android olsun, 16 gb ramli, kamerası iyi",os: android; ram: 16; camera: good
+"oyun için 7000 mah batarya, uygun fiyatlı",purpose: gaming; battery: 7000; price: affordable
+"selfie için iyi kamera, 8 gb ramli iphone",purpose: selfie; camera: good_front; ram: 8; os: ios
+"orta segment android, kamerası iyi, oyun oynamam",price: mid_range; os: android; camera: good; purpose: not_gaming
+"pahalı android, batarya ömrü çok uzun, selfie için",price: expensive; os: android; battery: very_long_lasting; purpose: selfie
+"ucuz iphone, ramı 8 gb, bataryası iyi değil",price: cheap; os: ios; ram: 8; battery: not_good
+"kamerası çok iyi, oyun için uygun, iphone",camera: very_good; purpose: gaming; os: ios
+"android olsun, 8 gb ram, 10000 tl altı",os: android; ram: 8; price <= 10000
+"selfie için en iyi kamera, orta fiyatlı iphone",purpose: selfie; camera: best_front; price: mid_range; os: ios
+"ramı yüksek, bataryası uzun giden, pahalı olmayan",ram: high; battery: long_lasting; price: not_expensive
+"kamerası iyi, uygun fiyatlı, oyun için",camera: good; price: affordable; purpose: gaming
+"iphone olsun, 5000 mah batarya, oyun oynamam",os: ios; battery: 5000; purpose: not_gaming
+"android olsun, 12 gb ram, kamerası iyi",os: android; ram: 12; camera: good
+"oyun için, 7000 mah batarya, uygun fiyatlı",purpose: gaming; battery: 7000; price: affordable
+"selfie için, 16 gb ram, pahalı değil",purpose: selfie; ram: 16; price: not_expensive
+"orta segment android, bataryası iyi, oyun için",price: mid_range; os: android; battery: good; purpose: gaming
+"pahalı iphone, oyun için, 12 gb ram",price: expensive; os: ios; purpose: gaming; ram: 12
+"ucuz android, kamerası iyi, selfie için",price: cheap; os: android; camera: good; purpose: selfie
+"kamerası çok iyi, bataryası uzun, android",camera: very_good; battery: long_lasting; os: android
+"oyun için uygun fiyatlı, ramı 12 gb",purpose: gaming; price: affordable; ram: 12
+"selfie için en iyi kamera, 20000 tl civarı iphone",purpose: selfie; camera: best_front; price: 20000; os: ios
+"orta segment iphone, oyun için, 16 gb ram",price: mid_range; os: ios; purpose: gaming; ram: 16
+"pahalı bir telefon, ramı yüksek, bataryası uzun",price: expensive; ram: high; battery: long_lasting
+"ucuz bir android, kamerası iyi, oyun oynamam",price: cheap; os: android; camera: good; purpose: not_gaming
+"iphone olsun, 5000 mah batarya, selfie için",os: ios; battery: 5000; purpose: selfie
+"android olsun, 16 gb ramli, kamerası iyi",os: android; ram: 16; camera: good
+"oyun için 7000 mah batarya, uygun fiyatlı",purpose: gaming; battery: 7000; price: affordable
+"selfie için iyi kamera, 8 gb ramli iphone",purpose: selfie; camera: good_front; ram: 8; os: ios
+"orta segment android, kamerası iyi, oyun oynamam",price: mid_range; os: android; camera: good; purpose: not_gaming
+"pahalı android, batarya ömrü çok uzun, selfie için",price: expensive; os: android; battery: very_long_lasting; purpose: selfie
+"ucuz iphone, ramı 8 gb, bataryası iyi değil",price: cheap; os: ios; ram: 8; battery: not_good
+"kamerası çok iyi, oyun için uygun, iphone",camera: very_good; purpose: gaming; os: ios
+"android olsun, 8 gb ram, 10000 tl altı",os: android; ram: 8; price <= 10000
+"selfie için en iyi kamera, orta fiyatlı iphone",purpose: selfie; camera: best_front; price: mid_range; os: ios
+"ramı yüksek, bataryası uzun giden, pahalı olmayan",ram: high; battery: long_lasting; price: not_expensive
+"kamerası iyi, uygun fiyatlı, oyun için",camera: good; price: affordable; purpose: gaming
+"iphone olsun, 5000 mah batarya, oyun oynamam",os: ios; battery: 5000; purpose: not_gaming
+"android olsun, 12 gb ram, kamerası iyi",os: android; ram: 12; camera: good
+"oyun için, 7000 mah batarya, uygun fiyatlı",purpose: gaming; battery: 7000; price: affordable
+"selfie için, 16 gb ram, pahalı değil",purpose: selfie; ram: 16; price: not_expensive
+"orta segment android, bataryası iyi, oyun için",price: mid_range; os: android; battery: good; purpose: gaming
+"pahalı iphone, oyun için, 12 gb ram",price: expensive; os: ios; purpose: gaming; ram: 12
+"ucuz android, kamerası iyi, selfie için",price: cheap; os: android; camera: good; purpose: selfie
+"kamerası çok iyi, bataryası uzun, android",camera: very_good; battery: long_lasting; os: android
+"oyun için uygun fiyatlı, ramı 12 gb",purpose: gaming; price: affordable; ram: 12
+"selfie için en iyi kamera, 20000 tl civarı iphone",purpose: selfie; camera: best_front; price: 20000; os: ios
+"orta segment iphone, oyun için, 16 gb ram",price: mid_range; os: ios; purpose: gaming; ram: 16
+"pahalı bir telefon, ramı yüksek, bataryası uzun",price: expensive; ram: high; battery: long_lasting
+"ucuz bir android, kamerası iyi, oyun oynamam",price: cheap; os: android; camera: good; purpose: not_gaming
+"iphone olsun, 5000 mah batarya, selfie için",os: ios; battery: 5000; purpose: selfie
+"android olsun, 16 gb ramli, kamerası iyi",os: android; ram: 16; camera: good
+"oyun için 7000 mah batarya, uygun fiyatlı",purpose: gaming; battery: 7000; price: affordable
+"selfie için iyi kamera, 8 gb ramli iphone",purpose: selfie; camera: good_front; ram: 8; os: ios
+"orta segment android, kamerası iyi, oyun oynamam",price: mid_range; os: android; camera: good; purpose: not_gaming
+"pahalı android, batarya ömrü çok uzun, selfie için",price: expensive; os: android; battery: very_long_lasting; purpose: selfie
+"ucuz iphone, ramı 8 gb, bataryası iyi değil",price: cheap; os: ios; ram: 8; battery: not_good
+"kamerası çok iyi, oyun için uygun, iphone",camera: very_good; purpose: gaming; os: ios
+"android olsun, 8 gb ram, 10000 tl altı",os: android; ram: 8; price <= 10000
+"selfie için en iyi kamera, orta fiyatlı iphone",purpose: selfie; camera: best_front; price: mid_range; os: ios
+"ramı yüksek, bataryası uzun giden, pahalı olmayan",ram: high; battery: long_lasting; price: not_expensive
+"kamerası iyi, uygun fiyatlı, oyun için",camera: good; price: affordable; purpose: gaming
+"iphone olsun, 5000 mah batarya, oyun oynamam",os: ios; battery: 5000; purpose: not_gaming
+"android olsun, 12 gb ram, kamerası iyi",os: android; ram: 12; camera: good
+"oyun için, 7000 mah batarya, uygun fiyatlı",purpose: gaming; battery: 7000; price: affordable
+"selfie için, 16 gb ram, pahalı değil",purpose: selfie; ram: 16; price: not_expensive
+"orta segment android, bataryası iyi, oyun için",price: mid_range; os: android; battery: good; purpose: gaming
+"pahalı iphone, oyun için, 12 gb ram",price: expensive; os: ios; purpose: gaming; ram: 12
+"ucuz android, kamerası iyi, selfie için",price: cheap; os: android; camera: good; purpose: selfie
+"kamerası çok iyi, bataryası uzun, android",camera: very_good; battery: long_lasting; os: android
+"oyun için uygun fiyatlı, ramı 12 gb",purpose: gaming; price: affordable; ram: 12
+"selfie için en iyi kamera, 20000 tl civarı iphone",purpose: selfie; camera: best_front; price: 20000; os: ios
+"orta segment iphone, oyun için, 16 gb ram",price: mid_range; os: ios; purpose: gaming; ram: 16
+"pahalı bir telefon, ramı yüksek, bataryası uzun",price: expensive; ram: high; battery: long_lasting
+"ucuz bir android, kamerası iyi, oyun oynamam",price: cheap; os: android; camera: good; purpose: not_gaming
+"iphone olsun, 5000 mah batarya, selfie için",os: ios; battery: 5000; purpose: selfie
+"android olsun, 16 gb ramli, kamerası iyi",os: android; ram: 16; camera: good
+"oyun için 7000 mah batarya, uygun fiyatlı",purpose: gaming; battery: 7000; price: affordable
+"selfie için iyi kamera, 8 gb ramli iphone",purpose: selfie; camera: good_front; ram: 8; os: ios
+"orta segment android, kamerası iyi, oyun oynamam",price: mid_range; os: android; camera: good; purpose: not_gaming
+"pahalı android, batarya ömrü çok uzun, selfie için",price: expensive; os: android; battery: very_long_lasting; purpose: selfie
+"ucuz iphone, ramı 8 gb, bataryası iyi değil",price: cheap; os: ios; ram: 8; battery: not_good
+"kamerası çok iyi, oyun için uygun, iphone",camera: very_good; purpose: gaming; os: ios
+"android olsun, 8 gb ram, 10000 tl altı",os: android; ram: 8; price <= 10000
+"selfie için en iyi kamera, orta fiyatlı iphone",purpose: selfie; camera: best_front; price: mid_range; os: ios
+"ramı yüksek, bataryası uzun giden, pahalı olmayan",ram: high; battery: long_lasting; price: not_expensive
+"kamerası iyi, uygun fiyatlı, oyun için",camera: good; price: affordable; purpose: gaming
+"iphone olsun, 5000 mah batarya, oyun oynamam",os: ios; battery: 5000; purpose: not_gaming
+"android olsun, 12 gb ram, kamerası iyi",os: android; ram: 12; camera: good
+"oyun için, 7000 mah batarya, uygun fiyatlı",purpose: gaming; battery: 7000; price: affordable
+"selfie için, 16 gb ram, pahalı değil",purpose: selfie; ram: 16; price: not_expensive
+"orta segment android, bataryası iyi, oyun için",price: mid_range; os: android; battery: good; purpose: gaming
+"pahalı iphone, oyun için, 12 gb ram",price: expensive; os: ios; purpose: gaming; ram: 12
+"ucuz android, kamerası iyi, selfie için",price: cheap; os: android; camera: good; purpose: selfie
+"kamerası çok iyi, bataryası uzun, android",camera: very_good; battery: long_lasting; os: android
+"oyun için uygun fiyatlı, ramı 12 gb",purpose: gaming; price: affordable; ram: 12
+"selfie için en iyi kamera, 20000 tl civarı iphone",purpose: selfie; camera: best_front; price: 20000; os: ios
+"orta segment iphone, oyun için, 16 gb ram",price: mid_range; os: ios; purpose: gaming; ram: 16
+"pahalı bir telefon, ramı yüksek, bataryası uzun",price: expensive; ram: high; battery: long_lasting
+"ucuz bir android, kamerası iyi, oyun oynamam",price: cheap; os: android; camera: good; purpose: not_gaming
+"iphone olsun, 5000 mah batarya, selfie için",os: ios; battery: 5000; purpose: selfie
+"android olsun, 16 gb ramli, kamerası iyi",os: android; ram: 16; camera: good
+"oyun için 7000 mah batarya, uygun fiyatlı",purpose: gaming; battery: 7000; price: affordable
+"selfie için iyi kamera, 8 gb ramli iphone",purpose: selfie; camera: good_front; ram: 8; os: ios
+"orta segment android, kamerası iyi, oyun oynamam",price: mid_range; os: android; camera: good; purpose: not_gaming
+"pahalı android, batarya ömrü çok uzun, selfie için",price: expensive; os: android; battery: very_long_lasting; purpose: selfie
+"ucuz iphone, ramı 8 gb, bataryası iyi değil",price: cheap; os: ios; ram: 8; battery: not_good
+"kamerası çok iyi, oyun için uygun, iphone",camera: very_good; purpose: gaming; os: ios
+"android olsun, 8 gb ram, 10000 tl altı",os: android; ram: 8; price <= 10000
+"selfie için en iyi kamera, orta fiyatlı iphone",purpose: selfie; camera: best_front; price: mid_range; os: ios
+"ramı yüksek, bataryası uzun giden, pahalı olmayan",ram: high; battery: long_lasting; price: not_expensive
+"kamerası iyi, uygun fiyatlı, oyun için",camera: good; price: affordable; purpose: gaming
+"iphone olsun, 5000 mah batarya, oyun oynamam",os: ios; battery: 5000; purpose: not_gaming
+"android olsun, 12 gb ram, kamerası iyi",os: android; ram: 12; camera: good
+"oyun için, 7000 mah batarya, uygun fiyatlı",purpose: gaming; battery: 7000; price: affordable
+"selfie için, 16 gb ram, pahalı değil",purpose: selfie; ram: 16; price: not_expensive
+"orta segment android, bataryası iyi, oyun için",price: mid_range; os: android; battery: good; purpose: gaming
+"pahalı iphone, oyun için, 12 gb ram",price: expensive; os: ios; purpose: gaming; ram: 12
+"ucuz android, kamerası iyi, selfie için",price: cheap; os: android; camera: good; purpose: selfie
+"kamerası çok iyi, bataryası uzun, android",camera: very_good; battery: long_lasting; os: android
+"oyun için uygun fiyatlı, ramı 12 gb",purpose: gaming; price: affordable; ram: 12
+"selfie için en iyi kamera, 20000 tl civarı iphone",purpose: selfie; camera: best_front; price: 20000; os: ios
+"orta segment iphone, oyun için, 16 gb ram",price: mid_range; os: ios; purpose: gaming; ram: 16
+"pahalı bir telefon, ramı yüksek, bataryası uzun",price: expensive; ram: high; battery: long_lasting
+"ucuz bir android, kamerası iyi, oyun oynamam",price: cheap; os: android; camera: good; purpose: not_gaming
+"iphone olsun, 5000 mah batarya, selfie için",os: ios; battery: 5000; purpose: selfie
+"android olsun, 16 gb ramli, kamerası iyi",os: android; ram: 16; camera: good
+"oyun için 7000 mah batarya, uygun fiyatlı",purpose: gaming; battery: 7000; price: affordable
+"selfie için iyi kamera, 8 gb ramli iphone",purpose: selfie; camera: good_front; ram: 8; os: ios
+"orta segment android, kamerası iyi, oyun oynamam",price: mid_range; os: android; camera: good; purpose: not_gaming
+"pahalı android, batarya ömrü çok uzun, selfie için",price: expensive; os: android; battery: very_long_lasting; purpose: selfie
+"ucuz iphone, ramı 8 gb, bataryası iyi değil",price: cheap; os: ios; ram: 8; battery: not_good
+"kamerası çok iyi, oyun için uygun, iphone",camera: very_good; purpose: gaming; os: ios
+"android olsun, 8 gb ram, 10000 tl altı",os: android; ram: 8; price <= 10000
+"selfie için en iyi kamera, orta fiyatlı iphone",purpose: selfie; camera: best_front; price: mid_range; os: ios
+"ramı yüksek, bataryası uzun giden, pahalı olmayan",ram: high; battery: long_lasting; price: not_expensive
+"kamerası iyi, uygun fiyatlı, oyun için",camera: good; price: affordable; purpose: gaming
+"iphone olsun, 5000 mah batarya, oyun oynamam",os: ios; battery: 5000; purpose: not_gaming
+"android olsun, 12 gb ram, kamerası iyi",os: android; ram: 12; camera: good
+"oyun için, 7000 mah batarya, uygun fiyatlı",purpose: gaming; battery: 7000; price: affordable
+"selfie için, 16 gb ram, pahalı değil",purpose: selfie; ram: 16; price: not_expensive
+"orta segment android, bataryası iyi, oyun için",price: mid_range; os: android; battery: good; purpose: gaming
+"pahalı iphone, oyun için, 12 gb ram",price: expensive; os: ios; purpose: gaming; ram: 12
+"ucuz android, kamerası iyi, selfie için",price: cheap; os: android; camera: good; purpose: selfie
+"kamerası çok iyi, bataryası uzun, android",camera: very_good; battery: long_lasting; os: android
+"oyun için uygun fiyatlı, ramı 12 gb",purpose: gaming; price: affordable; ram: 12
+"selfie için en iyi kamera, 20000 tl civarı iphone",purpose: selfie; camera: best_front; price: 20000; os: ios
+"orta segment iphone, oyun için, 16 gb ram",price: mid_range; os: ios; purpose: gaming; ram: 16
+"pahalı bir telefon, ramı yüksek, bataryası uzun",price: expensive; ram: high; battery: long_lasting
+"ucuz bir android, kamerası iyi, oyun oynamam",price: cheap; os: android; camera: good; purpose: not_gaming
+"iphone olsun, 5000 mah batarya, selfie için",os: ios; battery: 5000; purpose: selfie
+"android olsun, 16 gb ramli, kamerası iyi",os: android; ram: 16; camera: good
+"oyun için 7000 mah batarya, uygun fiyatlı",purpose: gaming; battery: 7000; price: affordable
+"selfie için iyi kamera, 8 gb ramli iphone",purpose: selfie; camera: good_front; ram: 8; os: ios
+"orta segment android, kamerası iyi, oyun oynamam",price: mid_range; os: android; camera: good; purpose: not_gaming
+"pahalı android, batarya ömrü çok uzun, selfie için",price: expensive; os: android; battery: very_long_lasting; purpose: selfie
+"ucuz iphone, ramı 8 gb, bataryası iyi değil",price: cheap; os: ios; ram: 8; battery: not_good
+"kamerası çok iyi, oyun için uygun, iphone",camera: very_good; purpose: gaming; os: ios
+"android olsun, 8 gb ram, 10000 tl altı",os: android; ram: 8; price <= 10000
+"selfie için en iyi kamera, orta fiyatlı iphone",purpose: selfie; camera: best_front; price: mid_range; os: ios
+"ramı yüksek, bataryası uzun giden, pahalı olmayan",ram: high; battery: long_lasting; price: not_expensive
+"kamerası iyi, uygun fiyatlı, oyun için",camera: good; price: affordable; purpose: gaming
+"iphone olsun, 5000 mah batarya, oyun oynamam",os: ios; battery: 5000; purpose: not_gaming
+"android olsun, 12 gb ram, kamerası iyi",os: android; ram: 12; camera: good
+"oyun için, 7000 mah batarya, uygun fiyatlı",purpose: gaming; battery: 7000; price: affordable
+"selfie için, 16 gb ram, pahalı değil",purpose: selfie; ram: 16; price: not_expensive
+"orta segment android, bataryası iyi, oyun için",price: mid_range; os: android; battery: good; purpose: gaming
+"pahalı iphone, oyun için, 12 gb ram",price: expensive; os: ios; purpose: gaming; ram: 12
+"ucuz android, kamerası iyi, selfie için",price: cheap; os: android; camera: good; purpose: selfie
+"kamerası çok iyi, bataryası uzun, android",camera: very_good; battery: long_lasting; os: android
+"oyun için uygun fiyatlı, ramı 12 gb",purpose: gaming; price: affordable; ram: 12
+"selfie için en iyi kamera, 20000 tl civarı iphone",purpose: selfie; camera: best_front; price: 20000; os: ios
+"orta segment iphone, oyun için, 16 gb ram",price: mid_range; os: ios; purpose: gaming; ram: 16
+"pahalı bir telefon, ramı yüksek, bataryası uzun",price: expensive; ram: high; battery: long_lasting
+"ucuz bir android, kamerası iyi, oyun oynamam",price: cheap; os: android; camera: good; purpose: not_gaming
+"iphone olsun, 5000 mah batarya, selfie için",os: ios; battery: 5000; purpose: selfie
+"android olsun, 16 gb ramli, kamerası iyi",os: android; ram: 16; camera: good
+"oyun için 7000 mah batarya, uygun fiyatlı",purpose: gaming; battery: 7000; price: affordable
+"selfie için iyi kamera, 8 gb ramli iphone",purpose: selfie; camera: good_front; ram: 8; os: ios
+"orta segment android, kamerası iyi, oyun oynamam",price: mid_range; os: android; camera: good; purpose: not_gaming
+"pahalı android, batarya ömrü çok uzun, selfie için",price: expensive; os: android; battery: very_long_lasting; purpose: selfie
+"ucuz iphone, ramı 8 gb, bataryası iyi değil",price: cheap; os: ios; ram: 8; battery: not_good
+"kamerası çok iyi, oyun için uygun, iphone",camera: very_good; purpose: gaming; os: ios
+"android olsun, 8 gb ram, 10000 tl altı",os: android; ram: 8; price <= 10000
+"selfie için en iyi kamera, orta fiyatlı iphone",purpose: selfie; camera: best_front; price: mid_range; os: ios
+"ramı yüksek, bataryası uzun giden, pahalı olmayan",ram: high; battery: long_lasting; price: not_expensive
+"kamerası iyi, uygun fiyatlı, oyun için",camera: good; price: affordable; purpose: gaming
+"iphone olsun, 5000 mah batarya, oyun oynamam",os: ios; battery: 5000; purpose: not_gaming
+"android olsun, 12 gb ram, kamerası iyi",os: android; ram: 12; camera: good
+"oyun için, 7000 mah batarya, uygun fiyatlı",purpose: gaming; battery: 7000; price: affordable
+"selfie için, 16 gb ram, pahalı değil",purpose: selfie; ram: 16; price: not_expensive
+"orta segment android, bataryası iyi, oyun için",price: mid_range; os: android; battery: good; purpose: gaming
+"pahalı iphone, oyun için, 12 gb ram",price: expensive; os: ios; purpose: gaming; ram: 12
+"ucuz android, kamerası iyi, selfie için",price: cheap; os: android; camera: good; purpose: selfie
+"kamerası çok iyi, bataryası uzun, android",camera: very_good; battery: long_lasting; os: android
+"oyun için uygun fiyatlı, ramı 12 gb",purpose: gaming; price: affordable; ram: 12
+"selfie için en iyi kamera, 20000 tl civarı iphone",purpose: selfie; camera: best_front; price: 20000; os: ios
+"orta segment iphone, oyun için, 16 gb ram",price: mid_range; os: ios; purpose: gaming; ram: 16
+"pahalı bir telefon, ramı yüksek, bataryası uzun",price: expensive; ram: high; battery: long_lasting
+"ucuz bir android, kamerası iyi, oyun oynamam",price: cheap; os: android; camera: good; purpose: not_gaming
+"iphone olsun, 5000 mah batarya, selfie için",os: ios; battery: 5000; purpose: selfie
+"android olsun, 16 gb ramli, kamerası iyi",os: android; ram: 16; camera: good
+"oyun için 7000 mah batarya, uygun fiyatlı",purpose: gaming; battery: 7000; price: affordable
+"selfie için iyi kamera, 8 gb ramli iphone",purpose: selfie; camera: good_front; ram: 8; os: ios
+"orta segment android, kamerası iyi, oyun oynamam",price: mid_range; os: android; camera: good; purpose: not_gaming
+"pahalı android, batarya ömrü çok uzun, selfie için",price: expensive; os: android; battery: very_long_lasting; purpose: selfie
+"ucuz iphone, ramı 8 gb, bataryası iyi değil",price: cheap; os: ios; ram: 8; battery: not_good
+"kamerası çok iyi, oyun için uygun, iphone",camera: very_good; purpose: gaming; os: ios
+"android olsun, 8 gb ram, 10000 tl altı",os: android; ram: 8; price <= 10000
+"selfie için en iyi kamera, orta fiyatlı iphone",purpose: selfie; camera: best_front; price: mid_range; os: ios
+"ramı yüksek, bataryası uzun giden, pahalı olmayan",ram: high; battery: long_lasting; price: not_expensive
+"kamerası iyi, uygun fiyatlı, oyun için",camera: good; price: affordable; purpose: gaming
+"iphone olsun, 5000 mah batarya, oyun oynamam",os: ios; battery: 5000; purpose: not_gaming
+"android olsun, 12 gb ram, kamerası iyi",os: android; ram: 12; camera: good
+"oyun için, 7000 mah batarya, uygun fiyatlı",purpose: gaming; battery: 7000; price: affordable
+"selfie için, 16 gb ram, pahalı değil",purpose: selfie; ram: 16; price: not_expensive
+"orta segment android, bataryası iyi, oyun için",price: mid_range; os: android; battery: good; purpose: gaming
+"pahalı iphone, oyun için, 12 gb ram",price: expensive; os: ios; purpose: gaming; ram: 12
+"ucuz android, kamerası iyi, selfie için",price: cheap; os: android; camera: good; purpose: selfie
+"kamerası çok iyi, bataryası uzun, android",camera: very_good; battery: long_lasting; os: android
+"oyun için uygun fiyatlı, ramı 12 gb",purpose: gaming; price: affordable; ram: 12
+"selfie için en iyi kamera, 20000 tl civarı iphone",purpose: selfie; camera: best_front; price: 20000; os: ios
+"orta segment iphone, oyun için, 16 gb ram",price: mid_range; os: ios; purpose: gaming; ram: 16
+"pahalı bir telefon, ramı yüksek, bataryası uzun",price: expensive; ram: high; battery: long_lasting
+"ucuz bir android, kamerası iyi, oyun oynamam",price: cheap; os: android; camera: good; purpose: not_gaming
+"iphone olsun, 5000 mah batarya, selfie için",os: ios; battery: 5000; purpose: selfie
+"android olsun, 16 gb ramli, kamerası iyi",os: android; ram: 16; camera: good
+"oyun için 7000 mah batarya, uygun fiyatlı",purpose: gaming; battery: 7000; price: affordable
+"selfie için iyi kamera, 8 gb ramli iphone",purpose: selfie; camera: good_front; ram: 8; os: ios
+"orta segment android, kamerası iyi, oyun oynamam",price: mid_range; os: android; camera: good; purpose: not_gaming
+"pahalı android, batarya ömrü çok uzun, selfie için",price: expensive; os: android; battery: very_long_lasting; purpose: selfie
+"ucuz iphone, ramı 8 gb, bataryası iyi değil",price: cheap; os: ios; ram: 8; battery: not_good
+"kamerası çok iyi, oyun için uygun, iphone",camera: very_good; purpose: gaming; os: ios
+"android olsun, 8 gb ram, 10000 tl altı",os: android; ram: 8; price <= 10000
+"selfie için en iyi kamera, orta fiyatlı iphone",purpose: selfie; camera: best_front; price: mid_range; os: ios
+"ramı yüksek, bataryası uzun giden, pahalı olmayan",ram: high; battery: long_lasting; price: not_expensive
+"kamerası iyi, uygun fiyatlı, oyun için",camera: good; price: affordable; purpose: gaming
+"iphone olsun, 5000 mah batarya, oyun oynamam",os: ios; battery: 5000; purpose: not_gaming
+"android olsun, 12 gb ram, kamerası iyi",os: android; ram: 12; camera: good
+"oyun için, 7000 mah batarya, uygun fiyatlı",purpose: gaming; battery: 7000; price: affordable
+"selfie için, 16 gb ram, pahalı değil",purpose: selfie; ram: 16; price: not_expensive
+"orta segment android, bataryası iyi, oyun için",price: mid_range; os: android; battery: good; purpose: gaming
+"pahalı iphone, oyun için, 12 gb ram",price: expensive; os: ios; purpose: gaming; ram: 12
+"ucuz android, kamerası iyi, selfie için",price: cheap; os: android; camera: good; purpose: selfie
+"kamerası çok iyi, bataryası uzun, android",camera: very_good; battery: long_lasting; os: android
+"oyun için uygun fiyatlı, ramı 12 gb",purpose: gaming; price: affordable; ram: 12
+"selfie için en iyi kamera, 20000 tl civarı iphone",purpose: selfie; camera: best_front; price: 20000; os: ios
+"orta segment iphone, oyun için, 16 gb ram",price: mid_range; os: ios; purpose: gaming; ram: 16
+"pahalı bir telefon, ramı yüksek, bataryası uzun",price: expensive; ram: high; battery: long_lasting
+"ucuz bir android, kamerası iyi, oyun oynamam",price: cheap; os: android; camera: good; purpose: not_gaming
+"iphone olsun, 5000 mah batarya, selfie için",os: ios; battery: 5000; purpose: selfie
+"android olsun, 16 gb ramli, kamerası iyi",os: android; ram: 16; camera: good
+"oyun için 7000 mah batarya, uygun fiyatlı",purpose: gaming; battery: 7000; price: affordable
+"selfie için iyi kamera, 8 gb ramli iphone",purpose: selfie; camera: good_front; ram: 8; os: ios
+"orta segment android, kamerası iyi, oyun oynamam",price: mid_range; os: android; camera: good; purpose: not_gaming
+"pahalı android, batarya ömrü çok uzun, selfie için",price: expensive; os: android; battery: very_long_lasting; purpose: selfie
+"ucuz iphone, ramı 8 gb, bataryası iyi değil",price: cheap; os: ios; ram: 8; battery: not_good
+"kamerası çok iyi, oyun için uygun, iphone",camera: very_good; purpose: gaming; os: ios
+"android olsun, 8 gb ram, 10000 tl altı",os: android; ram: 8; price <= 10000
+"selfie için en iyi kamera, orta fiyatlı iphone",purpose: selfie; camera: best_front; price: mid_range; os: ios
+"ramı yüksek, bataryası uzun giden, pahalı olmayan",ram: high; battery: long_lasting; price: not_expensive
+"kamerası iyi, uygun fiyatlı, oyun için",camera: good; price: affordable; purpose: gaming
+"iphone olsun, 5000 mah batarya, oyun oynamam",os: ios; battery: 5000; purpose: not_gaming
+"android olsun, 12 gb ram, kamerası iyi",os: android; ram: 12; camera: good
+"oyun için, 7000 mah batarya, uygun fiyatlı",purpose: gaming; battery: 7000; price: affordable
+"selfie için, 16 gb ram, pahalı değil",purpose: selfie; ram: 16; price: not_expensive
+"orta segment android, bataryası iyi, oyun için",price: mid_range; os: android; battery: good; purpose: gaming
+"pahalı iphone, oyun için, 12 gb ram",price: expensive; os: ios; purpose: gaming; ram: 12
+"ucuz android, kamerası iyi, selfie için",price: cheap; os: android; camera: good; purpose: selfie
+"kamerası çok iyi, bataryası uzun, android",camera: very_good; battery: long_lasting; os: android
+"oyun için uygun fiyatlı, ramı 12 gb",purpose: gaming; price: affordable; ram: 12
+"selfie için en iyi kamera, 20000 tl civarı iphone",purpose: selfie; camera: best_front; price: 20000; os: ios
+"orta segment iphone, oyun için, 16 gb ram",price: mid_range; os: ios; purpose: gaming; ram: 16
+"pahalı bir telefon, ramı yüksek, bataryası uzun",price: expensive; ram: high; battery: long_lasting
+"ucuz bir android, kamerası iyi, oyun oynamam",price: cheap; os: android; camera: good; purpose: not_gaming
+"iphone olsun, 5000 mah batarya, selfie için",os: ios; battery: 5000; purpose: selfie
+"android olsun, 16 gb ramli, kamerası iyi",os: android; ram: 16; camera: good
+"oyun için 7000 mah batarya, uygun fiyatlı",purpose: gaming; battery: 7000; price: affordable
+"selfie için iyi kamera, 8 gb ramli iphone",purpose: selfie; camera: good_front; ram: 8; os: ios
+"orta segment android, kamerası iyi, oyun oynamam",price: mid_range; os: android; camera: good; purpose: not_gaming
+"pahalı android, batarya ömrü çok uzun, selfie için",price: expensive; os: android; battery: very_long_lasting; purpose: selfie
+"ucuz iphone, ramı 8 gb, bataryası iyi değil",price: cheap; os: ios; ram: 8; battery: not_good
+"kamerası çok iyi, oyun için uygun, iphone",camera: very_good; purpose: gaming; os: ios
+"android olsun, 8 gb ram, 10000 tl altı",os: android; ram: 8; price <= 10000
+"selfie için en iyi kamera, orta fiyatlı iphone",purpose: selfie; camera: best_front; price: mid_range; os: ios
+"ramı yüksek, bataryası uzun giden, pahalı olmayan",ram: high; battery: long_lasting; price: not_expensive
+"kamerası iyi, uygun fiyatlı, oyun için",camera: good; price: affordable; purpose: gaming
+"iphone olsun, 5000 mah batarya, oyun oynamam",os: ios; battery: 5000; purpose: not_gaming
+"android olsun, 12 gb ram, kamerası iyi",os: android; ram: 12; camera: good
+"oyun için, 7000 mah batarya, uygun fiyatlı",purpose: gaming; battery: 7000; price: affordable
+"selfie için, 16 gb ram, pahalı değil",purpose: selfie; ram: 16; price: not_expensive
+"orta segment android, bataryası iyi, oyun için",price: mid_range; os: android; battery: good; purpose: gaming
+"pahalı iphone, oyun için, 12 gb ram",price: expensive; os: ios; purpose: gaming; ram: 12
+"ucuz android, kamerası iyi, selfie için",price: cheap; os: android; camera: good; purpose: selfie
+"kamerası çok iyi, bataryası uzun, android",camera: very_good; battery: long_lasting; os: android
+"oyun için uygun fiyatlı, ramı 12 gb",purpose: gaming; price: affordable; ram: 12
+"selfie için en iyi kamera, 20000 tl civarı iphone",purpose: selfie; camera: best_front; price: 20000; os: ios
+"orta segment iphone, oyun için, 16 gb ram",price: mid_range; os: ios; purpose: gaming; ram: 16
+"pahalı bir telefon, ramı yüksek, bataryası uzun",price: expensive; ram: high; battery: long_lasting
+"ucuz bir android, kamerası iyi, oyun oynamam",price: cheap; os: android; camera: good; purpose: not_gaming
+"iphone olsun, 5000 mah batarya, selfie için",os: ios; battery: 5000; purpose: selfie
+"android olsun, 16 gb ramli, kamerası iyi",os: android; ram: 16; camera: good
+"oyun için 7000 mah batarya, uygun fiyatlı",purpose: gaming; battery: 7000; price: affordable
+"selfie için iyi kamera, 8 gb ramli iphone",purpose: selfie; camera: good_front; ram: 8; os: ios
+"orta segment android, kamerası iyi, oyun oynamam",price: mid_range; os: android; camera: good; purpose: not_gaming
+"pahalı android, batarya ömrü çok uzun, selfie için",price: expensive; os: android; battery: very_long_lasting; purpose: selfie
+"ucuz iphone, ramı 8 gb, bataryası iyi değil",price: cheap; os: ios; ram: 8; battery: not_good
+"kamerası çok iyi, oyun için uygun, iphone",camera: very_good; purpose: gaming; os: ios
+"android olsun, 8 gb ram, 10000 tl altı",os: android; ram: 8; price <= 10000
+"selfie için en iyi kamera, orta fiyatlı iphone",purpose: selfie; camera: best_front; price: mid_range; os: ios
+"ramı yüksek, bataryası uzun giden, pahalı olmayan",ram: high; battery: long_lasting; price: not_expensive
+"kamerası iyi, uygun fiyatlı, oyun için",camera: good; price: affordable; purpose: gaming
+"iphone olsun, 5000 mah batarya, oyun oynamam",os: ios; battery: 5000; purpose: not_gaming
+"android olsun, 12 gb ram, kamerası iyi",os: android; ram: 12; camera: good
+"oyun için, 7000 mah batarya, uygun fiyatlı",purpose: gaming; battery: 7000; price: affordable
+"selfie için, 16 gb ram, pahalı değil",purpose: selfie; ram: 16; price: not_expensive
+"orta segment android, bataryası iyi, oyun için",price: mid_range; os: android; battery: good; purpose: gaming
+"pahalı iphone, oyun için, 12 gb ram",price: expensive; os: ios; purpose: gaming; ram: 12
+"ucuz android, kamerası iyi, selfie için",price: cheap; os: android; camera: good; purpose: selfie
+"kamerası çok iyi, bataryası uzun, android",camera: very_good; battery: long_lasting; os: android
+"oyun için uygun fiyatlı, ramı 12 gb",purpose: gaming; price: affordable; ram: 12
+"selfie için en iyi kamera, 20000 tl civarı iphone",purpose: selfie; camera: best_front; price: 20000; os: ios
+"orta segment iphone, oyun için, 16 gb ram",price: mid_range; os: ios; purpose: gaming; ram: 16
+"pahalı bir telefon, ramı yüksek, bataryası uzun",price: expensive; ram: high; battery: long_lasting
+"ucuz bir android, kamerası iyi, oyun oynamam",price: cheap; os: android; camera: good; purpose: not_gaming
+"iphone olsun, 5000 mah batarya, selfie için",os: ios; battery: 5000; purpose: selfie
+"android olsun, 16 gb ramli, kamerası iyi",os: android; ram: 16; camera: good
+"oyun için 7000 mah batarya, uygun fiyatlı",purpose: gaming; battery: 7000; price: affordable
+"selfie için iyi kamera, 8 gb ramli iphone",purpose: selfie; camera: good_front; ram: 8; os: ios
+"orta segment android, kamerası iyi, oyun oynamam",price: mid_range; os: android; camera: good; purpose: not_gaming
+"pahalı android, batarya ömrü çok uzun, selfie için",price: expensive; os: android; battery: very_long_lasting; purpose: selfie
+"ucuz iphone, ramı 8 gb, bataryası iyi değil",price: cheap; os: ios; ram: 8; battery: not_good
+"kamerası çok iyi, oyun için uygun, iphone",camera: very_good; purpose: gaming; os: ios
+"android olsun, 8 gb ram, 10000 tl altı",os: android; ram: 8; price <= 10000
+"selfie için en iyi kamera, orta fiyatlı iphone",purpose: selfie; camera: best_front; price: mid_range; os: ios
+"ramı yüksek, bataryası uzun giden, pahalı olmayan",ram: high; battery: long_lasting; price: not_expensive
+"kamerası iyi, uygun fiyatlı, oyun için",camera: good; price: affordable; purpose: gaming
+"iphone olsun, 5000 mah batarya, oyun oynamam",os: ios; battery: 5000; purpose: not_gaming
+"android olsun, 12 gb ram, kamerası iyi",os: android; ram: 12; camera: good
+"oyun için, 7000 mah batarya, uygun fiyatlı",purpose: gaming; battery: 7000; price: affordable
+"selfie için, 16 gb ram, pahalı değil",purpose: selfie; ram: 16; price: not_expensive
+"orta segment android, bataryası iyi, oyun için",price: mid_range; os: android; battery: good; purpose: gaming
+"pahalı iphone, oyun için, 12 gb ram",price: expensive; os: ios; purpose: gaming; ram: 12
+"ucuz android, kamerası iyi, selfie için",price: cheap; os: android; camera: good; purpose: selfie
+"kamerası çok iyi, bataryası uzun, android",camera: very_good; battery: long_lasting; os: android
+"oyun için uygun fiyatlı, ramı 12 gb",purpose: gaming; price: affordable; ram: 12
+"selfie için en iyi kamera, 20000 tl civarı iphone",purpose: selfie; camera: best_front; price: 20000; os: ios
+"orta segment iphone, oyun için, 16 gb ram",price: mid_range; os: ios; purpose: gaming; ram: 16
+"pahalı bir telefon, ramı yüksek, bataryası uzun",price: expensive; ram: high; battery: long_lasting
+"ucuz bir android, kamerası iyi, oyun oynamam",price: cheap; os: android; camera: good; purpose: not_gaming
+"iphone olsun, 5000 mah batarya, selfie için",os: ios; battery: 5000; purpose: selfie
+"android olsun, 16 gb ramli, kamerası iyi",os: android; ram: 16; camera: good
+"oyun için 7000 mah batarya, uygun fiyatlı",purpose: gaming; battery: 7000; price: affordable
+"selfie için iyi kamera, 8 gb ramli iphone",purpose: selfie; camera: good_front; ram: 8; os: ios
+"orta segment android, kamerası iyi, oyun oynamam",price: mid_range; os: android; camera: good; purpose: not_gaming
+"pahalı android, batarya ömrü çok uzun, selfie için",price: expensive; os: android; battery: very_long_lasting; purpose: selfie
+"ucuz iphone, ramı 8 gb, bataryası iyi değil",price: cheap; os: ios; ram: 8; battery: not_good
+"kamerası çok iyi, oyun için uygun, iphone",camera: very_good; purpose: gaming; os: ios
+"android olsun, 8 gb ram, 10000 tl altı",os: android; ram: 8; price <= 10000
+"selfie için en iyi kamera, orta fiyatlı iphone",purpose: selfie; camera: best_front; price: mid_range; os: ios
+"ramı yüksek, bataryası uzun giden, pahalı olmayan",ram: high; battery: long_lasting; price: not_expensive
+"kamerası iyi, uygun fiyatlı, oyun için",camera: good; price: affordable; purpose: gaming
+"iphone olsun, 5000 mah batarya, oyun oynamam",os: ios; battery: 5000; purpose: not_gaming
+"android olsun, 12 gb ram, kamerası iyi",os: android; ram: 12; camera: good
+"oyun için, 7000 mah batarya, uygun fiyatlı",purpose: gaming; battery: 7000; price: affordable
+"selfie için, 16 gb ram, pahalı değil",purpose: selfie; ram: 16; price: not_expensive
+"orta segment android, bataryası iyi, oyun için",price: mid_range; os: android; battery: good; purpose: gaming
+"pahalı iphone, oyun için, 12 gb ram",price: expensive; os: ios; purpose: gaming; ram: 12
+"ucuz android, kamerası iyi, selfie için",price: cheap; os: android; camera: good; purpose: selfie
+"kamerası çok iyi, bataryası uzun, android",camera: very_good; battery: long_lasting; os: android
+"oyun için uygun fiyatlı, ramı 12 gb",purpose: gaming; price: affordable; ram: 12
+"selfie için en iyi kamera, 20000 tl civarı iphone",purpose: selfie; camera: best_front; price: 20000; os: ios
+"orta segment iphone, oyun için, 16 gb ram",price: mid_range; os: ios; purpose: gaming; ram: 16
+"pahalı bir telefon, ramı yüksek, bataryası uzun",price: expensive; ram: high; battery: long_lasting
+"ucuz bir android, kamerası iyi, oyun oynamam",price: cheap; os: android; camera: good; purpose: not_gaming
+"iphone olsun, 5000 mah batarya, selfie için",os: ios; battery: 5000; purpose: selfie
+"android olsun, 16 gb ramli, kamerası iyi",os: android; ram: 16; camera: good
+"oyun için 7000 mah batarya, uygun fiyatlı",purpose: gaming; battery: 7000; price: affordable
+"selfie için iyi kamera, 8 gb ramli iphone",purpose: selfie; camera: good_front; ram: 8; os: ios
+"orta segment android, kamerası iyi, oyun oynamam",price: mid_range; os: android; camera: good; purpose: not_gaming
+"pahalı android, batarya ömrü çok uzun, selfie için",price: expensive; os: android; battery: very_long_lasting; purpose: selfie
+"ucuz iphone, ramı 8 gb, bataryası iyi değil",price: cheap; os: ios; ram: 8; battery: not_good
+"kamerası çok iyi, oyun için uygun, iphone",camera: very_good; purpose: gaming; os: ios
+"android olsun, 8 gb ram, 10000 tl altı",os: android; ram: 8; price <= 10000
+"selfie için en iyi kamera, orta fiyatlı iphone",purpose: selfie; camera: best_front; price: mid_range; os: ios
+"ramı yüksek, bataryası uzun giden, pahalı olmayan",ram: high; battery: long_lasting; price: not_expensive
+"kamerası iyi, uygun fiyatlı, oyun için",camera: good; price: affordable; purpose: gaming
+"iphone olsun, 5000 mah batarya, oyun oynamam",os: ios; battery: 5000; purpose: not_gaming
+"android olsun, 12 gb ram, kamerası iyi",os: android; ram: 12; camera: good
+"oyun için, 7000 mah batarya, uygun fiyatlı",purpose: gaming; battery: 7000; price: affordable
+"selfie için, 16 gb ram, pahalı değil",purpose: selfie; ram: 16; price: not_expensive
+"orta segment android, bataryası iyi, oyun için",price: mid_range; os: android; battery: good; purpose: gaming
+"pahalı iphone, oyun için, 12 gb ram",price: expensive; os: ios; purpose: gaming; ram: 12
+"ucuz android, kamerası iyi, selfie için",price: cheap; os: android; camera: good; purpose: selfie
+"kamerası çok iyi, bataryası uzun, android",camera: very_good; battery: long_lasting; os: android
+"oyun için uygun fiyatlı, ramı 12 gb",purpose: gaming; price: affordable; ram: 12
+"selfie için en iyi kamera, 20000 tl civarı iphone",purpose: selfie; camera: best_front; price: 20000; os: ios
+"orta segment iphone, oyun için, 16 gb ram",price: mid_range; os: ios; purpose: gaming; ram: 16
+"pahalı bir telefon, ramı yüksek, bataryası uzun",price: expensive; ram: high; battery: long_lasting
+"ucuz bir android, kamerası iyi, oyun oynamam",price: cheap; os: android; camera: good; purpose: not_gaming
+"iphone olsun, 5000 mah batarya, selfie için",os: ios; battery: 5000; purpose: selfie
+"android olsun, 16 gb ramli, kamerası iyi",os: android; ram: 16; camera: good
+"oyun için 7000 mah batarya, uygun fiyatlı",purpose: gaming; battery: 7000; price: affordable
+"selfie için iyi kamera, 8 gb ramli iphone",purpose: selfie; camera: good_front; ram: 8; os: ios
+"orta segment android, kamerası iyi, oyun oynamam",price: mid_range; os: android; camera: good; purpose: not_gaming
+"pahalı android, batarya ömrü çok uzun, selfie için",price: expensive; os: android; battery: very_long_lasting; purpose: selfie
+"ucuz iphone, ramı 8 gb, bataryası iyi değil",price: cheap; os: ios; ram: 8; battery: not_good
+"kamerası çok iyi, oyun için uygun, iphone",camera: very_good; purpose: gaming; os: ios
+"android olsun, 8 gb ram, 10000 tl altı",os: android; ram: 8; price <= 10000
+"selfie için en iyi kamera, orta fiyatlı iphone",purpose: selfie; camera: best_front; price: mid_range; os: ios
+"ramı yüksek, bataryası uzun giden, pahalı olmayan",ram: high; battery: long_lasting; price: not_expensive
+"kamerası iyi, uygun fiyatlı, oyun için",camera: good; price: affordable; purpose: gaming
+"iphone olsun, 5000 mah batarya, oyun oynamam",os: ios; battery: 5000; purpose: not_gaming
+"android olsun, 12 gb ram, kamerası iyi",os: android; ram: 12; camera: good
+"oyun için, 7000 mah batarya, uygun fiyatlı",purpose: gaming; battery: 7000; price: affordable
+"selfie için, 16 gb ram, pahalı değil",purpose: selfie; ram: 16; price: not_expensive
+"orta segment android, bataryası iyi, oyun için",price: mid_range; os: android; battery: good; purpose: gaming
+"pahalı iphone, oyun için, 12 gb ram",price: expensive; os: ios; purpose: gaming; ram: 12
+"ucuz android, kamerası iyi, selfie için",price: cheap; os: android; camera: good; purpose: selfie
+"kamerası çok iyi, bataryası uzun, android",camera: very_good; battery: long_lasting; os: android
+"oyun için uygun fiyatlı, ramı 12 gb",purpose: gaming; price: affordable; ram: 12
+"selfie için en iyi kamera, 20000 tl civarı iphone",purpose: selfie; camera: best_front; price: 20000; os: ios
+"orta segment iphone, oyun için, 16 gb ram",price: mid_range; os: ios; purpose: gaming; ram: 16
+"pahalı bir telefon, ramı yüksek, bataryası uzun",price: expensive; ram: high; battery: long_lasting
+"ucuz bir android, kamerası iyi, oyun oynamam",price: cheap; os: android; camera: good; purpose: not_gaming
+"iphone olsun, 5000 mah batarya, selfie için",os: ios; battery: 5000; purpose: selfie
+"android olsun, 16 gb ramli, kamerası iyi",os: android; ram: 16; camera: good
+"oyun için 7000 mah batarya, uygun fiyatlı",purpose: gaming; battery: 7000; price: affordable
+"selfie için iyi kamera, 8 gb ramli iphone",purpose: selfie; camera: good_front; ram: 8; os: ios
+"orta segment android, kamerası iyi, oyun oynamam",price: mid_range; os: android; camera: good; purpose: not_gaming
+"pahalı android, batarya ömrü çok uzun, selfie için",price: expensive; os: android; battery: very_long_lasting; purpose: selfie
+"ucuz iphone, ramı 8 gb, bataryası iyi değil",price: cheap; os: ios; ram: 8; battery: not_good
+"kamerası çok iyi, oyun için uygun, iphone",camera: very_good; purpose: gaming; os: ios
+"android olsun, 8 gb ram, 10000 tl altı",os: android; ram: 8; price <= 10000
+"selfie için en iyi kamera, orta fiyatlı iphone",purpose: selfie; camera: best_front; price: mid_range; os: ios
+"ramı yüksek, bataryası uzun giden, pahalı olmayan",ram: high; battery: long_lasting; price: not_expensive
+"kamerası iyi, uygun fiyatlı, oyun için",camera: good; price: affordable; purpose: gaming
+"iphone olsun, 5000 mah batarya, oyun oynamam",os: ios; battery: 5000; purpose: not_gaming
+"android olsun, 12 gb ram, kamerası iyi",os: android; ram: 12; camera: good
+"oyun için, 7000 mah batarya, uygun fiyatlı",purpose: gaming; battery: 7000; price: affordable
+"selfie için, 16 gb ram, pahalı değil",purpose: selfie; ram: 16; price: not_expensive
+"orta segment android, bataryası iyi, oyun için",price: mid_range; os: android; battery: good; purpose: gaming
+"pahalı iphone, oyun için, 12 gb ram",price: expensive; os: ios; purpose: gaming; ram: 12
+"ucuz android, kamerası iyi, selfie için",price: cheap; os: android; camera: good; purpose: selfie
+"kamerası çok iyi, bataryası uzun, android",camera: very_good; battery: long_lasting; os: android
+"oyun için uygun fiyatlı, ramı 12 gb",purpose: gaming; price: affordable; ram: 12
+"selfie için en iyi kamera, 20000 tl civarı iphone",purpose: selfie; camera: best_front; price: 20000; os: ios
+"orta segment iphone, oyun için, 16 gb ram",price: mid_range; os: ios; purpose: gaming; ram: 16
+"pahalı bir telefon, ramı yüksek, bataryası uzun",price: expensive; ram: high; battery: long_lasting
+"ucuz bir android, kamerası iyi, oyun oynamam",price: cheap; os: android; camera: good; purpose: not_gaming
+"iphone olsun, 5000 mah batarya, selfie için",os: ios; battery: 5000; purpose: selfie
+"android olsun, 16 gb ramli, kamerası iyi",os: android; ram: 16; camera: good
+"oyun için 7000 mah batarya, uygun fiyatlı",purpose: gaming; battery: 7000; price: affordable
+"selfie için iyi kamera, 8 gb ramli iphone",purpose: selfie; camera: good_front; ram: 8; os: ios
+"orta segment android, kamerası iyi, oyun oynamam",price: mid_range; os: android; camera: good; purpose: not_gaming
+"pahalı android, batarya ömrü çok uzun, selfie için",price: expensive; os: android; battery: very_long_lasting; purpose: selfie
+"ucuz iphone, ramı 8 gb, bataryası iyi değil",price: cheap; os: ios; ram: 8; battery: not_good
+"kamerası çok iyi, oyun için uygun, iphone",camera: very_good; purpose: gaming; os: ios
+"android olsun, 8 gb ram, 10000 tl altı",os: android; ram: 8; price <= 10000
+"selfie için en iyi kamera, orta fiyatlı iphone",purpose: selfie; camera: best_front; price: mid_range; os: ios
+"ramı yüksek, bataryası uzun giden, pahalı olmayan",ram: high; battery: long_lasting; price: not_expensive
+"kamerası iyi, uygun fiyatlı, oyun için",camera: good; price: affordable; purpose: gaming
+"iphone olsun, 5000 mah batarya, oyun oynamam",os: ios; battery: 5000; purpose: not_gaming
+"android olsun, 12 gb ram, kamerası iyi",os: android; ram: 12; camera: good
+"oyun için, 7000 mah batarya, uygun fiyatlı",purpose: gaming; battery: 7000; price: affordable
+"selfie için, 16 gb ram, pahalı değil",purpose: selfie; ram: 16; price: not_expensive
+"orta segment android, bataryası iyi, oyun için",price: mid_range; os: android; battery: good; purpose: gaming
+"pahalı iphone, oyun için, 12 gb ram",price: expensive; os: ios; purpose: gaming; ram: 12
+"ucuz android, kamerası iyi, selfie için",price: cheap; os: android; camera: good; purpose: selfie
+"kamerası çok iyi, bataryası uzun, android",camera: very_good; battery: long_lasting; os: android
+"oyun için uygun fiyatlı, ramı 12 gb",purpose: gaming; price: affordable; ram: 12
+"selfie için en iyi kamera, 20000 tl civarı iphone",purpose: selfie; camera: best_front; price: 20000; os: ios
+"orta segment iphone, oyun için, 16 gb ram",price: mid_range; os: ios; purpose: gaming; ram: 16
+"pahalı bir telefon, ramı yüksek, bataryası uzun",price: expensive; ram: high; battery: long_lasting
+"ucuz bir android, kamerası iyi, oyun oynamam",price: cheap; os: android; camera: good; purpose: not_gaming
+"iphone olsun, 5000 mah batarya, selfie için",os: ios; battery: 5000; purpose: selfie
+"android olsun, 16 gb ramli, kamerası iyi",os: android; ram: 16; camera: good
+"oyun için 7000 mah batarya, uygun fiyatlı",purpose: gaming; battery: 7000; price: affordable
+"selfie için iyi kamera, 8 gb ramli iphone",purpose: selfie; camera: good_front; ram: 8; os: ios
+"orta segment android, kamerası iyi, oyun oynamam",price: mid_range; os: android; camera: good; purpose: not_gaming
+"pahalı android, batarya ömrü çok uzun, selfie için",price: expensive; os: android; battery: very_long_lasting; purpose: selfie
+"ucuz iphone, ramı 8 gb, bataryası iyi değil",price: cheap; os: ios; ram: 8; battery: not_good
+"kamerası çok iyi, oyun için uygun, iphone",camera: very_good; purpose: gaming; os: ios
+"android olsun, 8 gb ram, 10000 tl altı",os: android; ram: 8; price <= 10000
+"selfie için en iyi kamera, orta fiyatlı iphone",purpose: selfie; camera: best_front; price: mid_range; os: ios
+"ramı yüksek, bataryası uzun giden, pahalı olmayan",ram: high; battery: long_lasting; price: not_expensive
+"kamerası iyi, uygun fiyatlı, oyun için",camera: good; price: affordable; purpose: gaming
+"iphone olsun, 5000 mah batarya, oyun oynamam",os: ios; battery: 5000; purpose: not_gaming
+"android olsun, 12 gb ram, kamerası iyi",os: android; ram: 12; camera: good
+"oyun için, 7000 mah batarya, uygun fiyatlı",purpose: gaming; battery: 7000; price: affordable
+"selfie için, 16 gb ram, pahalı değil",purpose: selfie; ram: 16; price: not_expensive
+"orta segment android, bataryası iyi, oyun için",price: mid_range; os: android; battery: good; purpose: gaming
+"pahalı iphone, oyun için, 12 gb ram",price: expensive; os: ios; purpose: gaming; ram: 12
+"ucuz android, kamerası iyi, selfie için",price: cheap; os: android; camera: good; purpose: selfie
+"kamerası çok iyi, bataryası uzun, android",camera: very_good; battery: long_lasting; os: android
+"oyun için uygun fiyatlı, ramı 12 gb",purpose: gaming; price: affordable; ram: 12
+"selfie için en iyi kamera, 20000 tl civarı iphone",purpose: selfie; camera: best_front; price: 20000; os: ios
+"orta segment iphone, oyun için, 16 gb ram",price: mid_range; os: ios; purpose: gaming; ram: 16
+"pahalı bir telefon, ramı yüksek, bataryası uzun",price: expensive; ram: high; battery: long_lasting
+"ucuz bir android, kamerası iyi, oyun oynamam",price: cheap; os: android; camera: good; purpose: not_gaming
+"iphone olsun, 5000 mah batarya, selfie için",os: ios; battery: 5000; purpose: selfie
+"android olsun, 16 gb ramli, kamerası iyi",os: android; ram: 16; camera: good
+"oyun için 7000 mah batarya, uygun fiyatlı",purpose: gaming; battery: 7000; price: affordable
+"selfie için iyi kamera, 8 gb ramli iphone",purpose: selfie; camera: good_front; ram: 8; os: ios
+"orta segment android, kamerası iyi, oyun oynamam",price: mid_range; os: android; camera: good; purpose: not_gaming
+"pahalı android, batarya ömrü çok uzun, selfie için",price: expensive; os: android; battery: very_long_lasting; purpose: selfie
+"ucuz iphone, ramı 8 gb, bataryası iyi değil",price: cheap; os: ios; ram: 8; battery: not_good
+"kamerası çok iyi, oyun için uygun, iphone",camera: very_good; purpose: gaming; os: ios
+"android olsun, 8 gb ram, 10000 tl altı",os: android; ram: 8; price <= 10000
+"selfie için en iyi kamera, orta fiyatlı iphone",purpose: selfie; camera: best_front; price: mid_range; os: ios
+"ramı yüksek, bataryası uzun giden, pahalı olmayan",ram: high; battery: long_lasting; price: not_expensive
+"kamerası iyi, uygun fiyatlı, oyun için",camera: good; price: affordable; purpose: gaming
+"iphone olsun, 5000 mah batarya, oyun oynamam",os: ios; battery: 5000; purpose: not_gaming
+"android olsun, 12 gb ram, kamerası iyi",os: android; ram: 12; camera: good
+"oyun için, 7000 mah batarya, uygun fiyatlı",purpose: gaming; battery: 7000; price: affordable
+"selfie için, 16 gb ram, pahalı değil",purpose: selfie; ram: 16; price: not_expensive
+"orta segment android, bataryası iyi, oyun için",price: mid_range; os: android; battery: good; purpose: gaming
+"pahalı iphone, oyun için, 12 gb ram",price: expensive; os: ios; purpose: gaming; ram: 12
+"ucuz android, kamerası iyi, selfie için",price: cheap; os: android; camera: good; purpose: selfie
+"kamerası çok iyi, bataryası uzun, android",camera: very_good; battery: long_lasting; os: android
+"oyun için uygun fiyatlı, ramı 12 gb",purpose: gaming; price: affordable; ram: 12
+"selfie için en iyi kamera, 20000 tl civarı iphone",purpose: selfie; camera: best_front; price: 20000; os: ios
+"orta segment iphone, oyun için, 16 gb ram",price: mid_range; os: ios; purpose: gaming; ram: 16
+"pahalı bir telefon, ramı yüksek, bataryası uzun",price: expensive; ram: high; battery: long_lasting
+"ucuz bir android, kamerası iyi, oyun oynamam",price: cheap; os: android; camera: good; purpose: not_gaming
+"iphone olsun, 5000 mah batarya, selfie için",os: ios; battery: 5000; purpose: selfie
+"android olsun, 16 gb ramli, kamerası iyi",os: android; ram: 16; camera: good
+"oyun için 7000 mah batarya, uygun fiyatlı",purpose: gaming; battery: 7000; price: affordable
+"selfie için iyi kamera, 8 gb ramli iphone",purpose: selfie; camera: good_front; ram: 8; os: ios
+"orta segment android, kamerası iyi, oyun oynamam",price: mid_range; os: android; camera: good; purpose: not_gaming
+"pahalı android, batarya ömrü çok uzun, selfie için",price: expensive; os: android; battery: very_long_lasting; purpose: selfie
+"ucuz iphone, ramı 8 gb, bataryası iyi değil",price: cheap; os: ios; ram: 8; battery: not_good
+"kamerası çok iyi, oyun için uygun, iphone",camera: very_good; purpose: gaming; os: ios
+"android olsun, 8 gb ram, 10000 tl altı",os: android; ram: 8; price <= 10000
+"selfie için en iyi kamera, orta fiyatlı iphone",purpose: selfie; camera: best_front; price: mid_range; os: ios
+"ramı yüksek, bataryası uzun giden, pahalı olmayan",ram: high; battery: long_lasting; price: not_expensive
+"kamerası iyi, uygun fiyatlı, oyun için",camera: good; price: affordable; purpose: gaming
+"iphone olsun, 5000 mah batarya, oyun oynamam",os: ios; battery: 5000; purpose: not_gaming
+"android olsun, 12 gb ram, kamerası iyi",os: android; ram: 12; camera: good
+"oyun için, 7000 mah batarya, uygun fiyatlı",purpose: gaming; battery: 7000; price: affordable
+"selfie için, 16 gb ram, pahalı değil",purpose: selfie; ram: 16; price: not_expensive
+"orta segment android, bataryası iyi, oyun için",price: mid_range; os: android; battery: good; purpose: gaming
+"pahalı iphone, oyun için, 12 gb ram",price: expensive; os: ios; purpose: gaming; ram: 12
+"ucuz android, kamerası iyi, selfie için",price: cheap; os: android; camera: good; purpose: selfie
+"kamerası çok iyi, bataryası uzun, android",camera: very_good; battery: long_lasting; os: android
+"oyun için uygun fiyatlı, ramı 12 gb",purpose: gaming; price: affordable; ram: 12
+"selfie için en iyi kamera, 20000 tl civarı iphone",purpose: selfie; camera: best_front; price: 20000; os: ios
+"orta segment iphone, oyun için, 16 gb ram",price: mid_range; os: ios; purpose: gaming; ram: 16
+"pahalı bir telefon, ramı yüksek, bataryası uzun",price: expensive; ram: high; battery: long_lasting
+"ucuz bir android, kamerası iyi, oyun oynamam",price: cheap; os: android; camera: good; purpose: not_gaming
+"iphone olsun, 5000 mah batarya, selfie için",os: ios; battery: 5000; purpose: selfie
+"android olsun, 16 gb ramli, kamerası iyi",os: android; ram: 16; camera: good
+"oyun için 7000 mah batarya, uygun fiyatlı",purpose: gaming; battery: 7000; price: affordable
+"selfie için iyi kamera, 8 gb ramli iphone",purpose: selfie; camera: good_front; ram: 8; os: ios
+"orta segment android, kamerası iyi, oyun oynamam",price: mid_range; os: android; camera: good; purpose: not_gaming
+"pahalı android, batarya ömrü çok uzun, selfie için",price: expensive; os: android; battery: very_long_lasting; purpose: selfie
+"ucuz iphone, ramı 8 gb, bataryası iyi değil",price: cheap; os: ios; ram: 8; battery: not_good
+"kamerası çok iyi, oyun için uygun, iphone",camera: very_good; purpose: gaming; os: ios
+"android olsun, 8 gb ram, 10000 tl altı",os: android; ram: 8; price <= 10000
+"selfie için en iyi kamera, orta fiyatlı iphone",purpose: selfie; camera: best_front; price: mid_range; os: ios
+"ramı yüksek, bataryası uzun giden, pahalı olmayan",ram: high; battery: long_lasting; price: not_expensive
+"kamerası iyi, uygun fiyatlı, oyun için",camera: good; price: affordable; purpose: gaming
+"iphone olsun, 5000 mah batarya, oyun oynamam",os: ios; battery: 5000; purpose: not_gaming
+"android olsun, 12 gb ram, kamerası iyi",os: android; ram: 12; camera: good
+"oyun için, 7000 mah batarya, uygun fiyatlı",purpose: gaming; battery: 7000; price: affordable
+"selfie için, 16 gb ram, pahalı değil",purpose: selfie; ram: 16; price: not_expensive
+"orta segment android, bataryası iyi, oyun için",price: mid_range; os: android; battery: good; purpose: gaming
+"pahalı iphone, oyun için, 12 gb ram",price: expensive; os: ios; purpose: gaming; ram: 12
+"ucuz android, kamerası iyi, selfie için",price: cheap; os: android; camera: good; purpose: selfie
+"kamerası çok iyi, bataryası uzun, android",camera: very_good; battery: long_lasting; os: android
+"oyun için uygun fiyatlı, ramı 12 gb",purpose: gaming; price: affordable; ram: 12
+"selfie için en iyi kamera, 20000 tl civarı iphone",purpose: selfie; camera: best_front; price: 20000; os: ios
+"orta segment iphone, oyun için, 16 gb ram",price: mid_range; os: ios; purpose: gaming; ram: 16
+"pahalı bir telefon, ramı yüksek, bataryası uzun",price: expensive; ram: high; battery: long_lasting
+"ucuz bir android, kamerası iyi, oyun oynamam",price: cheap; os: android; camera: good; purpose: not_gaming
+"iphone olsun, 5000 mah batarya, selfie için",os: ios; battery: 5000; purpose: selfie
+"android olsun, 16 gb ramli, kamerası iyi",os: android; ram: 16; camera: good
+"oyun için 7000 mah batarya, uygun fiyatlı",purpose: gaming; battery: 7000; price: affordable
+"selfie için iyi kamera, 8 gb ramli iphone",purpose: selfie; camera: good_front; ram: 8; os: ios
+"orta segment android, kamerası iyi, oyun oynamam",price: mid_range; os: android; camera: good; purpose: not_gaming
+"pahalı android, batarya ömrü çok uzun, selfie için",price: expensive; os: android; battery: very_long_lasting; purpose: selfie
+"ucuz iphone, ramı 8 gb, bataryası iyi değil",price: cheap; os: ios; ram: 8; battery: not_good
+"kamerası çok iyi, oyun için uygun, iphone",camera: very_good; purpose: gaming; os: ios
+"android olsun, 8 gb ram, 10000 tl altı",os: android; ram: 8; price <= 10000
+"selfie için en iyi kamera, orta fiyatlı iphone",purpose: selfie; camera: best_front; price: mid_range; os: ios
+"ramı yüksek, bataryası uzun giden, pahalı olmayan",ram: high; battery: long_lasting; price: not_expensive
+"kamerası iyi, uygun fiyatlı, oyun için",camera: good; price: affordable; purpose: gaming
+"iphone olsun, 5000 mah batarya, oyun oynamam",os: ios; battery: 5000; purpose: not_gaming
+"android olsun, 12 gb ram, kamerası iyi",os: android; ram: 12; camera: good
+"oyun için, 7000 mah batarya, uygun fiyatlı",purpose: gaming; battery: 7000; price: affordable
+"selfie için, 16 gb ram, pahalı değil",purpose: selfie; ram: 16; price: not_expensive
+"orta segment android, bataryası iyi, oyun için",price: mid_range; os: android; battery: good; purpose: gaming
+"pahalı iphone, oyun için, 12 gb ram",price: expensive; os: ios; purpose: gaming; ram: 12
+"ucuz android, kamerası iyi, selfie için",price: cheap; os: android; camera: good; purpose: selfie
+"kamerası çok iyi, bataryası uzun, android",camera: very_good; battery: long_lasting; os: android
+"oyun için uygun fiyatlı, ramı 12 gb",purpose: gaming; price: affordable; ram: 12
+"selfie için en iyi kamera, 20000 tl civarı iphone",purpose: selfie; camera: best_front; price: 20000; os: ios
+"orta segment iphone, oyun için, 16 gb ram",price: mid_range; os: ios; purpose: gaming; ram: 16
+"pahalı bir telefon, ramı yüksek, bataryası uzun",price: expensive; ram: high; battery: long_lasting
+"ucuz bir android, kamerası iyi, oyun oynamam",price: cheap; os: android; camera: good; purpose: not_gaming
+"iphone olsun, 5000 mah batarya, selfie için",os: ios; battery: 5000; purpose: selfie
+"android olsun, 16 gb ramli, kamerası iyi",os: android; ram: 16; camera: good
+"oyun için 7000 mah batarya, uygun fiyatlı",purpose: gaming; battery: 7000; price: affordable
+"selfie için iyi kamera, 8 gb ramli iphone",purpose: selfie; camera: good_front; ram: 8; os: ios
+"orta segment android, kamerası iyi, oyun oynamam",price: mid_range; os: android; camera: good; purpose: not_gaming
+"pahalı android, batarya ömrü çok uzun, selfie için",price: expensive; os: android; battery: very_long_lasting; purpose: selfie
+"ucuz iphone, ramı 8 gb, bataryası iyi değil",price: cheap; os: ios; ram: 8; battery: not_good
+"kamerası çok iyi, oyun için uygun, iphone",camera: very_good; purpose: gaming; os: ios
+"android olsun, 8 gb ram, 10000 tl altı",os: android; ram: 8; price <= 10000
+"selfie için en iyi kamera, orta fiyatlı iphone",purpose: selfie; camera: best_front; price: mid_range; os: ios
+"ramı yüksek, bataryası uzun giden, pahalı olmayan",ram: high; battery: long_lasting; price: not_expensive
+"kamerası iyi, uygun fiyatlı, oyun için",camera: good; price: affordable; purpose: gaming
+"iphone olsun, 5000 mah batarya, oyun oynamam",os: ios; battery: 5000; purpose: not_gaming
+"android olsun, 12 gb ram, kamerası iyi",os: android; ram: 12; camera: good
+"oyun için, 7000 mah batarya, uygun fiyatlı",purpose: gaming; battery: 7000; price: affordable
+"selfie için, 16 gb ram, pahalı değil",purpose: selfie; ram: 16; price: not_expensive
+"orta segment android, bataryası iyi, oyun için",price: mid_range; os: android; battery: good; purpose: gaming
+"pahalı iphone, oyun için, 12 gb ram",price: expensive; os: ios; purpose: gaming; ram: 12
+"ucuz android, kamerası iyi, selfie için",price: cheap; os: android; camera: good; purpose: selfie
+"kamerası çok iyi, bataryası uzun, android",camera: very_good; battery: long_lasting; os: android
+"oyun için uygun fiyatlı, ramı 12 gb",purpose: gaming; price: affordable; ram: 12
+"selfie için en iyi kamera, 20000 tl civarı iphone",purpose: selfie; camera: best_front; price: 20000; os: ios
+"orta segment iphone, oyun için, 16 gb ram",price: mid_range; os: ios; purpose: gaming; ram: 16
+"pahalı bir telefon, ramı yüksek, bataryası uzun",price: expensive; ram: high; battery: long_lasting
+"ucuz bir android, kamerası iyi, oyun oynamam",price: cheap; os: android; camera: good; purpose: not_gaming
+"iphone olsun, 5000 mah batarya, selfie için",os: ios; battery: 5000; purpose: selfie
+"android olsun, 16 gb ramli, kamerası iyi",os: android; ram: 16; camera: good
+"oyun için 7000 mah batarya, uygun fiyatlı",purpose: gaming; battery: 7000; price: affordable
+"selfie için iyi kamera, 8 gb ramli iphone",purpose: selfie; camera: good_front; ram: 8; os: ios
+"orta segment android, kamerası iyi, oyun oynamam",price: mid_range; os: android; camera: good; purpose: not_gaming
+"pahalı android, batarya ömrü çok uzun, selfie için",price: expensive; os: android; battery: very_long_lasting; purpose: selfie
+"ucuz iphone, ramı 8 gb, bataryası iyi değil",price: cheap; os: ios; ram: 8; battery: not_good
+"kamerası çok iyi, oyun için uygun, iphone",camera: very_good; purpose: gaming; os: ios
+"android olsun, 8 gb ram, 10000 tl altı",os: android; ram: 8; price <= 10000
+"selfie için en iyi kamera, orta fiyatlı iphone",purpose: selfie; camera: best_front; price: mid_range; os: ios
+"ramı yüksek, bataryası uzun giden, pahalı olmayan",ram: high; battery: long_lasting; price: not_expensive
+"kamerası iyi, uygun fiyatlı, oyun için",camera: good; price: affordable; purpose: gaming
+"iphone olsun, 5000 mah batarya, oyun oynamam",os: ios; battery: 5000; purpose: not_gaming
+"android olsun, 12 gb ram, kamerası iyi",os: android; ram: 12; camera: good
+"oyun için, 7000 mah batarya, uygun fiyatlı",purpose: gaming; battery: 7000; price: affordable
+"selfie için, 16 gb ram, pahalı değil",purpose: selfie; ram: 16; price: not_expensive
+"orta segment android, bataryası iyi, oyun için",price: mid_range; os: android; battery: good; purpose: gaming
+"pahalı iphone, oyun için, 12 gb ram",price: expensive; os: ios; purpose: gaming; ram: 12
+"ucuz android, kamerası iyi, selfie için",price: cheap; os: android; camera: good; purpose: selfie
+"kamerası çok iyi, bataryası uzun, android",camera: very_good; battery: long_lasting; os: android
+"oyun için uygun fiyatlı, ramı 12 gb",purpose: gaming; price: affordable; ram: 12
+"selfie için en iyi kamera, 20000 tl civarı iphone",purpose: selfie; camera: best_front; price: 20000; os: ios
+"orta segment iphone, oyun için, 16 gb ram",price: mid_range; os: ios; purpose: gaming; ram: 16
+"pahalı bir telefon, ramı yüksek, bataryası uzun",price: expensive; ram: high; battery: long_lasting
+"ucuz bir android, kamerası iyi, oyun oynamam",price: cheap; os: android; camera: good; purpose: not_gaming
+"iphone olsun, 5000 mah batarya, selfie için",os: ios; battery: 5000; purpose: selfie
+"android olsun, 16 gb ramli, kamerası iyi",os: android; ram: 16; camera: good
+"oyun için 7000 mah batarya, uygun fiyatlı",purpose: gaming; battery: 7000; price: affordable
+"selfie için iyi kamera, 8 gb ramli iphone",purpose: selfie; camera: good_front; ram: 8; os: ios
+"orta segment android, kamerası iyi, oyun oynamam",price: mid_range; os: android; camera: good; purpose: not_gaming
+"pahalı android, batarya ömrü çok uzun, selfie için",price: expensive; os: android; battery: very_long_lasting; purpose: selfie
+"ucuz iphone, ramı 8 gb, bataryası iyi değil",price: cheap; os: ios; ram: 8; battery: not_good
+"kamerası çok iyi, oyun için uygun, iphone",camera: very_good; purpose: gaming; os: ios
