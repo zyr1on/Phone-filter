@@ -1,4 +1,4 @@
-// price:brand:os: usage: ram:storage: battery:camera: screen: is_new_prompt: 
+// price:...; brand:...; os:...; usage:...; ram:...; storage:...; battery:...; camera:...; screen:...; 
 
 // is_new_prompt:true OLAN KISIM
 15000 tl altında 6 gb ram android telefon öner -> price:<=15000; brand:none; os:android; usage:none; ram:>=6; storage:none; battery:none; camera:none; screen:none;
