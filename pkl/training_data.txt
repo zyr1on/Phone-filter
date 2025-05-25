@@ -1,0 +1,91 @@
+15000 tl altında 6 gb ram android telefon öner -> price: <=15000; ram: >=6; os: android
+10000 tl 4 gb iphone telefon öner -> price: 10000; ram: 4; os: ios
+25000 tl hafızası iyi olan oyun için telefon android -> price: 25000; battery: good; usage: game; os: android
+fotoğraf çekmek için 20000 tl altında samsung telefon -> usage: photo; price: <=20000; brand: samsung
+8 gb ram oyun telefonu 30000 tl bütçe -> ram: 8; usage: game; price: <=30000
+12000 tl huawei telefon 128 gb depolama -> price: 12000; brand: huawei; storage: 128
+iphone 256 gb depolama 40000 tl -> brand: apple; storage: 256; price: 40000
+xiaomi 5000 mah batarya android telefon -> brand: xiaomi; battery: 5000; os: android
+6.5 inç ekran oyun telefonu 18000 tl -> screen: 6.5; usage: game; price: 18000
+ios telefon -> os:ios
+ios telefon öner-> os:ios
+bütçe 15000 -> price <= 15000
+bütçem 15000TL -> price <= 15000
+bütçem 15000 lira -> price <= 15000
+bütçem max 15000 -> price <= 15000
+bütçem en az 15000 -> price >= 15000
+bütçem fark etmez -> price:any
+afyon telefon -> os:ios
+ayfon -> os:ios
+ayfon telefon -> os:ios
+apple telefon -> os:ios
+apple -> os:ios
+pahalı telefon öner -> price >= 30000
+48 mp kamera telefon 15000 tl altında -> camera: 48; price: <=15000
+oppo android telefon 4 gb ram -> brand: oppo; os: android; ram: 4
+samsung galaxy 6 gb ram fotoğraf için -> brand: samsung; ram: 6; usage: photo
+20000 tl üstü iphone öner -> price: >=20000; brand: apple; os: ios
+realme gaming telefon 8 gb ram -> brand: realme; usage: game; ram: 8
+honor telefon 6.4 inç ekran 12000 tl -> brand: honor; screen: 6.4; price: 12000
+vivo 64 mp kamera 16000 tl -> brand: vivo; camera: 64; price: 16000
+poco oyun telefunu 128 gb -> brand: poco; usage: game; storage: 128
+oneplus android 12 gb ram -> brand: oneplus; os: android; ram: 12
+motorola 5000 mah batarya 14000 tl -> brand: motorola; battery: 5000; price: 14000
+google pixel kamera için 25000 tl -> brand: google; usage: photo; price: 25000
+asus rog gaming telefon 16 gb ram -> brand: asus; usage: game; ram: 16
+mi 11 ultra 50 mp kamera -> brand: xiaomi; camera: 50
+iphone 13 pro 128 gb 35000 tl -> brand: apple; storage: 128; price: 35000
+huawei p50 pro fotoğraf çekimi -> brand: huawei; usage: photo
+redmi note 11 4 gb ram 8000 tl -> brand: xiaomi; ram: 4; price: 8000
+oppo find x5 pro oyun için -> brand: oppo; usage: game
+nothing phone 1 android 8 gb -> brand: nothing; os: android; ram: 8
+tecno spark 7 64 gb depolama -> brand: tecno; storage: 64
+infinix hot 12 play gaming -> brand: infinix; usage: game
+itel a58 pro batarya ömrü iyi -> brand: itel; battery: good
+casper via f40 türk telefonu -> brand: casper; os: android
+general mobile gm 21 pro -> brand: general mobile; os: android
+6 inç altı ekran küçük telefon 15000 tl -> screen: <=6; price: 15000
+7 inç üstü büyük ekran telefon oyun için -> screen: >=7; usage: game
+100 mp üstü kamera telefon fotoğraf -> camera: >=100; usage: photo
+512 gb depolama telefon 45000 tl -> storage: 512; price: 45000
+4000 mah altı düşük batarya telefon -> battery: <=4000
+6000 mah üstü yüksek batarya telefon -> battery: >=6000
+16 gb ram performans telefonu -> ram: 16; usage: game
+32 gb ram ultra performans -> ram: 32; usage: game
+iphone telefon öner -> os:ios
+iphone -> os:ios
+hafıza iyi -> storage:good
+bütçem 12000 -> price <= 12000
+bütçe 12000 -> price <= 12000
+bütçem max 12000 -> price <= 12000
+android telefon öner -> os:android
+android -> os:android
+bütçem 15000tl -> price <= 15000
+fotograf çekmek için telefon öner -> usage:photo
+giriş sınıfı bir telefon öner -> price <= 10000; os:android
+256 gb hafıza -> storage: 256
+hafızası iyi olan telefon öner -> storage: good
+hafızası iyi olan -> storage: good
+hafızası kötü olmayan telefon öner -> storage: good
+hafızası kötü olmayan -> storage: good
+budget telefon 5000 tl altı -> price: <=5000
+premium telefon 50000 tl üstü -> price: >=50000
+orta segment telefon 20000 tl civarı -> price: ~20000
+entry level telefon başlangıç -> price: <=10000
+ekonomik android telefon -> os: android; price: <=15000
+pahalı iphone telefon -> brand: apple; price: >=30000
+ucuz xiaomi telefon -> brand: xiaomi; price: <=10000
+orta seviye samsung -> brand: samsung; price: ~25000
+güçlü oyun telefonu -> usage: game; ram: >=8
+profesyonel kamera telefonu -> usage: photo; camera: >=48
+uzun batarya ömrü telefon -> battery: >=5000
+kompakt telefon küçük -> screen: <=5.5
+büyük ekran medya telefonu -> screen: >=6.5
+hızlı telefon performans -> ram: >=6; usage: game
+yavaş telefon temel kullanım -> ram: <=4
+çok depolama telefon -> storage: >=256
+çok depolama -> storage: >=256
+az depolama telefon -> storage: <=64
+az depolama -> storage: <=64
+bataryası iyi dayansın -> battery: good
+bataryası 5000 mah üzeri -> battery >= 5000
