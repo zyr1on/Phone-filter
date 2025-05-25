@@ -7,50 +7,51 @@ fotoğraf çekmek için 20000 tl altında samsung telefon -> usage: photo; price
 iphone 256 gb depolama 40000 tl -> brand: apple; storage: 256; price: 40000
 xiaomi 5000 mah batarya android telefon -> brand: xiaomi; battery: 5000; os: android
 6.5 inç ekran oyun telefonu 18000 tl -> screen: 6.5; usage: game; price: 18000
-ios telefon -> os:ios
-ios telefon öner-> os:ios
-bütçe 15000 -> price <= 15000
-bütçem 15000TL -> price <= 15000
-bütçem 15000 lira -> price <= 15000
-bütçem max 15000 -> price <= 15000
-bütçem en az 15000 -> price >= 15000
-bütçem fark etmez -> price:any
-afyon telefon -> os:ios
-ayfon -> os:ios
-ayfon telefon -> os:ios
-apple telefon -> os:ios
-apple -> os:ios
-pahalı telefon öner -> price >= 30000
-48 mp kamera telefon 15000 tl altında -> camera: 48; price: <=15000
-oppo android telefon 4 gb ram -> brand: oppo; os: android; ram: 4
-samsung galaxy 6 gb ram fotoğraf için -> brand: samsung; ram: 6; usage: photo
-20000 tl üstü iphone öner -> price: >=20000; brand: apple; os: ios
-realme gaming telefon 8 gb ram -> brand: realme; usage: game; ram: 8
-honor telefon 6.4 inç ekran 12000 tl -> brand: honor; screen: 6.4; price: 12000
-vivo 64 mp kamera 16000 tl -> brand: vivo; camera: 64; price: 16000
-poco oyun telefunu 128 gb -> brand: poco; usage: game; storage: 128
-oneplus android 12 gb ram -> brand: oneplus; os: android; ram: 12
-motorola 5000 mah batarya 14000 tl -> brand: motorola; battery: 5000; price: 14000
-google pixel kamera için 25000 tl -> brand: google; usage: photo; price: 25000
-asus rog gaming telefon 16 gb ram -> brand: asus; usage: game; ram: 16
-mi 11 ultra 50 mp kamera -> brand: xiaomi; camera: 50
-iphone 13 pro 128 gb 35000 tl -> brand: apple; storage: 128; price: 35000
-huawei p50 pro fotoğraf çekimi -> brand: huawei; usage: photo
-redmi note 11 4 gb ram 8000 tl -> brand: xiaomi; ram: 4; price: 8000
-oppo find x5 pro oyun için -> brand: oppo; usage: game
-
-6 inç altı ekran küçük telefon 15000 tl -> screen: <=6; price: 15000
-7 inç üstü büyük ekran telefon oyun için -> screen: >=7; usage: game
-100 mp üstü kamera telefon fotoğraf -> camera: >=100; usage: photo
-512 gb depolama telefon 45000 tl -> storage: 512; price: 45000
-4000 mah altı düşük batarya telefon -> battery: <=4000
-6000 mah üstü yüksek batarya telefon -> battery: >=6000
-16 gb ram performans telefonu -> ram: 16; usage: game
-32 gb ram ultra performans -> ram: 32; usage: game
-iphone telefon öner -> os:ios
-iphone -> os:ios
-hafıza iyi -> storage:good
-bütçem 12000 -> price <= 12000
+ios telefon -> os:ios;
+ios telefon öner-> os:ios;
+15000 -> price <= 15000;
+15000 tl -> price <= 15000;
+bütçe 15000 -> price <= 15000;
+bütçem 15000TL -> price <= 15000;
+bütçem 15000 lira -> price <= 15000;
+bütçem max 15000 -> price <= 15000;
+bütçem en az 15000 -> price >= 15000;
+bütçem fark etmez -> price:any;
+afyon telefon -> os:ios;
+ayfon -> os:ios;
+ayfon telefon -> os:ios;
+apple telefon -> os:ios;
+apple -> os:ios;
+pahalı telefon öner -> price >= 30000;
+48 mp kamera telefon 15000 tl altında -> camera: 48; price: <=15000;
+oppo android telefon 4 gb ram -> brand: oppo; os: android; ram: 4;
+samsung galaxy 6 gb ram fotoğraf için -> brand: samsung; ram: 6; usage: photo;
+20000 tl üstü iphone öner -> price: >=20000; brand: apple; os: ios;
+realme gaming telefon 8 gb ram -> brand: realme; usage: game; ram: 8;
+honor telefon 6.4 inç ekran 12000 tl -> brand: honor; screen: 6.4; price: 12000;
+vivo 64 mp kamera 16000 tl -> brand: vivo; camera: 64; price: 16000;
+poco oyun telefunu 128 gb -> brand: poco; usage: game; storage: 128;
+oneplus android 12 gb ram -> brand: oneplus; os: android; ram: 12;
+motorola 5000 mah batarya 14000 tl -> brand: motorola; battery: 5000; price: 14000;
+google pixel kamera için 25000 tl -> brand: google; usage: photo; price: 25000;
+asus rog gaming telefon 16 gb ram -> brand: asus; usage: game; ram: 16;
+mi 11 ultra 50 mp kamera -> brand: xiaomi; camera: 50;
+iphone 13 pro 128 gb 35000 tl -> brand: apple; storage: 128; price: 35000;
+huawei p50 pro fotoğraf çekimi -> brand: huawei; usage: photo;
+redmi note 11 4 gb ram 8000 tl -> brand: xiaomi; ram: 4; price: 8000;
+oppo find x5 pro oyun için -> brand: oppo; usage: game;
+6 inç altı ekran küçük telefon 15000 tl -> screen: <=6; price: 15000;
+7 inç üstü büyük ekran telefon oyun için -> screen: >=7; usage: game;
+100 mp üstü kamera telefon fotoğraf -> camera: >=100; usage: photo;
+512 gb depolama telefon 45000 tl -> storage: 512; price: 45000;
+4000 mah altı düşük batarya telefon -> battery: <=4000;
+6000 mah üstü yüksek batarya telefon -> battery: >=6000;
+16 gb ram performans telefonu -> ram: 16; usage: game;
+32 gb ram ultra performans -> ram: 32; usage: game;
+iphone telefon öner -> os:ios;
+iphone -> os:ios;
+hafıza iyi -> storage:good;
+bütçem 12000 -> price <= 12000;
 bütçe 12000 -> price <= 12000
 bütçem max 12000 -> price <= 12000
 android telefon öner -> os:android
