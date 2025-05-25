@@ -19,6 +19,12 @@ oyun oynamak için android telefon öner -> price: any; os:andorid; usage: game;
 15000 tl altında 6 gb ram android telefon -> price: <=15000; os: android; ram: 6;  is_new_prompt:true;
 pahalı iphone telefon -> price: >=30000; os: ios; is_new_prompt:true;
 kamerası iyi olan android telefon öner -> price: any; os:android; usage:photo; camera: good; is_new_prompt:true;
+15000 tl den az 6 gb ram android telefon öner -> price: <=15000; os:android; ram: 6gb; is_new_prompt: true;
+25000 tl hafızası iyi olan oyun için telefon android -> price: <=25000; os:android; usage:game; storage:good; is_new_prompt: true;
+fotoğraf çekmek için samsung telefon -> price: any; brand:samsung; os:android; usage:photo; is_new_prompt:true; 
+fotoğraf çekmek için samsung telefon -> price: any; os:android; usage:photo; is_new_prompt:true; 
+fotoğraf çekmek için apple telefon  -> price: any; brand: apple; os:ios; usage:photo; is_new_prompt:true;
+fotoğraf çekmek için iphone telefon -> price: any; brand:apple; os:ios; usage:photo; is_new_prompt:true;
 
 // BÜTÇE KISMI
 bütçem 15000 tl -> price: <= 15000; is_new_prompt: false;
@@ -41,6 +47,7 @@ androidd -> os:andorid; is_new_prompt: false;
 samsung -> brand:samsung; os:android; is_new_prompt: false;
 androd -> os:android; is_new_prompt: false;
 android telefon öner -> os:andorid; is_new_prompt:true;
+
 // OS IOS
 apple telefon -> os:ios; is_new_prompt:false;
 apple -> os:ios; is_new_prompt: false;
@@ -56,7 +63,6 @@ gaming telefon -> usage:game; is_new_prompt:false;
 oyun oynanan telefon -> usage:game; is_new_prompt:false;
 oyun oynamak için -> usage:game; is_new_prompt: false;
 gaming telefon istiyorum -> usage:game; is_new_prompt:false;
-
 
 // USAGE PHOTO KISMI
 fotograf -> usage:photo; is_new_prompt: false;
@@ -79,8 +85,8 @@ hafızası çok olan -> storage: >= 128; is_new_prompt: false;
 hafızası fark etmez -> storage: >= 128; is_new_prompt: false;
 hafızası ortalama olan -> storage: <= 128; is_new_prompt: false;
 hafızası aşırı olan -> storage: >= 256; is_new_prompt:false;
-256 gb hafıza -> storage: 256; is_new_prompt; false
-128 gb hafıza -> storage: 128; is_new_prompt; false
+256 gb hafıza -> storage: 256; is_new_prompt; false;
+128 gb hafıza -> storage: 128; is_new_prompt; false;
 
 // BATARYA KISMI
 bataryası iyi olan -> battery: good; is_new_prompt: false;
@@ -91,7 +97,7 @@ bataryası çok olan -> battery: good; is_new_prompt:false;
 bataryası fark etmez-> battery: any; is_new_prompt: false;
 6000 mah üstü batarya telefon -> battery: good; is_new_prompt: false;
 4000 mah ve altı batarya telefon -> battery: bad; is_new_prompt: false;
-uzun batarya ömrü telefon -> battery: good; is_new_prompt; false
+uzun batarya ömrü telefon -> battery: good; is_new_prompt; false;
 
 // SCREEN KISMI
 ekranı büyük olan -> screen: >= 6.5; is_new_prompt: false;
