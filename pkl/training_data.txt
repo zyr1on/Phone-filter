@@ -9,24 +9,24 @@ xiaomi 5000 mah batarya android telefon -> brand: xiaomi; battery: 5000; os: and
 6.5 inç ekran oyun telefonu 18000 tl -> screen: 6.5; usage: game; price: 18000;
 ios telefon -> os:ios;
 afyon telefon -> os:ios;
-afyon -> os:ios;
-iphon -> os:ios;
-ayfon -> os:ios;
-ayfon telefon -> os:ios;
-apple telefon -> os:ios;
-apple -> os:ios;
-15000 -> price <= 15000;
-15000 tl -> price <= 15000;
-bütçe 15000 -> price <= 15000;
-bütçem 15000TL -> price <= 15000;
-bütçem 15000 lira -> price <= 15000;
-bütçem max 15000 -> price <= 15000;
-bütçem en az 15000 -> price >= 15000;
-bütçem fark etmez -> price:any;
-pahalı telefon öner -> price >= 35000;
-48 mp kamera telefon 15000 tl altında -> camera: 48; price: <=15000;
-48 mp kamera telefon -> camera: 48;
-48mp -> camera:48;
+afyon -> os:ios; is_new_prompt; false
+iphon -> os:ios; is_new_prompt; false
+ayfon -> os:ios; is_new_prompt; false
+ayfon telefon -> os:ios; is_new_prompt; false
+apple telefon -> os:ios; is_new_prompt; false
+apple -> os:ios; is_new_prompt; false
+15000 -> price <= 15000; is_new_prompt; false
+15000 tl -> price <= 15000; is_new_prompt; false
+bütçe 15000 -> price <= 15000;  is_new_prompt; false
+bütçem 15000TL -> price <= 15000; is_new_prompt; false
+bütçem 15000 lira -> price <= 15000; is_new_prompt; false
+bütçem max 15000 -> price <= 15000; is_new_prompt; false
+bütçem en az 15000 -> price >= 15000; is_new_prompt; false
+bütçem fark etmez -> price:any; is_new_prompt; false
+pahalı telefon öner -> price >= 35000; is_new_prompt; false
+48 mp kamera telefon 15000 tl altında -> camera: 48; price: <=15000; is_new_prompt; false
+48 mp kamera telefon -> camera: 48; is_new_prompt; false
+48mp -> camera:48; is_new_prompt; false
 oppo android telefon 4 gb ram -> brand: oppo; os: android; ram: 4;
 samsung galaxy 6 gb ram fotoğraf için -> brand: samsung; ram: 6; usage: photo;
 20000 tl üstü iphone öner -> price: >=20000; brand: apple; os: ios;
@@ -42,59 +42,59 @@ oppo find x5 pro oyun için -> brand: oppo; usage: game;
 7 inç üstü büyük ekran telefon oyun için -> screen: >=7; usage: game;
 100 mp üstü kamera telefon fotoğraf -> camera: >=100; usage: photo;
 512 gb depolama telefon 45000 tl -> storage: 512; price: 45000;
-4000 mah altı batarya telefon -> battery: <=4000;
-6000 mah üstü batarya telefon -> battery: >=6000;
-batarya güzel olan telefon öner -> battery: good;
-batarya iyi olan telefon öner -> battery: good;
-batarya iyi -> battery: good;
-iyi batarya -> battery: good;
+4000 mah altı batarya telefon -> battery: <=4000; is_new_prompt; false
+6000 mah üstü batarya telefon -> battery: >=6000; is_new_prompt; false
+batarya güzel olan telefon öner -> battery: good; is_new_prompt; false
+batarya iyi olan telefon öner -> battery: good; is_new_prompt; false
+batarya iyi -> battery: good; is_new_prompt; false
+iyi batarya -> battery: good; is_new_prompt; false
 16 gb ram performans telefonu -> ram: 16; usage: game;
 32 gb ram ultra performans -> ram: 32; usage: game;
 iphone telefon öner -> os:ios;
-iphone -> os:ios;
-hafıza iyi -> storage:good;
-iyi hafıza -> storage:good;
-bütçem 12000 -> price <= 12000;
-bütçe 12000 -> price <= 12000;
-bütçem max 12000 -> price <= 12000;
-android telefon öner -> os:android;
-android telefon söyle -> os:android;
-android telefon göster -> os:android;
-android telefon -> os:android;
-android -> os:android;
-bütçem 15000tl -> price <= 15000;
-fotograf çekmek için telefon öner -> usage:photo;
+iphone -> os:ios; is_new_prompt; false
+hafıza iyi -> storage:good; is_new_prompt; false
+iyi hafıza -> storage:good; is_new_prompt; false
+bütçem 12000 -> price <= 12000; is_new_prompt; false
+bütçe 12000 -> price <= 12000; is_new_prompt; false
+bütçem max 12000 -> price <= 12000; is_new_prompt; false
+android telefon öner -> os:android; is_new_prompt; false
+android telefon söyle -> os:android; is_new_prompt; false
+android telefon göster -> os:android; is_new_prompt; false
+android telefon -> os:android; is_new_prompt; false
+android -> os:android; is_new_prompt; false
+bütçem 15000tl -> price <= 15000; is_new_prompt; false
+fotograf çekmek için telefon öner -> usage:photo; is_new_prompt; false
 giriş sınıfı bir telefon öner -> price <= 10000; os:android;
-256 gb hafıza -> storage: 256;
-hafızası iyi olan telefon öner -> storage: good;
-hafızası iyi olan -> storage: good;
-hafızası kötü olmayan telefon öner -> storage: good;
-hafızası kötü olmayan -> storage: good;
-budget telefon 5000 tl altı -> price: <=5000;
+256 gb hafıza -> storage: 256; is_new_prompt; false
+hafızası iyi olan telefon öner -> storage: good; is_new_prompt; false
+hafızası iyi olan -> storage: good; is_new_prompt; false
+hafızası kötü olmayan telefon öner -> storage: good; is_new_prompt; false
+hafızası kötü olmayan -> storage: good; is_new_prompt; false
+budget telefon 5000 tl altı -> price: <=5000; os: android
 premium telefon 50000 tl üstü -> price: >=50000;
-orta segment telefon 20000 tl civarı -> price: ~20000;
-entry level telefon başlangıç -> price: <=10000;
-ekonomik android telefon -> os: android; price: <=15000;
+orta segment telefon 20000 tl civarı -> price: <=20000; is_new_prompt; false
+entry level telefon başlangıç -> price: <=10000; is_new_prompt; false
+ekonomik android telefon -> os: android; price: <=15000; is_new_prompt; false
 pahalı iphone telefon -> brand: apple; price: >=30000;
 ucuz xiaomi telefon -> brand: xiaomi; price: <=10000;
 orta seviye samsung -> brand: samsung; price: ~25000;
-güçlü oyun telefonu -> usage: game; ram: >=8;
-profesyonel kamera telefonu -> usage: photo; camera: >=48;
-uzun batarya ömrü telefon -> battery: >=5000;
-kompakt telefon küçük -> screen: <=5.5;
-büyük ekran medya telefonu -> screen: >=6.5;
-hızlı telefon performans -> ram: >=6; usage: game;
-yavaş telefon temel kullanım -> ram: <=4;
-çok depolama telefon -> storage: >=256;
-çok depolama -> storage: >=256;
-az depolama telefon -> storage: <=64;
-az depolama -> storage: <=64;
-bataryası iyi dayansın -> battery: good;
-bataryası 5000 mah üzeri -> battery >= 5000;
-android telefon -> os: android;
-ios telefon -> os: ios;
-15000 tl telefon -> price: <=15000;
-oyun telefonu -> usage: game;
+güçlü oyun telefonu -> usage: game; ram: >=8; os:android;
+profesyonel kamera telefonu -> usage: photo; camera: >=48; 
+uzun batarya ömrü telefon -> battery: >=5000; is_new_prompt; false
+kompakt telefon küçük -> screen: <=5.5; is_new_prompt; false
+büyük ekran medya telefonu -> screen: >=6.5; is_new_prompt; false
+hızlı telefon performans -> ram: >=6; usage: game; os:android
+yavaş telefon temel kullanım -> ram: <=4; is_new_prompt; false
+çok depolama telefon -> storage: >=256; is_new_prompt; false
+çok depolama -> storage: >=256; is_new_prompt; false
+az depolama telefon -> storage: <=64; is_new_prompt; false
+az depolama -> storage: <=64; is_new_prompt; false
+bataryası iyi dayansın -> battery: good; is_new_prompt; false
+bataryası 5000 mah üzeri -> battery >= 5000; is_new_prompt; false
+android telefon -> os: android; is_new_prompt; false
+ios telefon -> os: ios; is_new_prompt; false
+15000 tl telefon -> price: <=15000; is_new_prompt; false
+oyun telefonu -> usage: game; os:android; 
 fotoğraf telefonu -> usage: photo;
 6 gb ram telefon -> ram: 6;
 128 gb depolama telefon -> storage: 128;
