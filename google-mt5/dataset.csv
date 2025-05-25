@@ -27,8 +27,8 @@ minimum 128 gb depolama ve nfc özellikli,storage >= 128; feature: nfc
 8 gb ramli telefon istiyorum,ram: 8
 5000 mah bataryalı ve ucuz bir telefon,battery: 5000; price: cheap
 iyi kamerası olan bir iphone arıyorum,camera: good; os: ios
-oyun oynamak için uygun fiyatlı bir android,purpose: gaming; price: <=25000; os: android
-selfie için iyi bir kamera ve uzun batarya,purpose: selfie; camera: good; battery: good
+oyun oynamak için uygun fiyatlı bir android,purpose: gaming; price: affordable; os: android
+selfie için iyi bir kamera ve uzun batarya,purpose: selfie; camera: good; battery: long_lasting
 12 gb ram ve en fazla 15000 tl fiyatı olan telefon,ram: 12; price <= 15000
 en az 4000 mah bataryası olan bir iphone,battery >= 4000; os: ios
 hem uygun fiyatlı hem de kamerası iyi olan bir android,price: affordable; camera: good; os: android
@@ -43,7 +43,7 @@ oyun için güçlü bir telefon ama 15000 tl altında,purpose: gaming; price <= 
 4500 mah üzeri batarya ve android,battery >= 4500; os: android
 en fazla 15000 tl,price <= 15000
 bütçem 15000 tl,price: 15000
-fiyat önemli değil ama kamerası iyi olsun,price:any; camera:good
+fiyat önemli değil ama kamerası iyi olsun,price: high; camera: good
 12 gb ramli telefon istiyorum,ram: 12
 ramı yüksek bir android,ram: high; os: android
 4 gb ramli ucuz telefon,ram: 4; price: cheap
@@ -64,8 +64,8 @@ ramı 20 gb olan telefon,ram: 20
 ramı en az 10 gb,ram >= 10
 ramı 4 gb bir android,ram: 4; os: android
 ramı 8 gb bir iphone,ram: 8; os: ios
-ramı 12 gb bir android,ram:12; os: android
-ramı 16 gb bir android,ram:16; os: android
+ramı 12 gb bir android,ram: 12; os: android
+ramı 16 gb bir android,ram: 16; os: android
 ramı 6 gb olsun,ram: 6
 ram 8 gb olsun,ram: 8
 bataryası çok uzun giden telefon,battery: very_long_lasting
