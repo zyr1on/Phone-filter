@@ -10,7 +10,7 @@ def load_data(data_file):
             continue  # yorum satırı veya geçersiz satır atla
         input_text, output_text = line.split(" -> ", 1)
         total += 1
-        print(input_text, output_text)
+        print("input:",input_text,"output:",output_text)
     print("total: ",total)
 # Fonksiyon çağrısı
 load_data("training_data.txt")
