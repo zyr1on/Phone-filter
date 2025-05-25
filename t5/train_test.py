@@ -19,7 +19,6 @@ def turkce_karakterleri_cevir(text):
     return text
 
 
-
 class PhoneDataset(Dataset):
     def __init__(self, inputs, targets, tokenizer, max_length=512):
         self.inputs = inputs
@@ -58,6 +57,7 @@ class PhoneDataset(Dataset):
             'labels': target_encoding['input_ids'].flatten()
         }
 
+
 class PhoneT5Model:
     def __init__(self, model_name='t5-small'):
         self.model_name = model_name
@@ -79,23 +79,23 @@ class PhoneT5Model:
             lines = f.readlines()
         
         for line in lines:
-        	line = line.strip()
-        	if not line:  # boş satır kontrolü
-            	continue
-        	if line.startswith("//") or " -> " not in line:
-            	continue  # yorum satırı veya geçersiz satır atla
-        	input_text, output_text = line.split(" -> ", 1)
+            line = line.strip()
+            if not line:  # boş satır kontrolü
+                continue
+            if line.startswith("//") or " -> " not in line:
+                continue  # yorum satırı veya geçersiz satır atla
+            input_text, output_text = line.split(" -> ", 1)
 
-        # Küçük harfe çevir
-        	input_text = input_text.lower()
-        	output_text = output_text.lower()
+            # Küçük harfe çevir
+            input_text = input_text.lower()
+            output_text = output_text.lower()
 
-        # Türkçe karakterleri çevir
-        	input_text = turkce_karakterleri_cevir(input_text)
-        	output_text = turkce_karakterleri_cevir(output_text)
+            # Türkçe karakterleri çevir
+            input_text = turkce_karakterleri_cevir(input_text)
+            output_text = turkce_karakterleri_cevir(output_text)
 
-        	inputs.append(input_text.strip())
-        	targets.append(output_text.strip())
+            inputs.append(input_text.strip())
+            targets.append(output_text.strip())
         
         return inputs, targets
     
@@ -174,6 +174,7 @@ class PhoneT5Model:
         
         response = self.tokenizer.decode(outputs[0], skip_special_tokens=True)
         return response
+
 
 if __name__ == "__main__":
     print("T5 Model Eğitimi Başlıyor...")
