@@ -79,15 +79,15 @@ class PhoneT5Model:
         
         with open(data_file, 'r', encoding='utf-8') as f:
             lines = f.readlines()
-        
+        totalline = 0
         for line in lines:
             line = line.strip()
             if not line:  # boş satır kontrolü
                 continue
-            if line.startswith("//") or " -> " not in line:
+            if line.startswith("//") or " -> " not in line: # // ile başlıyorsa veya -> yoksa discard et
                 continue  # yorum satırı veya geçersiz satır atla
             input_text, output_text = line.split(" -> ", 1)
-
+            totalline += 1
             # Küçük harfe çevir
             input_text = input_text.lower()
             output_text = output_text.lower()
@@ -98,7 +98,7 @@ class PhoneT5Model:
 
             inputs.append(input_text.strip())
             targets.append(output_text.strip())
-        
+        print("Total lines: ", totalline)
         return inputs, targets
     
     def train(self, data_file, output_dir='./phone_t5_model', epochs=3, batch_size=8):
