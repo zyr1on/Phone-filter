@@ -5,6 +5,7 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 import os
 
+# türkce karakter normalizasyonu
 def turkce_karakterleri_cevir(text):
     cevirme_dict = {
         'ç': 'c', 'Ç': 'C',
@@ -70,7 +71,8 @@ class PhoneT5Model:
         }
         self.tokenizer.add_special_tokens(special_tokens)
         self.model.resize_token_embeddings(len(self.tokenizer))
-    
+
+    # egitim verilerini yükle, küçük harfe çevir, normalize et.
     def load_data(self, data_file):
         inputs = []
         targets = []
