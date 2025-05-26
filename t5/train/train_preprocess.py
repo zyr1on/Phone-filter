@@ -1,9 +1,9 @@
 import torch
 from transformers import T5ForConditionalGeneration, T5Tokenizer, Trainer, TrainingArguments, EarlyStoppingCallback
 from torch.utils.data import Dataset, DataLoader
-import pandas as pd
+#import pandas as pd
 from sklearn.model_selection import train_test_split
-import os
+#import os
 
 # türkce karakter normalizasyonu
 def turkce_karakterleri_cevir(text):
@@ -115,27 +115,57 @@ class PhoneT5Model:
         # Create datasets
         train_dataset = PhoneDataset(train_inputs, train_targets, self.tokenizer)
         val_dataset = PhoneDataset(val_inputs, val_targets, self.tokenizer)
+
+        # Training arguments EPOCH
+        # training_args = TrainingArguments(
+        #     output_dir=output_dir,
+        #     num_train_epochs=epochs,
+        #     per_device_train_batch_size=batch_size,
+        #     per_device_eval_batch_size=batch_size,
+        #     learning_rate=3e-5,
+        #     warmup_steps=100,
+        #     weight_decay=0.01,
+        #     logging_dir='./logs',
+
+        #     # CHANGED AREA
+        #     evaluation_strategy='epoch',
+        #     save_strategy='epoch',
+        #     logging_strategy='epoch',
+
+
+        #     save_total_limit=3,
+        #     load_best_model_at_end=True,
+        #     metric_for_best_model='eval_loss',
+        #     greater_is_better=False,
+        #     report_to="none",  # wandb devre dışı
+        #     dataloader_num_workers=0  # Windows uyumluluğu
+        # )
         
-        # Training arguments
+        # Training arguments STEPS
         training_args = TrainingArguments(
             output_dir=output_dir,
+
             num_train_epochs=epochs,
-            per_device_train_batch_size=batch_size,
-            per_device_eval_batch_size=batch_size,
+            per_device_train_batch_size=batch_size, # 8 üstü ideal şuan için
+            per_device_eval_batch_size=batch_size,  # 8 üstü ideal şuan için
+            
             learning_rate=3e-5, 
-            warmup_steps=100,
+            warmup_ratio=0.1,
             weight_decay=0.01,
             logging_dir='./logs',
             logging_steps=10,
+            
             eval_strategy='steps',
             eval_steps=50,
             save_steps=100,
-            save_total_limit=3,
+            save_total_limit=1,
+            
             load_best_model_at_end=True,
             metric_for_best_model='eval_loss',
             greater_is_better=False,
+            
             report_to="none",  # Disable wandb
-            dataloader_num_workers=0  # Windows compatibility
+            dataloader_num_workers=0  # Windows compatibility 
         )
         
         # Create trainer
@@ -155,11 +185,11 @@ class PhoneT5Model:
         print("Model kaydediliyor...")
         self.model.save_pretrained(output_dir)
         self.tokenizer.save_pretrained(output_dir)
-        
         print(f"Model {output_dir} klasörüne kaydedildi!")
     
     def generate_response(self, input_text, max_length=256):
-        input_text = "Telefon önerisi: " + input_text
+        #input_text = "Telefon önerisi: " + input_text
+        # telefon önerisi eklenebilir başına
         
         input_ids = self.tokenizer.encode(input_text, return_tensors='pt')
         
@@ -181,21 +211,16 @@ class PhoneT5Model:
 if __name__ == "__main__":
     print("T5 Model Eğitimi Başlıyor...")
     print("GPU kullanımı:", "Evet" if torch.cuda.is_available() else "Hayır")
-    
     # Check if CUDA is available
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     print(f"Kullanılan cihaz: {device}")
-    
     try:
         # Create model
-        model = PhoneT5Model('t5-base')  # t5-base için daha iyi sonuç ama daha yavaş
+        model = PhoneT5Model('t5-base')  # t5-base veya t5-large seçilebilir
         model.model.to(device)
-        
         # Train
-        model.train('training_data.txt', epochs=15, batch_size=8)  # Batch size düşük tutuldu RAM için
-        
+        model.train('training_data.txt', epochs=15, batch_size=8)  # Batch size düşük tutuldu RAM için        
         print("Eğitim tamamlandı!")
-        
     except Exception as e:
         print(f"Hata oluştu: {e}")
         print("Gerekli paketler: pip install torch transformers datasets")
