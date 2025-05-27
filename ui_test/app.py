@@ -1,18 +1,31 @@
 from flask import Flask, render_template, request, jsonify
+import pandas as pd
+import os
 
 app = Flask(__name__)
 
-def parse_features(input_str):
-    results = []
-    # input'u ayır
-    pairs = input_str.strip().split(';')
-    # her key-value çiftini işle
-    for pair in pairs:
-        if ':' in pair:
-            key, value = pair.split(':', 1)
-            if not value.strip().lower() == "none":
-                results.append(f"{key.strip()}:{value.strip()}")
-    return results
+def load_phone_data():
+    try:
+        df = pd.read_csv('phone_dataset.csv')
+        return df
+    except:
+        return None
+
+def filter_phones(query):
+    df = load_phone_data()
+    if df is None:
+        return []
+    
+    query = query.lower().strip()
+    
+    if 'android' in query:
+        filtered = df[df['brand'].str.lower() == 'android']
+    elif 'iphone' in query:
+        filtered = df[df['brand'].str.lower() == 'iphone']
+    else:
+        return []
+    
+    return filtered.to_dict('records')
 
 @app.route('/')
 def index():
@@ -23,15 +36,22 @@ def process_input():
     user_input = request.json.get('input', '')
     
     if not user_input.strip():
-        return jsonify({'response': 'Lütfen bir şey yazınız.'})
+        return jsonify({'response': 'Lütfen bir şey yazınız.', 'phones': []})
     
-    parsed_results = parse_features(user_input)
+    phones = filter_phones(user_input)
     
-    if not parsed_results:
-        return jsonify({'response': 'Tekrar deneyiniz.'})
-    
-    response = '\n'.join(parsed_results)
-    return jsonify({'response': response})
+    if phones:
+        return jsonify({
+            'response': f'{len(phones)} telefon bulundu:',
+            'phones': phones,
+            'query': user_input
+        })
+    else:
+        return jsonify({
+            'response': 'Telefon bulunamadı. "Android" veya "iPhone" yazın.',
+            'phones': [],
+            'query': user_input
+        })
 
 if __name__ == '__main__':
     app.run(debug=True)
