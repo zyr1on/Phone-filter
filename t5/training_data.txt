@@ -10,8 +10,8 @@ fotoğraf çekmek için 20000 tl altında samsung telefon -> price:<=20000; bran
 25000 tl yi geçmeyen oyuncu telefon öner -> price:<= 25000; brand:none; os:android; usage:game; ram:none; storage:none; battery:none; camera:none; screen:none; 
 15000 tl lik xiaomi telefon öner -> price:<= 15000; brand:xiaomi; os:andorid; usage:none; ram:none; storage:none; battery:none; camera:none; screen:none; 
 bataryası iyi olan max 12000 tl android telefon öner -> price:<= 12000; brand:none; os:andorid; usage:none; ram:none; battery:good; camera:none; screen:none; 
-hafızası ve bataryası iyi olan android telefon öner -> price:any; brand:none; os:andorid; usage:none; ram:none; storage:>= 128; battery:good; camera:none; screen:none; 
-hafıza ve batarya iyi olan 6 gb ram ve üzeri olan gaming android telefon öner -> price:any; brand:none; os:andorid; usage:game; ram:>= 6; storage: >= 128; battery:good;  
+hafızası ve bataryası iyi olan android telefon öner -> price:any; brand:none; os:andorid; usage:none; ram:none; storage:good; battery:good; camera:none; screen:none; 
+hafıza ve batarya iyi olan 6 gb ram ve üzeri olan gaming android telefon öner -> price:any; brand:none; os:andorid; usage:game; ram:>= 6; storage:good; battery:good;  
 hızlı telefon performans -> price:any; brand:none; os:android; usage: game; ram:none; storage:none; battery:none; camera:none; screen:none;
 oyun oynamak için android telefon öner -> price:any; brand:none; os:android; usage: game; ram:none; storage:none; battery:none; camera:none; screen:none;
 15000 tl altında 6 gb ram android telefon -> price:<=15000; brand:none; os:android; usage:none; ram:6; storage:none; battery:none; camera:none; screen:none; 
@@ -30,11 +30,11 @@ iyi fotoğraf çeken android telefon -> price:any; brand:none; os:android; usage
 uzun süre oyun oynayabileceğim oyuncu telefonları -> price: any; brand: none; os:android; usage:game; ram: 8; storage:none; battery:good; camera:none; screen:none;
 hafızasını sık sık kullanacağım bir iphone telefon öner -> price: any; brand:apple; os:ios; usage:none; ram: none; storage:good; battery:good; camera:none; screen:none;
 bataryası iyi dayanan bir apple marka telefon -> price:any; brand:apple; os:ios; usage:none; ram:none; storage:none; battery:good; camera:none; screen:none;
-bataryası ve hafızası iyi dayanan bir apple marka telefon -> price:any; brand:apple; os:ios; usage:none; ram:none; storage:256; battery:good; camera:none; screen:none;
+bataryası ve hafızası iyi dayanan bir apple marka telefon -> price:any; brand:apple; os:ios; usage:none; ram:none; storage:good; battery:good; camera:none; screen:none;
 rahat oyun oynayabileceğim şarjı erken bitmeyen bir android telefon -> pricy: any; brand:none; os:android; usage:game; ram: 8; storage:none; battery:good; camera:none; screen none;
-kasmayan ısınmayan bataryası iyi dayanan xiaomi -> price:any; brand:xiaomi; os:android; usage:none; ram: 6; storage: 128; battery:good; camera:none; screen:none;
-kasmayan ısınmayan bataryası iyi dayanan android -> price:any; brand:none; os:android; usage:none; ram: 6; storage: 128; battery:good; camera:none; screen:none;
-günlük hayatta işimi gören çabuk şarjı bitmeyen ve hafızası hemen dolmayan android telefon -> price: any; brand:none; os:android; usage:none; ram:6; storage:128; battery:good; camera:none; screen:none;
+kasmayan ısınmayan bataryası iyi dayanan xiaomi -> price:any; brand:xiaomi; os:android; usage:none; ram: 6; storage: good; battery:good; camera:none; screen:none;
+kasmayan ısınmayan bataryası iyi dayanan android -> price:any; brand:none; os:android; usage:none; ram: 6; storage: good; battery:good; camera:none; screen:none;
+günlük hayatta işimi gören çabuk şarjı bitmeyen ve hafızası hemen dolmayan android telefon -> price: any; brand:none; os:android; usage:none; ram:6; storage:good; battery:good; camera:none; screen:none;
 güzel fotoğraflar çekmek için büyük ekranlı iphone -> price:any; brand:apple; os:ios; usage:photo; ram: 6; storage: none; battery:none; camera:good; screen:none;
 
 // -------------------------------------- GEMINININ EKLEDIGI KISIMLAR BURASI -------------------------------------------------------------------------------------
@@ -77,7 +77,7 @@ ekranı küçük ios telefon -> price:any; brand:apple; os:ios; usage:none; ram:
 hem oyun hem fotoğraf için android telefon -> price:any; brand:none; os:android; usage:game_photo; ram:none; storage:none; battery:none; camera:good; screen:none; 
 8 gb ram ve üzeri android telefon -> price:any; brand:none; os:android; usage:none; ram:>=8; storage:none; battery:none; camera:none; screen:none; 
 pil ömrü uzun ve hızlı android telefon -> price:any; brand:none; os:android; usage:game; ram:none; storage:none; battery:good; camera:none; screen:none; 
-çok fazla uygulama yüklemek için android telefon -> price:any; brand:none; os:android; usage:none; ram:none; storage:256; battery:none; camera:none; screen:none; 
+çok fazla uygulama yüklemek için android telefon -> price:any; brand:none; os:android; usage:none; ram:none; storage:good; battery:none; camera:none; screen:none; 
 en iyi kameraya sahip telefon -> price:any; brand:none; os:none; usage:photo; ram:none; storage:none; battery:none; camera:good; screen:none; 
 en ucuz android telefon -> price:<=5000; brand:none; os:android; usage:none; ram:none; storage:none; battery:none; camera:none; screen:none; 
 iş için uygun android telefon -> price:any; brand:none; os:android; usage:work; ram:none; storage:none; battery:good; camera:none; screen:none; 
@@ -111,7 +111,6 @@ androd -> price:none; brand:none; os:android; usage:none; ram:none; storage:none
 android telefon öner -> price:none; brand:none; os:android; usage:none; ram:none; storage:none; battery:none; camera:none; screen:none;
 xiaomi -> price:none; brand:xiaomi; os:android; usage:none; ram:none; storage:none; battery:none; camera:none; screen:none;
 huawei -> price:none; brand:huawei; os:android; usage:none; ram:none; storage:none; battery:none; camera:none; screen:none;
-general mobile -> price:none; brand:general mobile; os:android; usage:none; ram:none; storage:none; battery:none; camera:none; screen:none;
 apple telefon -> price:none; brand:apple; os:ios; usage:none; ram:none; storage:none; battery:none; camera:none; screen:none;
 apple -> price:none; brand:apple; os:ios; usage:none; ram:none; storage:none; battery:none; camera:none; screen:none;
 ayfon telefon -> price:none; brand:apple; os:ios; usage:none; ram:none; storage:none; battery:none; camera:none; screen:none;
@@ -146,6 +145,12 @@ hafızası aşırı olan -> price:none; brand:none; os:none; usage:none; ram:non
 128 gb hafıza -> price:none; brand:none; os:none; usage:none; ram:none; storage:128; battery:none; camera:none; screen:none;
 512 gb hafıza -> price:none; brand:none; os:none; usage:none; ram:none; storage:512; battery:none; camera:none; screen:none;
 64 gb hafıza -> price:none; brand:none; os:none; usage:none; ram:none; storage:64; battery:none; camera:none; screen:none;
+iyi hafıza -> price:none; brand:none; os:none; usage:none; ram:none; storage:good; battery:none; camera:none; screen:none;
+hafızası orta olan -> price:none; brand:none; os:none; usage:none; ram:none; storage:medium; battery:none; camera:none; screen:none;
+hafızası kötü olan -> price:none; brand:none; os:none; usage:none; ram:none; storage:bad; battery:none; camera:none; screen:none;
+iyi hafıza iphone -> price:none; brand:apple; os:ios; usage:none; ram:none; storage:good; battery:none; camera:none; screen:none;
+
+
 bataryası iyi olan -> price:none; brand:none; os:none; usage:none; ram:none; storage:none; battery:good; camera:none; screen:none;
 bataryası çok olan -> price:none; brand:none; os:none; usage:none; ram:none; storage:none; battery:good; camera:none; screen:none;
 şarjı çok giden -> price:none; brand:none; os:none; usage:none; ram:none; storage:none; battery:good; camera:none; screen:none;
@@ -171,7 +176,7 @@ bataryası kötü olsun ama ucuz android -> price:<=8000; brand:none; os:android
 sadece arama yapmak için ucuz telefon -> price:<=5000; brand:none; os:none; usage:call; ram:none; storage:none; battery:none; camera:none; screen:none; 
 kamera ve batarya iyi olan samsung -> price:any; brand:samsung; os:android; usage:photo; ram:none; storage:none; battery:good; camera:good; screen:none; 
 oyun ve şarjı iyi olan android -> price:any; brand:none; os:android; usage:game; ram:none; storage:none; battery:good; camera:none; screen:none; 
-iş ve sosyal medya için telefon -> price:any; brand:none; os:none; usage:work_socialmedia; ram:none; storage:none; battery:none; camera:none; screen:none; 
+iş ve sosyal medya için telefon -> price:any; brand:none; os:none; usage:work; ram:none; storage:none; battery:none; camera:none; screen:none; 
 küçük ekranlı ve iyi kameralı iphone -> price:any; brand:apple; os:ios; usage:photo; ram:none; storage:none; battery:none; camera:good; screen:bad; 
 10000 tl altında bataryası iyi android -> price:<=10000; brand:none; os:android; usage:none; ram:none; storage:none; battery:good; camera:none; screen:none; 
 çok hızlı şarj olan telefon -> price:any; brand:none; os:none; usage:none; ram:none; storage:none; battery:good; camera:none; screen:none; 
@@ -183,8 +188,8 @@ pubg oynanabilecek android telefon -> price:any; brand:none; os:android; usage:g
 huawei fotoğraf çekmek için -> price:any; brand:huawei; os:android; usage:photo; ram:none; storage:none; battery:none; camera:good; screen:none; 
 20000 tl altı 8 gb ram android -> price:<=20000; brand:none; os:android; usage:none; ram:8; storage:none; battery:none; camera:none; screen:none; 
 en ucuz iphone -> price:<=18000; brand:apple; os:ios; usage:none; ram:none; storage:none; battery:none; camera:none; screen:none; 
-yüksek performanslı iş telefonu -> price:any; brand:none; os:none; usage:none; ram:8; storage:good; battery:good; camera:none; screen:none; 
-yüksek performanslı android iş telefonu -> price:any; brand:none; os:android; usage:none; ram:8; storage:good; battery:good; camera:none; screen:none; 
+yüksek performanslı iş telefonu -> price:any; brand:none; os:none; usage:work; ram:8; storage:good; battery:good; camera:none; screen:none; 
+yüksek performanslı android iş telefonu -> price:any; brand:none; os:android; usage:work; ram:8; storage:good; battery:good; camera:none; screen:none; 
 12000 tl civarı iyi kameralı android -> price:<=12000; brand:none; os:android; usage:photo; ram:none; storage:none; battery:none; camera:good; screen:none; 
 depolaması ve ekranı iyi android -> price:any; brand:none; os:android; usage:none; ram:none; storage:good; battery:none; camera:none; screen:good; 
 hızlı ve batarya ömrü iyi android -> price:any; brand:none; os:android; usage:game; ram:none; storage:none; battery:good; camera:none; screen:none; 
@@ -226,7 +231,7 @@ bataryası normal ama kamerası iyi android -> price:any; brand:none; os:android
 eski model oyun telefonu -> price:<=15000; brand:none; os:android; usage:game; ram:none; storage:none; battery:none; camera:none; screen:none; 
 iş için hızlı şarj olan telefon -> price:any; brand:none; os:none; usage:work; ram:none; storage:none; battery:good; camera:none; screen:none; 
 küçük ekranlı ve bataryası iyi android -> price:any; brand:none; os:android; usage:none; ram:none; storage:none; battery:good; camera:none; screen:bad; 
-hem oyun hem iş için telefon -> price:any; brand:none; os:none; usage:game_work; ram:none; storage:none; battery:none; camera:none; screen:none; 
+hem oyun hem iş için telefon -> price:any; brand:none; os:none; usage:game; ram:none; storage:none; battery:none; camera:none; screen:none; 
 10000 tl altı 128 gb depolama android -> price:<=10000; brand:none; os:android; usage:none; ram:none; storage:128; battery:none; camera:none; screen:none; 
 öğrencilere uygun fiyatlı telefon -> price:<=10000; brand:none; os:none; usage:student; ram:none; storage:none; battery:none; camera:none; screen:none; 
 sadece mesajlaşmak için telefon -> price:any; brand:none; os:none; usage:messaging; ram:none; storage:none; battery:none; camera:none; screen:none; 
@@ -251,7 +256,7 @@ video izlemek için bataryası iyi telefon -> price:any; brand:none; os:none; us
 6 gb ramli ve bataryası iyi android -> price:any; brand:none; os:android; usage:none; ram:6; storage:none; battery:good; camera:none; screen:none; 
 uygun fiyatlı küçük ekranlı android -> price:<=10000; brand:none; os:android; usage:none; ram:none; storage:none; battery:none; camera:none; screen:bad; 
 çok hızlı çalışan iphone -> price:any; brand:apple; os:ios; usage:game; ram:none; storage:none; battery:none; camera:none; screen:none; 
-hem iş hem fotoğraf için telefon -> price:any; brand:none; os:none; usage:work_photo; ram:none; storage:none; battery:none; camera:good; screen:none; 
+hem iş hem fotoğraf için telefon -> price:any; brand:none; os:none; usage:photo; ram:none; storage:none; battery:none; camera:good; screen:none; 
 20000 tl bütçe ile oyun telefonu android -> price:<=20000; brand:none; os:android; usage:game; ram:none; storage:none; battery:none; camera:none; screen:none; 
 eski model ama kamerası iyi android -> price:<=10000; brand:none; os:android; usage:photo; ram:none; storage:none; battery:none; camera:good; screen:none; 
 15000 tl altı samsung telefon -> price:<=15000; brand:samsung; os:android; usage:none; ram:none; storage:none; battery:none; camera:none; screen:none; 
@@ -279,7 +284,7 @@ sadece arama ve sosyal medya için telefon -> price:any; brand:none; os:none; us
 bataryası iyi olan ve küçük ekranlı android -> price:any; brand:none; os:android; usage:none; ram:none; storage:none; battery:good; camera:none; screen:bad; 
 fotoğraf çekmek için ucuz iphone -> price:<=15000; brand:apple; os:ios; usage:photo; ram:none; storage:none; battery:none; camera:good; screen:none; 
 8 gb ramli ve 256 gb depolamalı telefon -> price:any; brand:none; os:none; usage:none; ram:8; storage:256; battery:none; camera:none; screen:none; 
-iş ve oyun için telefon -> price:any; brand:none; os:none; usage:work_game; ram:none; storage:none; battery:none; camera:none; screen:none; 
+iş ve oyun için telefon -> price:any; brand:none; os:none; usage:game; ram:none; storage:none; battery:none; camera:none; screen:none; 
 hafızası kötü olan ama bataryası iyi telefon -> price:any; brand:none; os:none; usage:none; ram:none; storage:bad; battery:good; camera:none; screen:none; 
 20000 tl üstü oyun telefonu android -> price:>=20000; brand:none; os:android; usage:game; ram:none; storage:none; battery:none; camera:none; screen:none; 
 küçük ekranlı ve kamerası kötü android -> price:any; brand:none; os:android; usage:none; ram:none; storage:none; battery:none; camera:bad; screen:bad; 
@@ -302,7 +307,7 @@ Uzun ömürlü ve güncel android telefon -> price:any; brand:none; os:android; 
 Hem oyun hem film izlemek için büyük ekran -> price:any; brand:none; os:none; usage:game_movie; ram:none; storage:none; battery:none; camera:none; screen:good; 
 Çoklu görev için yüksek ramli android -> price:any; brand:none; os:android; usage:multitasking; ram:good; storage:none; battery:none; camera:none; screen:none; 
 Kamerası kötü ama bataryası çok iyi android -> price:any; brand:none; os:android; usage:none; ram:none; storage:none; battery:good; camera:bad; screen:none; 
-İş ve günlük kullanım için iphone -> price:any; brand:apple; os:ios; usage:work_daily; ram:none; storage:none; battery:none; camera:none; screen:none; 
+İş ve günlük kullanım için iphone -> price:any; brand:apple; os:ios; usage:work; ram:none; storage:none; battery:none; camera:none; screen:none; 
 12000 tl civarı 128 gb depolamalı android -> price:<=12000; brand:none; os:android; usage:none; ram:none; storage:128; battery:none; camera:none; screen:none; 
 Fotoğraf çekmek için bataryası kötü olmayan telefon -> price:any; brand:none; os:none; usage:photo; ram:none; storage:none; battery:good; camera:good; screen:none; 
 Oyun oynamak için yüksek performanslı android -> price:any; brand:none; os:android; usage:game; ram:good; storage:none; battery:none; camera:none; screen:none; 
@@ -312,7 +317,7 @@ Video düzenlemek için yüksek ramli telefon -> price:any; brand:none; os:none;
 Ekonomik ve büyük ekranlı android -> price:<=12000; brand:none; os:android; usage:none; ram:none; storage:none; battery:none; camera:none; screen:good; 
 Hafızası iyi ve ekranı küçük iphone -> price:any; brand:apple; os:ios; usage:none; ram:none; storage:good; battery:none; camera:none; screen:bad; 
 Sadece müzik dinlemek için uzun bataryalı telefon -> price:any; brand:none; os:none; usage:music; ram:none; storage:none; battery:good; camera:none; screen:none; 
-İş için hızlı ve güvenli android -> price:any; brand:none; os:android; usage:work; ram:none; storage:none; battery:none; camera:none; screen:none; 
+İş için hızlı ve güvenli android -> price:any; brand:none; os:android; usage:none; ram:none; storage:none; battery:none; camera:none; screen:none; 
 Sosyal medya ve oyun için android -> price:any; brand:none; os:android; usage:socialmedia_game; ram:none; storage:none; battery:none; camera:none; screen:none; 
 Ucuz ve bataryası kötü android -> price:<=7000; brand:none; os:android; usage:none; ram:none; storage:none; battery:bad; camera:none; screen:none; 
 Kamerası iyi ve 256 gb depolamalı android -> price:any; brand:none; os:android; usage:photo; ram:none; storage:256; battery:none; camera:good; screen:none; 
@@ -335,7 +340,7 @@ Kamerası kötü ama ucuz android -> price:<=8000; brand:none; os:android; usage
 Şık ve zarif tasarımlı telefon -> price:any; brand:none; os:none; usage:none; ram:none; storage:none; battery:none; camera:none; screen:none; 
 Öğrenci için düşük bütçeli iphone -> price:15000; brand:apple; os:ios; usage:none; ram:none; storage:none; battery:none; camera:none; screen:none; 
 Çoklu uygulama kullanımı için hızlı android -> price:any; brand:none; os:android; usage:none; ram:8; storage:good; battery:good; camera:none; screen:none; 
-Hem iş hem günlük hayat için android -> price:any; brand:none; os:android; usage:none; ram:none; storage:medium; battery:medium; camera:none; screen:none; 
+Hem iş hem günlük hayat için android -> price:any; brand:none; os:android; usage:work; ram:none; storage:medium; battery:medium; camera:none; screen:none; 
 Oyun oynamak için bataryası çok iyi telefon -> price:any; brand:none; os:none; usage:game; ram:none; storage:none; battery:good; camera:none; screen:none;
 10000 tl civarı iyi kameraya sahip telefon -> price:<=10000; brand:none; os:none; usage:photo; ram:none; storage:none; battery:none; camera:good; screen:none; 
 En yeni çıkan samsung telefon -> price:any; brand:samsung; os:android; usage:new; ram:none; storage:none; battery:none; camera:none; screen:none; 
@@ -352,7 +357,7 @@ Bataryası uzun giden ve şık telefon -> price:any; brand:none; os:none; usage:
 Oyun ve fotoğraf çekmek için uygun android -> price:any; brand:none; os:android; usage:game_photo; ram:none; storage:none; battery:none; camera:good; screen:none; 
 Bütçesi kısıtlı ama iyi performanslı android -> price:<=12000; brand:none; os:android; usage:game; ram:none; storage:none; battery:none; camera:none; screen:none; 
 25000 tl civarı büyük ekranlı android -> price:<=25000; brand:none; os:android; usage:none; ram:none; storage:none; battery:none; camera:none; screen:good; 
-İş ve oyun için yüksek ramli telefon -> price:any; brand:none; os:none; usage:work_game; ram:good; storage:none; battery:none; camera:none; screen:none; 
+İş ve oyun için yüksek ramli telefon -> price:any; brand:none; os:none; usage:game; ram:good; storage:none; battery:none; camera:none; screen:none; 
 Çok fazla video çekenler için telefon -> price:any; brand:none; os:none; usage:video; ram:none; storage:good; battery:good; camera:good; screen:none; 
 Hızlı açılan uygulamalar için telefon -> price:any; brand:none; os:none; usage:none; ram:good; storage:good; battery:none; camera:none; screen:none; 
 Hem uygun fiyatlı hem bataryası iyi iphone -> price:<=15000; brand:apple; os:ios; usage:none; ram:none; storage:none; battery:good; camera:none; screen:none; 
@@ -368,7 +373,11 @@ Sadece film ve dizi izlemek için telefon -> price:any; brand:none; os:none; usa
 Hızlı şarj ve uzun batarya ömrü android -> price:any; brand:none; os:android; usage:none; ram:none; storage:none; battery:good; camera:none; screen:none; 
 Fotoğraf ve sosyal medya için iphone -> price:any; brand:apple; os:ios; usage:photo_socialmedia; ram:none; storage:none; battery:none; camera:good; screen:none; 
 10000 tl civarı 6 gb ramli xiaomi -> price:<=10000; brand:xiaomi; os:android; usage:none; ram:6; storage:none; battery:none; camera:none; screen:none; 
-Günlük kullanım için hızlı telefon -> price:any; brand:none; os:none; usage:daily; ram:none; storage:none; battery:none; camera:none; screen:none; 
+Günlük kullanım için hızlı telefon -> price:any; brand:none; os:none; usage:daily; ram:none; storage:none; battery:none; camera:none; screen:none;
+Günlük -> price:any; brand:none; os:none; usage:daily; ram:none; storage:none; battery:none; camera:none; screen:none;
+Gündelik -> price:any; brand:none; os:none; usage:daily; ram:none; storage:none; battery:none; camera:none; screen:none;
+Gündelik hayat için -> price:any; brand:none; os:none; usage:daily; ram:none; storage:none; battery:none; camera:none; screen:none;
+normal hayat için telefon -> price:any; brand:none; os:none; usage:daily; ram:none; storage:none; battery:none; camera:none; screen:none;
 256 gb hafıza ve bataryası iyi iphone -> price:any; brand:apple; os:ios; usage:none; ram:none; storage:256; battery:good; camera:none; screen:none; 
 Sadece arama ve mesajlaşma için ucuz telefon -> price:<=5000; brand:none; os:none; usage:call_messaging; ram:none; storage:none; battery:none; camera:none; screen:none; 
 Çok fazla oyun oynayanlar için bataryası iyi android -> price:any; brand:none; os:android; usage:game; ram:none; storage:none; battery:good; camera:none; screen:none; 
@@ -405,7 +414,7 @@ Ekonomik ve kamerası iyi android -> price:<=10000; brand:none; os:android; usag
 Çok hızlı indirme yapan telefon -> price:any; brand:none; os:none; usage:none; ram:none; storage:good; battery:good; camera:none; screen:none; 
 25000 tl üstü iphone fotoğraf telefonu -> price:>=25000; brand:apple; os:ios; usage:photo; ram:none; storage:none; battery:none; camera:good; screen:none; 
 Eski model ama bataryası iyi android -> price:<=8000; brand:none; os:android; usage:none; ram:4; storage:none; battery:good; camera:none; screen:none; 
-Hem iş hem oyun için uygun fiyatlı android -> price:<=15000; brand:none; os:android; usage:work_game; ram:none; storage:none; battery:none; camera:none; screen:none; 
+Hem iş hem oyun için uygun fiyatlı android -> price:<=15000; brand:none; os:android; usage:work; ram:none; storage:none; battery:none; camera:none; screen:none; 
 Bataryası çok kötü olan ama hafif telefon -> price:any; brand:none; os:none; usage:none; ram:none; storage:none; battery:bad; camera:none; screen:none; 
 Kamerası normal, hafızası kötü olmayan android -> price:any; brand:none; os:android; usage:none; ram:none; storage:good; battery:none; camera:medium; screen:none; 
 15000 tl civarı şık tasarımlı android -> price:<=15000; brand:none; os:android; usage:none; ram:none; storage:none; battery:none; camera:none; screen:none; 
@@ -432,11 +441,14 @@ Yüksek ram ve bataryası iyi telefon -> price:any; brand:none; os:none; usage:n
 Öğrenci için fotoğraf çekmek için uygun fiyatlı iphone -> price:<=18000; brand:apple; os:ios; usage:student_photo; ram:none; storage:none; battery:none; camera:good; screen:none; 
 256 gb depolama ve hızlı android -> price:any; brand:none; os:android; usage:game; ram:none; storage:256; battery:none; camera:none; screen:none; 
 İş için uygun fiyatlı ve bataryası iyi android -> price:<=15000; brand:none; os:android; usage:work; ram:none; storage:none; battery:good; camera:none; screen:none; 
-Oyun ve günlük kullanım için iphone -> price:any; brand:apple; os:ios; usage:game_daily; ram:none; storage:none; battery:none; camera:none; screen:none; 
+Oyun ve günlük kullanım için iphone -> price:any; brand:apple; os:ios; usage:game; ram:none; storage:none; battery:none; camera:none; screen:none; 
+günlük kullanım için iphone -> price:any; brand:apple; os:ios; usage:daily; ram:none; storage:none; battery:none; camera:none; screen:none; 
+günlük kullanım için telefon -> price:any; brand:none; os:none; usage:daily; ram:none; storage:none; battery:none; camera:none; screen:none; 
 Kamerası iyi ve bataryası kötü olmayan telefon -> price:any; brand:none; os:none; usage:photo; ram:none; storage:none; battery:good; camera:good; screen:none; 
 Düşük bütçeli, bataryası normal android -> price:<=10000; brand:none; os:android; usage:none; ram:none; storage:none; battery:medium; camera:none; screen:none; 
 Ekranı küçük ama hızlı bir android -> price:any; brand:none; os:android; usage:game; ram:none; storage:none; battery:none; camera:none; screen:bad; 
 Çok fazla depolama alanı ve bataryası iyi olan android -> price:any; brand:none; os:android; usage:none; ram:none; storage:good; battery:good; camera:none; screen:none; 
+bataryası normal -> price:any; brand:none; os:none; usage:none; ram:none; storage:none; battery:medium; camera:none; screen:none; 
 
 // GEMINI BITIS KISMI
 
@@ -463,11 +475,18 @@ samsung -> price:none; brand:samsung; os:android;usage:none; ram:none; storage:n
 androd -> price:none; brand:none; os:android;usage:none; ram:none; storage:none; battery:none; camera:none; screen:none; 
 android telefon öner -> price:none; brand:none; os:andorid; usage:none; ram:none; storage:none; battery:none; camera:none; screen:none; 
 
+xiaomi telefon -> price:none; brand:xiaomi; os:android;usage:none; ram:none; storage:none; battery:none; camera:none; screen:none;
+şayomi telefon -> price:none; brand:xiaomi; os:android;usage:none; ram:none; storage:none; battery:none; camera:none; screen:none;
+çin telefonu -> price:none; brand:xiaomi; os:android;usage:none; ram:none; storage:none; battery:none; camera:none; screen:none; 
+iksiaomi -> price:none; brand:xiaomi; os:android;usage:none; ram:none; storage:none; battery:none; camera:none; screen:none; 
+
 // OS IOS
 apple telefon -> price:none; brand:apple; os:ios; usage:none; ram:none; storage:none; battery:none; camera:none; screen:none; 
 apple -> price:none; brand:apple; os:ios; usage:none; ram:none; storage:none; battery:none; camera:none; screen:none; 
 ayfon telefon -> price:none; brand:apple; os:ios; usage:none; ram:none; storage:none; battery:none; camera:none; screen:none; 
 ios telefon -> price:none; brand:apple; os:ios; usage:none; ram:none; storage:none; battery:none; camera:none; screen:none; 
+iphone marka -> price:none; brand:apple; os:ios; usage:none; ram:none; storage:none; battery:none; camera:none; screen:none; 
+iphon marka -> price:none; brand:apple; os:ios; usage:none; ram:none; storage:none; battery:none; camera:none; screen:none; 
 apple marka telefon -> price:none; brand:apple; os:ios; usage:none; ram:none; storage:none; battery:none; camera:none; screen:none; 
 epıl -> price:none; brand:apple; os:ios; usage:none; ram:none; storage:none; battery:none; camera:none; screen:none; 
 apple marka -> price:none; brand:apple; os:ios; usage:none; ram:none; storage:none; battery:none; camera:none; screen:none;
@@ -479,56 +498,77 @@ oyuncu telefonu -> price:none; brand:none; os:none; usage:game; ram:none; storag
 oyun telefonu -> price:none; brand:none; os:none; usage:game; ram:none; storage:none; battery:none; camera:none; screen:none; 
 gaming telefon -> price:none; brand:none; os:none; usage:game; ram:none; storage:none; battery:none; camera:none; screen:none; 
 oyun oynanan telefon -> price:none; brand:none; os:none; usage:game; ram:none; storage:none; battery:none; camera:none; screen:none; 
-oyun oynamak için ->price:none; brand:none; os:none; usage:game; ram:none; storage:none; battery:none; camera:none; screen:none; 
+oyun oynamak için -> price:none; brand:none; os:none; usage:game; ram:none; storage:none; battery:none; camera:none; screen:none; 
+oyun için -> price:none; brand:none; os:none; usage:game; ram:none; storage:none; battery:none; camera:none; screen:none; 
+pubg için -> price:none; brand:none; os:none; usage:game; ram:none; storage:none; battery:none; camera:none; screen:none; 
+pubg telefon -> price:none; brand:none; os:none; usage:game; ram:none; storage:none; battery:none; camera:none; screen:none; 
+pubg oyunu oynamak için  -> price:none; brand:none; os:none; usage:game; ram:none; storage:none; battery:none; camera:none; screen:none; 
+pubg oyunu android  -> price:none; brand:none; os:android; usage:game; ram:none; storage:none; battery:none; camera:none; screen:none; 
 gaming telefon istiyorum -> price:none; brand:none; os:none; usage:game; ram:none; storage:none; battery:none; camera:none; screen:none; 
 gaming android telefon -> price:none; brand:none; os:android; usage:game; ram:none; storage:none; battery:none; camera:none; screen:none; 
 güçlü android telefon -> price:none; brand:none; os:android; usage:game; ram:none; storage:none; battery:none; camera:none; screen:none;
 güçlü telefon -> price:none; brand:none; os:android; usage:game; ram:none; storage:none; battery:none; camera:none; screen:none;
+oyun için olan ama iyi kameralı telefon -> price:none; brand:none; os:none; usage:game; ram:none; storage:none; battery:none; camera:good; screen:none;
+oyun ve selfie için -> price:none; brand:none; os:none; usage:game; ram:none; storage:none; battery:none; camera:good; screen:none;
 
 
 // USAGE PHOTO KISMI
 fotograf -> price:none; brand:none; os:none; usage:photo; ram:none; storage:none; battery:none; camera:none; screen:none; 
 selfie çekmek için -> price:none; brand:none; os:none; usage:photo; ram:none; storage:none; battery:none; camera:none; screen:none; 
 kamerası iyi olan -> price:none; brand:none; os:none; usage:photo; ram:none; storage:none; battery:none; camera:none; screen:none; 
-kamera iyi -> price:none; brand:none; os:none; usage:phone; ram:none; storage:none; battery:none; camera:none; screen:none;
-iyi kamera -> price:none; brand:none; os:none; usage:phone; ram:none; storage:none; battery:none; camera:none; screen:none; 
-fotoğraf telefonu -> price:none; brand:none; os:none; usage: photo; ram:none; storage:none; battery:none; camera:none; screen:none; 
+kamerası kötü olmayan -> price:none; brand:none; os:none; usage:photo; ram:none; storage:none; battery:none; camera:good; screen:none; 
+kamerası kötü olan -> price:none; brand:none; os:none; usage:photo; ram:none; storage:none; battery:none; camera:bad; screen:none; 
+
+kamera iyi -> price:none; brand:none; os:none; usage:phone; ram:none; storage:none; battery:none; camera:good; screen:none;
+iyi kamera -> price:none; brand:none; os:none; usage:phone; ram:none; storage:none; battery:none; camera:good; screen:none; 
+fotoğraf telefonu -> price:none; brand:none; os:none; usage: photo; ram:none; storage:none; battery:none; camera:good; screen:none; 
+foto için -> price:none; brand:none; os:none; usage: photo; ram:none; storage:none; battery:none; camera:good; screen:none; 
+
 
 // RAM KISMI
-rami 8 den yüksek olan -> price:none; brand:none; os:none; usage: none; ram: 8; storage:none; battery:none; camera:none; screen:none; 
-rami 6 veya üstü -> price:none; brand:none; os:none; usage: none; ram:>=6; storage:none; battery:none; camera:none; screen:none;
-rami 4 olan -> price:none; brand:none; os:none; usage: none; ram:4; storage:none; battery:none; camera:none; screen:none; 
-rami 8 olan -> price:none; brand:none; os:none; usage: none; ram:8; storage:none; battery:none; camera:none; screen:none; 
+rami 8 olan -> price:none; brand:none; os:none; usage: none; ram: 8; storage:none; battery:none; camera:none; screen:none; 
+rami 6 gb olan -> price:none; brand:none; os:none; usage: none; ram: 6; storage:none; battery:none; camera:none; screen:none;
+rami 4 GB olan -> price:none; brand:none; os:none; usage: none; ram:4; storage:none; battery:none; camera:none; screen:none; 
+rami 8 gigabyte olan -> price:none; brand:none; os:none; usage: none; ram:8; storage:none; battery:none; camera:none; screen:none; 
 rami 12 olan -> price:none; brand:none; os:none; usage: none; ram:12; storage:none; battery:none; camera:none; screen:none; 
 rami 16 olan -> price:none; brand:none; os:none; usage: none; ram:16; storage:none; battery:none; camera:none; screen:none; 
 
 // STORAGE KISMI
-hafızası iyi olan -> price:none; brand:none; os:none; usage:none; ram:none; storage: >= 128; battery:none; camera:none; screen:none; 
-depolama iyi olan -> price:none; brand:none; os:none; usage:none; ram:none; storage: >= 128; battery:none; camera:none; screen:none; 
-depolama çok olan -> price:none; brand:none; os:none; usage:none; ram:none; storage: >= 128; battery:none; camera:none; screen:none; 
-depolaması orta olan -> price:none; brand:none; os:none; usage:none; ram:none; storage: <= 128; battery:none; camera:none; screen:none; 
-hafızası çok olan -> price:none; brand:none; os:none; usage:none; ram:none; storage: >= 128; battery:none; camera:none; screen:none; 
-hafızası fark etmez -> price:none; brand:none; os:none; usage:none; ram:none; storage: >= 128; battery:none; camera:none; screen:none; 
-hafızası ortalama olan -> price:none; brand:none; os:none; usage:none; ram:none; storage: <= 128; battery:none; camera:none; screen:none; 
-hafızası aşırı olan -> price:none; brand:none; os:none; usage:none; ram:none; storage: >= 256; battery:none; camera:none; screen:none; 
+hafızası iyi olan -> price:none; brand:none; os:none; usage:none; ram:none; storage: good; battery:none; camera:none; screen:none; 
+depolama iyi olan -> price:none; brand:none; os:none; usage:none; ram:none; storage: good; battery:none; camera:none; screen:none; 
+depolama çok olan -> price:none; brand:none; os:none; usage:none; ram:none; storage: good; battery:none; camera:none; screen:none; 
+depolaması orta olan -> price:none; brand:none; os:none; usage:none; ram:none; storage: medium; battery:none; camera:none; screen:none; 
+hafızası çok olan -> price:none; brand:none; os:none; usage:none; ram:none; storage: good; battery:none; camera:none; screen:none; 
+hafızası fark etmez -> price:none; brand:none; os:none; usage:none; ram:none; storage: any; battery:none; camera:none; screen:none; 
+hafızası ortalama olan -> price:none; brand:none; os:none; usage:none; ram:none; storage: medium; battery:none; camera:none; screen:none;
+hafıza ortalama  -> price:none; brand:none; os:none; usage:none; ram:none; storage: medium; battery:none; camera:none; screen:none;
+hafızası aşırı olan -> price:none; brand:none; os:none; usage:none; ram:none; storage: good; battery:none; camera:none; screen:none; 
 256 gb hafıza -> price:none; brand:none; os:none; usage:none; ram:none; storage: 256; battery:none; camera:none; screen:none; 
 128 gb hafıza -> price:none; brand:none; os:none; usage:none; ram:none; storage: 128; battery:none; camera:none; screen:none; 
-hafızası hemen dolmayan telefon öner -> price:none; brand:none; os:none; usage:none; ram:none; storage: 128; battery:none; camera:none; screen:none; 
-hafıza olarak sorun çekmeyeceğim bir telefon öner -> price:none; brand:none; os:none; usage:none; ram:none; storage: 256; battery:none; camera:none; screen:none; 
+hafızası hemen dolmayan telefon öner -> price:none; brand:none; os:none; usage:none; ram:none; storage: good; battery:none; camera:none; screen:none; 
+hafıza olarak sorun çekmeyeceğim bir telefon öner -> price:none; brand:none; os:none; usage:none; ram:none; storage: good; battery:none; camera:none; screen:none; 
 
 // BATARYA KISMI
 bataryası iyi olan -> price:none; brand:none; os:none; usage:none; ram:none; storage: none; battery:good; camera:none; screen:none; 
+bataryası kötü  -> price:none; brand:none; os:none; usage:none; ram:none; storage: none; battery:bad; camera:none; screen:none; 
 bataryası çok olan -> price:none; brand:none; os:none; usage:none; ram:none; storage: none; battery:good; camera:none; screen:none; 
 şarjı çok giden -> price:none; brand:none; os:none; usage:none; ram:none; storage: none; battery:good; camera:none; screen:none; 
 şarjı çok olan -> price:none; brand:none; os:none; usage:none; ram:none; storage: none; batarya:good; camera:none; screen:none; 
 şarjı yetsin -> price:none; brand:none; os:none; usage:none; ram:none; storage: none; battery:good; camera:none; screen:none; 
 bataryası fark etmez-> price:none; brand:none; os:none; usage:none; ram:none; storage: none; battery:any; camera:none; screen:none; 
 6000 mah üstü batarya telefon -> price:none; brand:none; os:none; usage:none; ram:none; storage: none; battery:good; camera:none; screen:none; 
-4000 mah ve altı batarya telefon -> price:none; brand:none; os:none; usage:none; ram:none; storage: none; battery:bad; camera:none; screen:none; 
+4000 mah üstü batarya telefon -> price:none; brand:none; os:none; usage:none; ram:none; storage: none; battery:good; camera:none; screen:none; 
+3000 mah ve altı batarya telefon -> price:none; brand:none; os:none; usage:none; ram:none; storage: none; battery:bad; camera:none; screen:none; 
 uzun batarya ömrü telefon -> price:none; brand:none; os:none; usage:none; ram:none; storage: none; battery:good; camera:none; screen:none; 
-batarya olarak sorun çekmeyeceğim -> price:none; brand:none; os:none; usage:none; ram:none; storage: none; battery:good; camera:none; screen:none; 
-uzun süre dayanacak telefon -> price:none; brand:none; os:none; usage:none; ram:none; storage: none; battery:good; camera:none; screen:none; 
+batarya olarak sorun çekmeyeceğim -> price:none; brand:none; os:none; usage:none; ram:none; storage: none; battery:good; camera:none; screen:none;
+batarya iyi -> price:none; brand:none; os:none; usage:none; ram:none; storage: none; battery:good; camera:none; screen:none; 
+batarya kötü -> price:none; brand:none; os:none; usage:none; ram:none; storage: none; battery:bad; camera:none; screen:none; 
+uzun süre dayanacak telefon -> price:none; brand:none; os:none; usage:none; ram:none; storage: good; battery:good; camera:none; screen:none; 
 
-ekranı büyük olan -> price:none; brand:none; os:none; usage:none; ram:none; storage: none; battery:good; camera:none; screen: >= 6.5;
-ekranı kocaman olan -> price:none; brand:none; os:none; usage:none; ram:none; storage: none; battery:good; camera:none; screen: >= 6.5;
-ekranı normal olan -> price:none; brand:none; os:none; usage:none; ram:none; storage: none; battery:good; camera:none; screen: <= 6.5;
+// ekran kısmı
+
+ekranı büyük olan -> price:none; brand:none; os:none; usage:none; ram:none; storage: none; battery:good; camera:none; screen: good;
+ekranı normal olan -> price:none; brand:none; os:none; usage:none; ram:none; storage: none; battery:good; camera:none; screen: medium;
+normal ekran -> price:none; brand:none; os:none; usage:none; ram:none; storage: none; battery:good; camera:none; screen: medium;
+ekranı kocaman olan -> price:none; brand:none; os:none; usage:none; ram:none; storage: none; battery:good; camera:none; screen: good;
+ekranı normal olan -> price:none; brand:none; os:none; usage:none; ram:none; storage: none; battery:good; camera:none; screen: bad;
